@@ -1,0 +1,30 @@
+[submodule "job-seeker"]
+	path = job-seeker
+	url = https://github.com/vKrypto/job-seeker.git
+[submodule "barebrilliant"]
+	path = barebrilliant
+	url = https://github.com/vKrypto/barebrilliant.git
+[submodule "ai-based-repo-template"]
+	path = ai-based-repo-template
+	url = https://github.com/vKrypto/ai-based-repo-template.git
+[submodule "invoice-extraction"]
+	path = invoice-extraction
+	url = https://github.com/vKrypto/invoice-extraction.git
+[submodule "local-server"]
+	path = local-server
+	url = https://github.com/vKrypto/local-server.git
+[submodule "self-hosting"]
+	path = self-hosting
+	url = https://github.com/vKrypto/self-hosting.git
+[submodule "mini-server"]
+	path = mini-server
+	url = https://github.com/vKrypto/mini-server.git
+[submodule "setup-system-main"]
+	path = setup-system-main
+	url = https://github.com/vKrypto/setup-system.git
+[submodule "vKrypto"]
+	path = vKrypto
+	url = https://github.com/vKrypto/vKrypto.git
+[submodule "switchwale"]
+	path = switchwale
+	url = https://github.com/vKrypto/switchwale.git
