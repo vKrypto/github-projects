@@ -19,8 +19,8 @@
 [submodule "mini-server"]
 	path = mini-server
 	url = https://github.com/vKrypto/mini-server.git
-[submodule "setup-system-main"]
-	path = setup-system-main
+[submodule "setup-system"]
+	path = setup-system
 	url = https://github.com/vKrypto/setup-system.git
 [submodule "vKrypto"]
 	path = vKrypto
