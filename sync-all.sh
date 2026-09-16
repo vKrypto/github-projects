@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Syncs the github-projects main repo and every submodule: fetch, then
-# fast-forward pull, then push -- all on whatever branch is currently
-# checked out in each repo. Meant to be safe to run unattended (e.g. from
-# cron): a repo with uncommitted changes is reported and left alone
-# (not committed, not merged into) rather than touched automatically.
+# Syncs the github-projects main repo and every submodule: fetch, auto-commit
+# any uncommitted changes (same "Auto Syncing: ..." convention as
+# /custom_bin/commit), fast-forward pull, then push -- all on whatever
+# branch is currently checked out in each repo. A repo is never merged/
+# rebased automatically: if --ff-only can't apply cleanly, it's left as-is
+# and reported rather than force-touched.
 # See crontab -l for the schedule this normally runs on.
 
 set -uo pipefail
@@ -18,7 +19,7 @@ exec >> "$LOG_FILE" 2>&1
 
 echo "===== $(date -Is) ====="
 
-declare -a SYNCED=() DIRTY=() FAILED=()
+declare -a SYNCED=() COMMITTED=() FAILED=()
 
 # Retries a network git command a few times with a short pause -- this
 # workstation's DNS resolver has been observed to blip transiently
@@ -53,14 +54,22 @@ sync_repo() {
   fi
 
   if [ -n "$(git -C "$dir" status --porcelain)" ]; then
-    echo "[$label] uncommitted changes present -- not pulling (would risk a conflict); will still try to push already-committed work"
-    DIRTY+=("$label")
-  else
-    if ! retry git -C "$dir" pull --ff-only origin "$branch" --quiet; then
-      echo "[$label] pull --ff-only failed (local/remote history diverged?) -- leaving as-is, not pushing"
+    echo "[$label] uncommitted changes present -- auto-committing"
+    git -C "$dir" add -A
+    if git -C "$dir" commit --quiet -m "Auto Syncing: Auto commit"; then
+      echo "[$label] committed local changes"
+      COMMITTED+=("$label")
+    else
+      echo "[$label] commit failed -- leaving as-is, not pulling/pushing"
       FAILED+=("$label")
       return
     fi
+  fi
+
+  if ! retry git -C "$dir" pull --ff-only origin "$branch" --quiet; then
+    echo "[$label] pull --ff-only failed (local/remote history diverged?) -- leaving as-is, not pushing"
+    FAILED+=("$label")
+    return
   fi
 
   if ! retry git -C "$dir" push origin "HEAD:$branch" --quiet; then
@@ -79,10 +88,11 @@ while IFS= read -r sm_path; do
 done < <(git config --file .gitmodules --get-regexp path | awk '{print $2}')
 
 if [ -n "$(git status --porcelain)" ]; then
-  echo "[main] submodule pointers are now behind the commits just synced -- not auto-committed, review with 'git status' and commit when ready"
+  echo "[main] submodule pointers changed by the syncs just run -- committing and pushing"
+  sync_repo "." "main (github-projects) [submodule pointers]"
 fi
 
-echo "Summary: synced=[${SYNCED[*]:-}] dirty=[${DIRTY[*]:-}] failed=[${FAILED[*]:-}]"
+echo "Summary: synced=[${SYNCED[*]:-}] committed=[${COMMITTED[*]:-}] failed=[${FAILED[*]:-}]"
 echo
 
 # Keep the log from growing unbounded.
