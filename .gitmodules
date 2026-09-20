@@ -28,3 +28,6 @@
 [submodule "switchwale"]
 	path = switchwale
 	url = https://github.com/vKrypto/switchwale.git
+[submodule "monitoring_stack"]
+	path = monitoring_stack
+	url = https://github.com/vKrypto/monitoring_stack.git
