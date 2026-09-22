@@ -60,13 +60,3 @@ range(1, 11)
 #         i = i + 2
 #     else:
 #         i = i + 1
-
-# break ==> 
-# continue ==> skip
-
-for i in range(1, 10):
-    if i == 4:
-        continue  # skip
-    print(i)
-    if i == 8:
-        break
