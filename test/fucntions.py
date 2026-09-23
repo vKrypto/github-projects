@@ -50,10 +50,21 @@ monika(-100)
 monika([1, 20, 120, 12])
 
 
-def rehan(cur_personality, cur_state):
-    print("rehan....>", cur_personality, type(cur_state))
+def rehan(cur_personality, cur_state="ghatiya"):
+    print("rehan....>", cur_personality, cur_state)
 
 
 print(">>>>>> " * 20, ":)")
 rehan("lost", "ghatiya")
+rehan("lost")
 
+
+def rehan(cur_personality, *cur_states):
+    # cur_states = ("ghatiya", "hawasi", "tharki")
+    print("rehan....>", cur_personality, cur_states, type(cur_states))
+
+
+rehan("lost", "ghatiya", "hawasi", "tharki")
+rehan("lost", "ghatiya", "hawasi")
+rehan("lost", "ghatiya")
+rehan("lost")
