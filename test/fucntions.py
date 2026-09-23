@@ -38,6 +38,21 @@ print("---"*20)
 monika()
 
 
-
 def monika(cur_bf):
-    print(cur_bf)
+    print("monika....>", cur_bf, type(cur_bf))
+
+print("---"*40)
+
+monika("gadha")
+monika("ashutosh")
+monika("potty")
+monika(-100)
+monika([1, 20, 120, 12])
+
+
+def rehan(cur_personality, cur_state):
+    print("rehan....>", cur_personality, type(cur_state))
+
+
+print(">>>>>> " * 20, ":)")
+rehan("lost", "ghatiya")
