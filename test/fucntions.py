@@ -56,3 +56,4 @@ def rehan(cur_personality, cur_state):
 
 print(">>>>>> " * 20, ":)")
 rehan("lost", "ghatiya")
+
