@@ -40,4 +40,4 @@ monika()
 
 
 def monika(cur_bf):
-    print("")
+    print(cur_bf)
