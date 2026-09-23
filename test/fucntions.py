@@ -1,9 +1,7 @@
 """
 functions:
 
-
-re-usabiltiy
+re-usabiltiy: 
 clean code
-
 
 """
