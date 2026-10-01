@@ -18,3 +18,4 @@ onboarding page:
         two agents will be created:
             - agent 1: responsible for generating a personalized workout plan based on the user's inputs.
             - agent 2: responsible for generating a personalized meal plan based on the user's dietary preferences and allergies.
+            - agent 3: review them and critique and provide feedback on the generated plans to ensure they are balanced and effective, if any major suggestions required, they will be sent back to the respective agents for revision, max loop count will 3 for each task.
