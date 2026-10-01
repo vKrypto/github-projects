@@ -1,0 +1,20 @@
+frontend: react
+backend: python
+db: sqlite
+
+
+Phase 1: 
+
+onboarding page:
+    - ask user name and email for notification purposes
+    - provide photos of items you have in your home (optional, if not provided assume person is using zym, has most of the euqipments)
+    - your full picture a shirtless is recommended for better fitting suggestions.
+    - target body focus: give multiple options for body focus areas (e.g., arms, legs, torso) to tailor suggestions (multi selections + custom input for specific areas).
+    - food preferences(optional): allow users to select dietary preferences (e.g., vegetarian, vegan, gluten-free) and any allergies.
+
+    submit button: "Prepare Planning"
+
+    once submitted:
+        two agents will be created:
+            - agent 1: responsible for generating a personalized workout plan based on the user's inputs.
+            - agent 2: responsible for generating a personalized meal plan based on the user's dietary preferences and allergies.
