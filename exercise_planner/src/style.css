@@ -2328,3 +2328,54 @@ a:focus-visible {
   width: 100%;
   margin-top: 5px;
 }
+.heading-row {
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.plan-actions .outline {
+  font-size: 10px;
+}
+.plan-change-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c2d5b1;
+  background: #24311f;
+  border: 1px solid #3e5132;
+  border-radius: 7px;
+  padding: 12px 15px;
+  margin-top: 20px;
+  font-size: 11px;
+}
+.saved-preferences > div {
+  border-bottom: 1px solid #3c4930;
+  padding: 0 0 10px;
+}
+.saved-preferences small {
+  font-size: 9px;
+  color: #90a47f;
+}
+.saved-preferences p {
+  margin-bottom: 7px;
+}
+@media (max-width: 560px) {
+  .plan-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .heading-row .plan-actions .outline {
+    font-size: 9px;
+    margin: 0;
+    padding: 8px;
+  }
+  .plan-change-summary {
+    font-size: 9px;
+    line-height: 1.8;
+  }
+}

@@ -1,5 +1,5 @@
 from typing import Literal
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator
 
 class Signup(BaseModel):
     name: str = Field(min_length=1, max_length=100)
@@ -44,6 +44,18 @@ class CheckIn(BaseModel):
 
 class Feedback(BaseModel):
     text: str = Field(min_length=1, max_length=4000)
+
+class PlanAdjustment(BaseModel):
+    days: int = Field(default=7, ge=1, le=28, strict=True)
+    preferences: str = Field(min_length=1, max_length=4000)
+
+    @field_validator('preferences')
+    @classmethod
+    def clean_preferences(cls, value):
+        value = value.strip()
+        if not value:
+            raise ValueError('Describe your preferences before continuing.')
+        return value
 
 class PasswordChange(BaseModel):
     password: str = Field(min_length=8, max_length=128)

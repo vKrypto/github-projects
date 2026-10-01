@@ -24,6 +24,10 @@ Never suggest extreme restriction, supplements, prescription products or unsafe 
 Return exactly seven template days numbered 1 through 7. Week progression must have exactly
 four strings, with gradual adaptation and a lighter day each week. Task times use HH:MM 24h.
 Durations range 0-120 minutes, calories 0-2000 per task. Steps must be actionable.
+Apply saved user preferences to timing, equipment, food choices and routines. The most
+recent preference wins when notes conflict, while allergies and safety limitations remain
+mandatory. For refinement, use the existing plan and adherence as context to make the
+requested changes; for extension, continue from the current routine and progress.
 '''
 
 class OpenAIProvider:
@@ -97,9 +101,12 @@ def validate_role(role, plan, profile):
             if not 0<=t.minutes<=120 or not 0<=t.calories<=2000 or not t.steps:
                 raise PlanningError('Invalid task duration, energy estimate or missing instructions.')
 
-def generate(profile, media, start: date, progress=None, report=lambda *args:None, provider=None):
+def generate(profile, media, start: date, progress=None, report=lambda *args:None, provider=None, *, days_count=28, journey_offset=0, preferences=None, current_plan=None, action='generate'):
     provider = provider or PROVIDERS[os.getenv('LLM_PROVIDER','openai')]()
-    context = {'profile':profile,'media':media,'previous_progress':progress or {},'length_days':28}
+    if not 1 <= days_count <= 28: raise PlanningError('Plans can cover between 1 and 28 days per request.')
+    context = {'profile':profile,'media':media,'previous_progress':progress or {},
+               'length_days':days_count,'start_date':start.isoformat(),'journey_day_offset':journey_offset,
+               'saved_preferences':preferences or [],'current_plan':current_plan or {},'action':action}
     roles = ['meal']
     if set(profile['focus']) & {'Physique','Overall wellness'}: roles.insert(0,'workout')
     if set(profile['focus']) & {'Skin care','Hair care'}: roles.append('care')
@@ -129,16 +136,16 @@ def generate(profile, media, start: date, progress=None, report=lambda *args:Non
             report('revising',f'{r.title()} agent is revising its plan ({revisions[r]}/3). {feedback}')
             plans[r]=provider.generate(r,{**context,'previous_plan':plans[r].model_dump()},feedback)
     days=[]
-    for i in range(28):
+    for i in range(days_count):
         tasks=[]
         for role,plan in plans.items():
-            if role=='care' and i<14 and not profile['care_early']: continue
-            template = next(d for d in plan.days if d.day==i%7+1)
+            if role=='care' and journey_offset+i<14 and not profile['care_early']: continue
+            template = next(d for d in plan.days if d.day==(journey_offset+i)%7+1)
             for index,t in enumerate(template.tasks):
                 tasks.append({**t.model_dump(),'id':f'{role}-{index+1}', 'role':role,'week_note':plan.weekly_progression[i//7]})
-        days.append({'date':(start+timedelta(days=i)).isoformat(),'week':i//7+1,'tasks':sorted(tasks,key=lambda t:t['time'])})
+        days.append({'date':(start+timedelta(days=i)).isoformat(),'week':i//7+1,'tasks':sorted(tasks,key=lambda t:t['time']), 'daily_calorie_target':plans['meal'].daily_calorie_target, 'daily_burn_target':plans['workout'].daily_burn_target if 'workout' in plans else 0})
     return {'provider':os.getenv('LLM_PROVIDER','openai'),'model':os.getenv('OPENAI_MODEL','gpt-4.1-mini'),
-        'start_date':start.isoformat(),'end_date':(start+timedelta(days=27)).isoformat(),
+        'start_date':start.isoformat(),'end_date':(start+timedelta(days=days_count-1)).isoformat(),
         'daily_calorie_target':plans['meal'].daily_calorie_target,
         'daily_burn_target':plans['workout'].daily_burn_target if 'workout' in plans else 0,
         'care_start_day':1 if profile['care_early'] else 15,'days':days,

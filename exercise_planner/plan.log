@@ -43,7 +43,10 @@ Planning:
     
 
 Refine current plan:
-    
+    on clickbutton --> ask for one input box and which will get stored as user preferences for future plan generation, and will be used to refine the current plan for next x days (max 4 week plan), and will be sent to the user on dashboard and also store in db.
+Extend Plan:
+    on clickbutton --> ask for one input box and which will get stored as user preferences for future plan generation, and will be used to extend the current plan for next x days (max 4 week plan), and will be sent to the user on dashboard and also store in db.
+
 
 
 Phase 2 (MCP support):

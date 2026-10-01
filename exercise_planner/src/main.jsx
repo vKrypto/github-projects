@@ -29,7 +29,7 @@ import {
   KeyRound,
   Trash2,
 } from "lucide-react";
-import { api, localDate, dateObject, labelDate } from "./api";
+import { api, localDate, dateObject, labelDate, shiftDate } from "./api";
 import "./style.css";
 const DEFAULT_PROFILE = {
   name: "Sample User",
@@ -70,6 +70,8 @@ const taskIcon = (category) =>
 const statusKey = (date, id) => `${date}/${id}`;
 function App() {
   const [history, setHistory] = useState([]);
+  const [preferences, setPreferences] = useState([]),
+    [adjustmentDays, setAdjustmentDays] = useState(7);
   const [account, setAccount] = useState(null),
     [profile, setProfile] = useState(null),
     [plan, setPlan] = useState(null),
@@ -107,6 +109,7 @@ function App() {
     setStatuses({});
     setCheckins({});
     setHistory([]);
+    setPreferences([]);
     setMedia([]);
     setNotifications([]);
     setUsers([]);
@@ -123,6 +126,7 @@ function App() {
     setPlan(me.plan);
     setJob(me.job);
     setNotifications(me.notifications);
+    setPreferences(me.preferences || []);
     if (me.account.role === "admin") {
       setUsers(await api("/admin/users"));
     }
@@ -176,8 +180,10 @@ function App() {
         if (cancelled) return;
         setJob(next);
         if (next.status === "completed") {
-          await refresh();
-          toast("Your reviewed four-week plan is ready.");
+          const me = await refresh();
+          if (next.action !== "generate" && me.plan?.last_change)
+            setDate(me.plan.last_change.start_date);
+          toast(next.message || "Your reviewed plan is ready.");
         } else if (next.status === "failed") setError(next.message);
       } catch (e) {
         if (!cancelled) setError(e.message);
@@ -257,6 +263,32 @@ function App() {
     setPage("Overview");
     toast("Planning started. You can stay here while the agents work.");
   }
+  async function retryPlanning() {
+    const next = await api("/jobs/" + job.id + "/retry", { method: "POST" });
+    setJob(next);
+    toast("Retry started. Your saved preferences will be used.");
+  }
+  function openAdjustment(mode) {
+    setAdjustmentDays(mode === "refine" ? Math.min(7, remainingDays) : 7);
+    setError("");
+    setModal(mode);
+  }
+  async function submitAdjustment(e) {
+    e.preventDefault();
+    const values = new FormData(e.currentTarget);
+    const mode = modal;
+    await action(async () => {
+      const next = await api("/plans/" + mode, {
+        method: "POST",
+        body: { days: adjustmentDays, preferences: values.get("preferences") },
+      });
+      setJob(next);
+      setModal(null);
+      setPage("Overview");
+      setPreferences(await api("/preferences"));
+      toast("Your preferences are saved. Your plan update is being reviewed.");
+    });
+  }
   async function uploadFiles(kind, selectedFiles) {
     for (const file of selectedFiles) {
       const body = new FormData();
@@ -309,6 +341,15 @@ function App() {
     workouts = tasks.filter((t) => t.role === "workout");
   const week = selectedDay?.week || 1;
   const weekDays = days.filter((d) => d.week === week);
+  const totalWeeks = Math.max(1, Math.ceil(days.length / 7));
+  const remainingDays = Math.min(
+    28,
+    days.filter((d) => d.date >= localDate()).length,
+  );
+  const adjustmentStart =
+    modal === "extend"
+      ? [shiftDate(plan?.end_date || localDate(), 1), localDate()].sort().at(-1)
+      : [plan?.start_date || localDate(), localDate()].sort().at(-1);
   const allCompleted = days.reduce(
     (n, d) =>
       n +
@@ -446,12 +487,16 @@ function App() {
               You’ve got this.
             </p>
             <span>
-              YOUR 4-WEEK JOURNEY <ArrowUpRight size={14} />
+              YOUR WELLNESS JOURNEY <ArrowUpRight size={14} />
             </span>
             <div className="mini-track">
-              <i style={{ width: plan ? `${week * 25}%` : "0%" }} />
+              <i
+                style={{ width: plan ? `${(week / totalWeeks) * 100}%` : "0%" }}
+              />
             </div>
-            <small>{plan ? `Week ${week} of 4` : "Made around you"}</small>
+            <small>
+              {plan ? `Week ${week} of ${totalWeeks}` : "Made around you"}
+            </small>
           </div>
           <button
             className="settings"
@@ -682,6 +727,27 @@ function App() {
                     Add user
                   </button>
                 </form>
+                {plan?.last_change && (
+                  <div className="plan-change-summary">
+                    <Check size={17} />
+                    <span>
+                      Plan{" "}
+                      {plan.last_change.action === "refine"
+                        ? "refined"
+                        : "extended"}{" "}
+                      · {plan.last_change.days} days ·{" "}
+                      {labelDate(plan.last_change.start_date, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                      –
+                      {labelDate(plan.last_change.end_date, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </div>
+                )}
                 {credentials && (
                   <div className="credential-box">
                     Generated password: <code>{credentials}</code>
@@ -811,17 +877,44 @@ function App() {
                     <p>
                       {page === "Overview"
                         ? "Show up for yourself. We’ll take care of the plan."
-                        : "Your personalized four-week journey, one day at a time."}
+                        : "Your personal wellness journey, one day at a time."}
                     </p>
                   </div>
-                  <button
-                    className="outline"
-                    disabled={inProgress}
-                    onClick={openOnboarding}
-                  >
-                    <Settings size={15} />
-                    Customize plan
-                  </button>
+                  <div className="plan-actions">
+                    {plan && (
+                      <>
+                        <button
+                          className="outline"
+                          disabled={inProgress || busy || !remainingDays}
+                          onClick={() => openAdjustment("refine")}
+                          title={
+                            !remainingDays
+                              ? "No upcoming days remain. Extend your plan to continue."
+                              : "Refine upcoming days"
+                          }
+                        >
+                          <Sparkles size={15} />
+                          Refine current plan
+                        </button>
+                        <button
+                          className="outline"
+                          disabled={inProgress || busy}
+                          onClick={() => openAdjustment("extend")}
+                        >
+                          <Plus size={15} />
+                          Extend Plan
+                        </button>
+                      </>
+                    )}
+                    <button
+                      className="outline"
+                      disabled={inProgress}
+                      onClick={openOnboarding}
+                    >
+                      <Settings size={15} />
+                      Customize plan
+                    </button>
+                  </div>
                 </div>
               </div>
               {credentials && (
@@ -840,7 +933,13 @@ function App() {
                 <section className="planning-banner" aria-live="polite">
                   <LoaderCircle className="spin" size={24} />
                   <div>
-                    <h3>Preparing your four-week plan</h3>
+                    <h3>
+                      {job.action === "refine"
+                        ? "Refining your current plan"
+                        : job.action === "extend"
+                          ? "Extending your plan"
+                          : "Preparing your four-week plan"}
+                    </h3>
                     <p>{job.message}</p>
                     <small>Your progress is saved. You can return later.</small>
                   </div>
@@ -857,7 +956,7 @@ function App() {
                   <button
                     className="outline"
                     disabled={busy}
-                    onClick={() => action(startPlanning)}
+                    onClick={() => action(retryPlanning)}
                   >
                     Retry
                   </button>
@@ -906,14 +1005,12 @@ function App() {
                       <div className="hero-content">
                         <span className="pill">
                           <span /> WEEK {week} ·{" "}
-                          {
-                            [
-                              "BUILDING THE FOUNDATION",
-                              "FINDING YOUR RHYTHM",
-                              "GROWING WITH INTENTION",
-                              "CELEBRATING CONSISTENCY",
-                            ][week - 1]
-                          }
+                          {[
+                            "BUILDING THE FOUNDATION",
+                            "FINDING YOUR RHYTHM",
+                            "GROWING WITH INTENTION",
+                            "CELEBRATING CONSISTENCY",
+                          ][week - 1] || "KEEPING YOUR RHYTHM"}
                         </span>
                         <h2>Consistency over perfection.</h2>
                         <p>
@@ -971,8 +1068,11 @@ function App() {
                     >
                       <div className="stat-bottom">
                         <span className="dot orange" />
-                        {plan.daily_calorie_target.toLocaleString()} kcal daily
-                        target
+                        {(
+                          selectedDay?.daily_calorie_target ??
+                          plan.daily_calorie_target
+                        ).toLocaleString()}{" "}
+                        kcal daily target
                       </div>
                     </Stat>
                     <Stat
@@ -1027,7 +1127,11 @@ function App() {
                       <section className="progress-page">
                         <div className="section-heading">
                           <div>
-                            <h2>Your four-week progress</h2>
+                            <h2>
+                              {days.length > 28
+                                ? "Your progress over time"
+                                : "Your four-week progress"}
+                            </h2>
                             <p>
                               Activity completion, based on your saved tracking.
                             </p>
@@ -1191,10 +1295,12 @@ function App() {
                             <ChevronLeft size={14} />
                             Previous week
                           </button>
-                          <span>Week {week} of 4</span>
+                          <span>
+                            Week {week} of {totalWeeks}
+                          </span>
                           <button
                             className="outline"
-                            disabled={week === 4}
+                            disabled={week >= totalWeeks}
                             onClick={() => setDate(days[week * 7].date)}
                           >
                             Next week
@@ -1594,6 +1700,79 @@ function App() {
                   ) : (
                     <>
                       Sign in <ArrowRight size={17} />
+                    </>
+                  )}
+                </button>
+              </form>
+            ) : modal === "refine" || modal === "extend" ? (
+              <form onSubmit={submitAdjustment}>
+                <span className="eyebrow">YOUR PLAN, YOUR PREFERENCES</span>
+                <h2>
+                  {modal === "refine" ? "Refine current plan" : "Extend Plan"}
+                </h2>
+                <p>
+                  {modal === "refine"
+                    ? "Adjust upcoming days while keeping your completed and skipped activities."
+                    : "Continue your journey with new days after the current plan."}
+                </p>
+                <label>
+                  What would you like to change?
+                  <textarea
+                    name="preferences"
+                    required
+                    maxLength={4000}
+                    placeholder={
+                      modal === "refine"
+                        ? "e.g. Keep workouts under 30 minutes and add quick vegetarian lunches."
+                        : "e.g. Continue with more leg strength and simple meal prep."
+                    }
+                  />
+                </label>
+                <label>
+                  Number of days
+                  <select
+                    value={adjustmentDays}
+                    onChange={(e) => setAdjustmentDays(Number(e.target.value))}
+                  >
+                    {Array.from(
+                      { length: modal === "refine" ? remainingDays : 28 },
+                      (_, i) => i + 1,
+                    ).map((n) => (
+                      <option key={n} value={n}>
+                        {n} {n === 1 ? "day" : "days"}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="mandatory-note">
+                  <CalendarDays size={17} />
+                  {labelDate(adjustmentStart, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}{" "}
+                  –{" "}
+                  {labelDate(shiftDate(adjustmentStart, adjustmentDays - 1), {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </div>
+                <p className="muted">
+                  Your note is saved for future plan generation. Each request
+                  covers at most 28 days and is reviewed before appearing on
+                  your dashboard.
+                </p>
+                <button
+                  className="primary"
+                  disabled={busy || inProgress || !adjustmentDays}
+                >
+                  {busy ? (
+                    <LoaderCircle className="spin" size={17} />
+                  ) : (
+                    <>
+                      {modal === "refine" ? "Refine plan" : "Extend plan"}
+                      <ArrowRight size={17} />
                     </>
                   )}
                 </button>
@@ -2174,6 +2353,34 @@ function App() {
                     >
                       Change password <KeyRound size={16} />
                     </button>
+                    <div className="saved-preferences">
+                      <h3>Planning preferences</h3>
+                      {preferences.length ? (
+                        preferences
+                          .slice()
+                          .reverse()
+                          .map((p) => (
+                            <div key={p.id}>
+                              <p>{p.text}</p>
+                              <small>
+                                {p.action === "refine"
+                                  ? "Refinement"
+                                  : "Extension"}{" "}
+                                · {p.days} days ·{" "}
+                                {labelDate(p.created.slice(0, 10), {
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                              </small>
+                            </div>
+                          ))
+                      ) : (
+                        <p>
+                          Your refine and extend notes will be saved here for
+                          future plans.
+                        </p>
+                      )}
+                    </div>
                     <div className="notifications">
                       <h3>Notifications</h3>
                       {notifications.length ? (

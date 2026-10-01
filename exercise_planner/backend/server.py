@@ -13,9 +13,10 @@ from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Res
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from PIL import Image, UnidentifiedImageError
-from .models import Signup, Login, Profile, TaskStatus, CheckIn, Feedback, PasswordChange
+from .models import Signup, Login, Profile, TaskStatus, CheckIn, Feedback, PasswordChange, PlanAdjustment
 from .cache import Cache
 from . import planning
+from .plan_updates import adjustment_window, merge_adjustment
 
 DATA = Path(os.getenv('FORMA_DATA_DIR', str(Path(__file__).parent / 'data'))).resolve()
 DATA.mkdir(parents=True,exist_ok=True)
@@ -48,8 +49,13 @@ def init_db():
         CREATE TABLE IF NOT EXISTS checkins(tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, date TEXT, water INTEGER, weight REAL, notes TEXT, PRIMARY KEY(tenant,date));
         CREATE TABLE IF NOT EXISTS media(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, kind TEXT, date TEXT, filename TEXT, created TEXT);
         CREATE TABLE IF NOT EXISTS feedback(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, text TEXT, created TEXT);
+        CREATE TABLE IF NOT EXISTS plan_preferences(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, text TEXT NOT NULL, action TEXT NOT NULL, days INTEGER NOT NULL, created TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS notifications(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, message TEXT, created TEXT, email_status TEXT);
         ''')
+        job_columns = {r['name'] for r in con.execute('PRAGMA table_info(jobs)')}
+        for column, declaration in [('action', "TEXT NOT NULL DEFAULT 'generate'"), ('start_date', 'TEXT'), ('days', 'INTEGER NOT NULL DEFAULT 28'), ('preferences_id', 'TEXT')]:
+            if column not in job_columns:
+                con.execute(f'ALTER TABLE jobs ADD COLUMN {column} {declaration}')
         email=os.getenv('ADMIN_EMAIL','admin@example.com').lower()
         if not con.execute('SELECT id FROM accounts WHERE email=?',(email,)).fetchone():
             con.execute('INSERT INTO accounts VALUES(?,?,?,?,?,?)',(str(uuid.uuid4()),email,'Administrator',hash_password(os.getenv('ADMIN_PASSWORD','admin123')),'admin',now()))
@@ -125,34 +131,102 @@ def deliver_notification(identifier):
         except Exception: status='failed'
     with connect() as con: con.execute('UPDATE notifications SET email_status=? WHERE id=?',(status,identifier))
 
-def run_job(identifier,tenant,profile):
-    def report(status,message,details=None):
+def load_preferences(tenant):
+    with connect() as con:
+        return [dict(r) for r in con.execute('SELECT id,text,action,days,created FROM plan_preferences WHERE tenant=? ORDER BY rowid', (tenant,))]
+
+
+def run_job(identifier, tenant, profile, action='generate', start=None, count=28, base_plan=None, preference=''):
+    def report(status, message, details=None):
         with connect() as con:
-            con.execute('UPDATE jobs SET status=?,message=?,updated=? WHERE id=?',(status,message,now(),identifier))
-            if details is not None: con.execute('INSERT INTO job_audit VALUES(?,?,?,?,?)',(str(uuid.uuid4()),identifier,tenant,json.dumps(details),now()))
+            con.execute('UPDATE jobs SET status=?,message=?,updated=? WHERE id=?', (status,message,now(),identifier))
+            if details is not None:
+                con.execute('INSERT INTO job_audit VALUES(?,?,?,?,?)', (str(uuid.uuid4()),identifier,tenant,json.dumps(details),now()))
     try:
+        start = start or today(profile['timezone'])
         with connect() as con:
-            images=[dict(r) for r in con.execute("SELECT * FROM media WHERE tenant=? AND kind IN ('equipment','body') ORDER BY created DESC",(tenant,))]
-            for image in images: image['path']=str(DATA/'media'/tenant/image['filename'])
-            previous=[dict(r) for r in con.execute('SELECT * FROM statuses WHERE tenant=?',(tenant,))]
-            feedback=[dict(r) for r in con.execute('SELECT text FROM feedback WHERE tenant=? ORDER BY created DESC LIMIT 5',(tenant,))]
-        plan=planning.generate(profile,images,today(profile['timezone']),{'tasks':previous,'feedback':feedback},report)
-        # Only the same profile and live tenant may receive this result.
-        if load_profile(tenant)!=profile:
-            report('failed','Profile changed during planning. Please regenerate.');return
+            images = [dict(r) for r in con.execute("SELECT * FROM media WHERE tenant=? AND kind IN ('equipment','body') ORDER BY created DESC", (tenant,))]
+            for image in images:
+                image['path'] = str(DATA/'media'/tenant/image['filename'])
+            previous = [dict(r) for r in con.execute('SELECT date,task_id,status FROM statuses WHERE tenant=?', (tenant,))]
+            feedback = [dict(r) for r in con.execute('SELECT text FROM feedback WHERE tenant=? ORDER BY created DESC LIMIT 5', (tenant,))]
+        context_plan = {}
+        journey_offset = 0
+        if base_plan:
+            context_plan = {k:v for k,v in base_plan.items() if k not in ('days','reviews','changes')}
+            if action == 'refine':
+                end = (start + timedelta(days=count-1)).isoformat()
+                context_plan['days'] = [d for d in base_plan['days'] if start.isoformat() <= d['date'] <= end]
+            else:
+                context_plan['days'] = base_plan['days'][-7:]
+            if action != 'generate':
+                journey_offset = max(0, (start-date.fromisoformat(base_plan['start_date'])).days)
+        generated = planning.generate(profile, images, start, {'tasks':previous,'feedback':feedback}, report,
+            days_count=count, journey_offset=journey_offset, preferences=load_preferences(tenant),
+            current_plan=context_plan, action=action)
         with connect() as con:
-            old=con.execute('SELECT data FROM plans WHERE tenant=?',(tenant,)).fetchone()
+            con.execute('BEGIN IMMEDIATE')
+            stored_profile = con.execute('SELECT data FROM profiles WHERE tenant=?', (tenant,)).fetchone()
+            if not stored_profile or json.loads(stored_profile['data']) != profile:
+                raise planning.PlanningError('Profile changed during planning. Please retry with the updated profile.')
+            old = con.execute('SELECT data FROM plans WHERE tenant=?', (tenant,)).fetchone()
+            old_plan = json.loads(old['data']) if old else None
+            if old_plan != base_plan:
+                raise planning.PlanningError('Your plan changed during planning. Please retry against the current version.')
+            old_statuses = [dict(r) for r in con.execute('SELECT date,task_id,status FROM statuses WHERE tenant=?', (tenant,))]
             if old:
-                old_statuses=[dict(r) for r in con.execute('SELECT date,task_id,status FROM statuses WHERE tenant=?',(tenant,))]
-                con.execute('INSERT INTO plan_history VALUES(?,?,?,?,?)',(str(uuid.uuid4()),tenant,old['data'],json.dumps(old_statuses),now()))
-            con.execute('INSERT OR REPLACE INTO plans VALUES(?,?,?)',(tenant,json.dumps(plan),now()))
-            # Regeneration has new task identities; clear obsolete tracking for the affected dates.
-            con.execute('DELETE FROM statuses WHERE tenant=? AND date BETWEEN ? AND ?',(tenant,plan['start_date'],plan['end_date']))
-        cache.delete(tenant,'plan');cache.set(tenant,'plan',plan)
-        notification(tenant,'Your personalized four-week workout, meal and selected care plan is ready.')
-        report('completed','Your reviewed four-week plan is ready.')
-    except planning.PlanningError as e: report('failed',str(e))
-    except Exception: report('failed','Planning could not finish. Your previous plan is still available. Please retry.')
+                con.execute('INSERT INTO plan_history VALUES(?,?,?,?,?)', (str(uuid.uuid4()),tenant,old['data'],json.dumps(old_statuses),now()))
+            plan = generated if action == 'generate' else merge_adjustment(old_plan, generated, action, old_statuses, identifier, preference, now())
+            con.execute('INSERT OR REPLACE INTO plans VALUES(?,?,?)', (tenant,json.dumps(plan),now()))
+            if action == 'generate':
+                con.execute('DELETE FROM statuses WHERE tenant=? AND date BETWEEN ? AND ?', (tenant,generated['start_date'],generated['end_date']))
+            elif action == 'refine':
+                affected_dates = {d['date'] for d in generated['days']}
+                valid = {(d['date'],t['id']) for d in plan['days'] if d['date'] in affected_dates for t in d['tasks']}
+                for row in old_statuses:
+                    if row['date'] in affected_dates and (row['date'],row['task_id']) not in valid:
+                        con.execute('DELETE FROM statuses WHERE tenant=? AND date=? AND task_id=?', (tenant,row['date'],row['task_id']))
+        cache.delete(tenant,'plan')
+        cache.set(tenant,'plan',plan)
+        message = 'Your reviewed four-week plan is ready.' if action == 'generate' else f'Your plan has been {"refined" if action == "refine" else "extended"} for {count} days: {generated["start_date"]} to {generated["end_date"]}.'
+        notification(tenant, message)
+        report('completed', message)
+    except planning.PlanningError as e:
+        report('failed', str(e))
+    except Exception:
+        report('failed', 'Planning could not finish. Your previous plan is still available and your preference note is saved. Please retry.')
+
+
+def queue_job(account, action='generate', adjustment=None, preferences_id=None):
+    tenant = account['id']
+    profile = load_profile(tenant)
+    if not profile:
+        raise HTTPException(400, 'Complete onboarding first.')
+    if os.getenv('LLM_PROVIDER','openai') not in planning.PROVIDERS:
+        raise HTTPException(503, 'Configured planning provider is unavailable.')
+    current_plan = load_plan(tenant)
+    count = adjustment.days if adjustment else 28
+    start = today(profile['timezone'])
+    if action != 'generate':
+        try:
+            start = adjustment_window(current_plan, action, count, start)
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+    identifier = str(uuid.uuid4())
+    note = adjustment.preferences if adjustment else ''
+    with connect() as con:
+        con.execute('BEGIN IMMEDIATE')
+        if con.execute("SELECT id FROM jobs WHERE tenant=? AND status IN ('queued','generating','reviewing','revising')", (tenant,)).fetchone():
+            raise HTTPException(409, 'A plan is already being prepared.')
+        if adjustment and not preferences_id:
+            preferences_id = str(uuid.uuid4())
+            con.execute('INSERT INTO plan_preferences VALUES(?,?,?,?,?,?)', (preferences_id,tenant,note,action,count,now()))
+        con.execute('INSERT INTO jobs(id,tenant,status,message,created,updated,action,start_date,days,preferences_id) VALUES(?,?,?,?,?,?,?,?,?,?)',
+            (identifier,tenant,'queued','Planning is queued.',now(),now(),action,start.isoformat(),count,preferences_id))
+    executor.submit(run_job, identifier, tenant, profile, action, start, count, current_plan, note)
+    return {'id':identifier,'status':'queued','message':'Planning is queued.','action':action,
+            'days':count,'start_date':start.isoformat(),'end_date':(start+timedelta(days=count-1)).isoformat()}
+
 
 @asynccontextmanager
 async def lifespan(app):
@@ -196,7 +270,7 @@ def me(account=Depends(current),forma_admin:str | None=Cookie(default=None)):
     with connect() as con:
         job=con.execute('SELECT * FROM jobs WHERE tenant=? ORDER BY created DESC LIMIT 1',(account['id'],)).fetchone()
         notices=[dict(r) for r in con.execute('SELECT * FROM notifications WHERE tenant=? ORDER BY created DESC LIMIT 10',(account['id'],))]
-    return {'account':public(account),'profile':load_profile(account['id']),'plan':load_plan(account['id']),'job':dict(job) if job else None,'notifications':notices,'impersonating':bool(forma_admin) and account['role']!='admin'}
+    return {'account':public(account),'profile':load_profile(account['id']),'plan':load_plan(account['id']),'job':dict(job) if job else None,'notifications':notices,'preferences':load_preferences(account['id']),'impersonating':bool(forma_admin) and account['role']!='admin'}
 
 @app.put('/api/profile')
 def save_profile(data:Profile,account=Depends(current)):
@@ -218,16 +292,29 @@ def password(data:PasswordChange,account=Depends(current)):
 
 @app.post('/api/plans/generate',status_code=202)
 def start_plan(account=Depends(current)):
-    profile=load_profile(account['id'])
-    if not profile: raise HTTPException(400,'Complete onboarding first.')
-    if os.getenv('LLM_PROVIDER','openai') not in planning.PROVIDERS: raise HTTPException(503,'Configured planning provider is unavailable.')
-    identifier=str(uuid.uuid4())
+    return queue_job(account)
+
+@app.post('/api/plans/refine',status_code=202)
+def refine_plan(data:PlanAdjustment,account=Depends(current)):
+    return queue_job(account,'refine',data)
+
+@app.post('/api/plans/extend',status_code=202)
+def extend_plan(data:PlanAdjustment,account=Depends(current)):
+    return queue_job(account,'extend',data)
+
+@app.get('/api/preferences')
+def preferences(account=Depends(current)):
+    return load_preferences(account['id'])
+
+@app.post('/api/jobs/{identifier}/retry',status_code=202)
+def retry_job(identifier:str,account=Depends(current)):
     with connect() as con:
-        con.execute('BEGIN IMMEDIATE')
-        if con.execute("SELECT id FROM jobs WHERE tenant=? AND status IN ('queued','generating','reviewing','revising')",(account['id'],)).fetchone(): raise HTTPException(409,'A plan is already being prepared.')
-        con.execute('INSERT INTO jobs VALUES(?,?,?,?,?,?)',(identifier,account['id'],'queued','Planning is queued.',now(),now()))
-    executor.submit(run_job,identifier,account['id'],profile)
-    return {'id':identifier,'status':'queued','message':'Planning is queued.'}
+        row=con.execute('SELECT * FROM jobs WHERE id=? AND tenant=?',(identifier,account['id'])).fetchone()
+        if not row: raise HTTPException(404,'Planning job not found.')
+        if row['status']!='failed': raise HTTPException(409,'Only failed jobs can be retried.')
+        preference=con.execute('SELECT text FROM plan_preferences WHERE id=? AND tenant=?',(row['preferences_id'],account['id'])).fetchone() if row['preferences_id'] else None
+    adjustment=PlanAdjustment(days=row['days'],preferences=preference['text']) if preference else None
+    return queue_job(account,row['action'],adjustment,row['preferences_id'])
 
 @app.get('/api/jobs/{identifier}')
 def job(identifier:str,account=Depends(current)):

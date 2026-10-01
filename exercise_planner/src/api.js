@@ -38,3 +38,8 @@ export const localDate = () =>
 export const dateObject = (day) => new Date(day + "T12:00:00");
 export const labelDate = (day, opts) =>
   dateObject(day).toLocaleDateString("en-US", opts);
+export const shiftDate = (day, count) => {
+  const value = dateObject(day);
+  value.setDate(value.getDate() + count);
+  return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`;
+};
