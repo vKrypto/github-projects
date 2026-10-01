@@ -39,6 +39,7 @@ import PlanCards from "./PlanCards";
 import GuidePage, { TaskGuides } from "./Guide";
 import StaticPages from "./StaticPages";
 import { guideRoute } from "./library";
+import { MACRO_LABELS } from "./quantities";
 import "./style.css";
 const DEFAULT_PROFILE = {
   name: "Sample User",
@@ -1488,6 +1489,10 @@ function App() {
                             <PlanCards
                               tasks={visibleTasks}
                               view={planView}
+                              targets={
+                                selectedDay?.daily_nutrition_targets ||
+                                plan.daily_nutrition_targets
+                              }
                               date={date}
                               today={date === localDate()}
                               statuses={statuses}
@@ -2175,6 +2180,14 @@ function App() {
                       {selectedTask.calories} kcal estimated{" "}
                       {selectedTask.role === "workout" ? "burn" : ""}
                     </>
+                  )}
+                  {selectedTask.nutrition && (
+                    <span className="detail-macros">
+                      {MACRO_LABELS.map(
+                        ([key, label]) =>
+                          `${selectedTask.nutrition[key]} g ${label}`,
+                      ).join(" · ")}
+                    </span>
                   )}
                 </div>
                 {selectedTask.ingredients.length > 0 && (

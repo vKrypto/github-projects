@@ -9,6 +9,7 @@ import {
   resolveGuide,
   slug,
   taskGuides,
+  workoutFocus,
 } from "./library.js";
 import { workoutExercises } from "./quantities.js";
 
@@ -243,4 +244,80 @@ test("task guides cover every exercise in the full routine", () => {
     ),
     ["vegetable-biryani"],
   );
+});
+
+test("dishes and exercises likely in future plans resolve to the specific guide", () => {
+  const meal = (title) => findGuides(foods, title)[0]?.id;
+  assert.equal(meal("Lunch – Dal Tadka with Brown Rice"), "dal-tadka");
+  assert.equal(
+    meal("Breakfast – Moong Dal Chilla with Mint Chutney"),
+    "chilla",
+  );
+  assert.equal(meal("Dinner – Palak Paneer with Roti"), "palak-paneer");
+  assert.equal(meal("Snack – Sprouts Chaat"), "sprouts-salad");
+  assert.equal(
+    meal("Dinner – Baked Salmon with Roasted Vegetables"),
+    "baked-salmon",
+  );
+  const exercise = (text) => ids(findGuides(exercises, text));
+  assert.deepEqual(exercise("Push-ups: 3 sets of 10 reps"), ["push-up"]);
+  assert.deepEqual(exercise("Walking lunges: 3 sets of 12 reps"), [
+    "walking-lunge",
+  ]);
+  assert.deepEqual(exercise("Single-arm dumbbell row"), [
+    "one-arm-dumbbell-row",
+  ]);
+  assert.deepEqual(exercise("Incline bench press"), ["incline-dumbbell-press"]);
+  assert.deepEqual(exercise("Reverse crunches"), ["reverse-crunch"]);
+  assert.deepEqual(exercise("Surya Namaskar: 5 rounds"), ["sun-salutation"]);
+});
+
+test("workout focus comes from the title, then from the exercises' body areas", () => {
+  const focus = (title, steps = []) =>
+    workoutFocus(exercises, { title, steps });
+  assert.equal(focus("Lower Body Strength with Cable Machine"), "Legs");
+  assert.equal(focus("Dumbbell Circuit for Arms and Core"), "Arms");
+  assert.equal(focus("Full Body Stretching"), "Stretching");
+  assert.equal(focus("Treadmill Interval Training"), "Cardio");
+  assert.equal(focus("Rest and Recovery Day"), "Stretching");
+  assert.equal(
+    focus("Session A", [
+      "Goblet squats: 3 sets of 12 reps",
+      "Lunges: 3 sets of 10 reps",
+    ]),
+    "Legs",
+  );
+  assert.equal(
+    focus("Session B", [
+      "Push-ups: 3 x 10",
+      "Cable rows: 3 sets of 12 reps",
+      "Hammer curls: 3 sets of 10 reps",
+    ]),
+    "Upper body",
+  );
+  assert.equal(
+    focus("Session C", [
+      "Goblet squats: 3 x 12",
+      "Cable rows: 3 x 12",
+      "Push-ups: 3 x 10",
+    ]),
+    "Full body",
+  );
+  assert.equal(focus("Session D", ["Follow the routine"]), "Workout");
+});
+
+test("every exercise guide names the body area it works", () => {
+  const areas = new Set([
+    "Legs",
+    "Arms",
+    "Shoulders",
+    "Chest",
+    "Back",
+    "Core",
+    "Cardio",
+    "Full body",
+    "Stretching",
+  ]);
+  for (const [id, item] of Object.entries(exercises.items))
+    assert.ok(areas.has(item.area), id);
 });

@@ -3525,3 +3525,47 @@ a:focus-visible {
   color: #c3cdbb;
   font-size: 12px;
 }
+
+/* Nutrition and estimated burn */
+.macro-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: -4px;
+}
+.macro-row span {
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: #2b2921;
+  color: #c9bfa6;
+  font-size: 10px;
+}
+.macro-row b {
+  color: #efe3c6;
+  font-weight: 600;
+}
+.day-total-card p.macro-summary {
+  color: #d9ccaa;
+}
+.minimal-card header small {
+  color: #a5b29b;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+}
+.minimal-amount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.minimal-amount small {
+  color: #a4af9a;
+  font-size: 10px;
+}
+.detail-macros {
+  flex-basis: 100%;
+  color: #c9bfa6;
+}
+.task-detail-meta {
+  flex-wrap: wrap;
+}

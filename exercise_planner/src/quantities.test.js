@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   exerciseQuantity,
   formatDuration,
+  nutritionTotals,
   workoutExercises,
 } from "./quantities.js";
 
@@ -87,5 +88,17 @@ test("unquantified legacy routines keep their instructions rather than fabricate
       steps: ["Follow the routine", "Rest as needed"],
     }),
     [],
+  );
+});
+
+test("daily nutrition totals add meals that carry nutrition and skip older plans", () => {
+  assert.equal(nutritionTotals([{ calories: 500 }, { calories: 300 }]), null);
+  assert.deepEqual(
+    nutritionTotals([
+      { nutrition: { protein_g: 24, carbs_g: 45, fat_g: 15, fiber_g: 8 } },
+      { nutrition: { protein_g: 28, carbs_g: 95, fat_g: 13, fiber_g: 14 } },
+      { calories: 200 },
+    ]),
+    { protein_g: 52, carbs_g: 140, fat_g: 28, fiber_g: 22 },
   );
 });

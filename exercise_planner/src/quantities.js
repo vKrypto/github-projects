@@ -84,3 +84,25 @@ export function workoutExercises(task) {
   }
   return exercises;
 }
+
+const MACROS = ["protein_g", "carbs_g", "fat_g", "fiber_g"];
+
+// Plans generated before meals carried nutrition have none; return null then
+// rather than showing zero grams.
+export function nutritionTotals(meals) {
+  const known = meals.filter((meal) => meal.nutrition);
+  if (!known.length) return null;
+  return Object.fromEntries(
+    MACROS.map((key) => [
+      key,
+      known.reduce((total, meal) => total + (meal.nutrition[key] || 0), 0),
+    ]),
+  );
+}
+
+export const MACRO_LABELS = [
+  ["protein_g", "protein"],
+  ["carbs_g", "carbs"],
+  ["fat_g", "fat"],
+  ["fiber_g", "fibre"],
+];

@@ -10,6 +10,8 @@ import {
   formatDuration,
   workoutExercises,
   exerciseQuantity,
+  nutritionTotals,
+  MACRO_LABELS,
 } from "./quantities";
 import { exerciseRowGuides, findGuides, useLibrary } from "./library";
 import { GuideChips, GuideLink, GuideThumb, PhotoFocus } from "./Guide";
@@ -30,6 +32,7 @@ export default function PlanCards({
   mark,
   onDetails,
   view = "cards",
+  targets = null,
 }) {
   const statusOf = (task) => statuses[`${date}/${task.id}`] || "pending";
   const exerciseLibrary = useLibrary("exercise").library;
@@ -37,7 +40,14 @@ export default function PlanCards({
   const [focus, setFocus] = useState(null);
   const openExercise = (guide) => setFocus({ type: "exercise", guide });
   if (view === "minimal" && tasks.some((t) => t.role !== "care"))
-    return <MinimalPlan tasks={tasks} date={date} statuses={statuses} />;
+    return (
+      <MinimalPlan
+        tasks={tasks}
+        date={date}
+        statuses={statuses}
+        targets={targets}
+      />
+    );
   const groups = GROUPS.map((group) => ({
     ...group,
     tasks: tasks.filter((t) => t.role === group.role),
@@ -51,6 +61,7 @@ export default function PlanCards({
           const done = groupTasks.filter((t) => statusOf(t) === "completed");
           const doneMinutes = done.reduce((n, t) => n + t.minutes, 0);
           const calories = groupTasks.reduce((n, t) => n + t.calories, 0);
+          const totals = role === "meal" ? nutritionTotals(groupTasks) : null;
           return (
             <div className={`day-total-card ${role}`} key={role}>
               <span>
@@ -72,7 +83,25 @@ export default function PlanCards({
                   ? `${formatDuration(doneMinutes)} done · ${done.length}/${groupTasks.length} sessions`
                   : `${done.length}/${groupTasks.length} ${role === "meal" ? "meals" : "routines"} complete`}
               </p>
-              {role === "meal" && <small>Estimated calories</small>}
+              {totals && (
+                <p className="macro-summary">
+                  {MACRO_LABELS.slice(0, 3)
+                    .map(
+                      ([key, label]) =>
+                        `${totals[key]}${targets?.[key] ? `/${targets[key]}` : ""} g ${label}`,
+                    )
+                    .join(" · ")}
+                </p>
+              )}
+              {role === "meal" && (
+                <small>
+                  Estimated calories
+                  {totals && targets ? " · planned / daily target" : ""}
+                </small>
+              )}
+              {role === "workout" && calories > 0 && (
+                <small>~{calories.toLocaleString()} kcal estimated burn</small>
+              )}
             </div>
           );
         })}
@@ -157,10 +186,19 @@ export default function PlanCards({
                       {role === "meal"
                         ? `${formatDuration(task.minutes)} prep`
                         : role === "workout"
-                          ? "total session"
+                          ? `total session${task.calories ? ` · ~${task.calories} kcal` : ""}`
                           : "routine"}
                     </span>
                   </div>
+                  {role === "meal" && task.nutrition && (
+                    <div className="macro-row" aria-label="Nutrition">
+                      {MACRO_LABELS.map(([key, label]) => (
+                        <span key={key}>
+                          <b>{task.nutrition[key]} g</b> {label}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   {role === "workout" && exercises.length > 0 ? (
                     <div className="exercise-quantities">
                       <span className="quantity-label">EXERCISES</span>
@@ -206,6 +244,9 @@ export default function PlanCards({
                                     {formatDuration(exercise.minutes)}
                                   </small>
                                 )}
+                              {exercise.calories > 0 && (
+                                <small>~{exercise.calories} kcal</small>
+                              )}
                               {exercise.rest_seconds != null &&
                                 exercise.rest_seconds > 0 && (
                                   <small>
