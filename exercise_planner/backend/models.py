@@ -96,8 +96,17 @@ class PlanReview(StrictModel):
     issues: list[ReviewIssue]
 
 
+class WorkoutExercise(StrictModel):
+    name: str = Field(min_length=1, max_length=120)
+    sets: int | None = Field(ge=1, le=20)
+    reps: str | None = Field(max_length=60)
+    hold_seconds: int | None = Field(ge=1, le=600)
+    minutes: int | None = Field(ge=1, le=120)
+    rest_seconds: int | None = Field(ge=0, le=600)
+
 class WorkoutTask(PlannedTask):
     category: Literal['Workout']
+    exercises: list[WorkoutExercise] = Field(default_factory=list, max_length=16)
 
 class MealTask(PlannedTask):
     category: Literal['Breakfast','Lunch','Dinner','Snack']

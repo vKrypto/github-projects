@@ -2365,7 +2365,274 @@ a:focus-visible {
 .saved-preferences p {
   margin-bottom: 7px;
 }
+.quantity-plan {
+  padding: 20px;
+}
+.day-quantity-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: 12px;
+  margin-bottom: 26px;
+}
+.day-total-card {
+  padding: 17px;
+  border: 1px solid #3d4639;
+  border-radius: 10px;
+  background: #222b21;
+  min-width: 0;
+}
+.day-total-card.workout {
+  background: #292530;
+  border-color: #45404e;
+}
+.day-total-card.meal {
+  background: #2b2921;
+  border-color: #494334;
+}
+.day-total-card > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #bdc7b7;
+  font-size: 11px;
+}
+.day-total-card > strong {
+  display: block;
+  font-family: Manrope, sans-serif;
+  font-size: 25px;
+  margin-top: 12px;
+  letter-spacing: -0.8px;
+}
+.day-total-card strong small {
+  font-size: 12px;
+  font-weight: 400;
+  color: #b7bbaa;
+  letter-spacing: 0;
+}
+.day-total-card p {
+  font-size: 11px;
+  color: #a5ae9e;
+  margin: 7px 0 0;
+}
+.day-total-card > small {
+  display: block;
+  margin-top: 4px;
+  color: #939784;
+  font-size: 10px;
+}
+.activity-group + .activity-group {
+  margin-top: 26px;
+}
+.activity-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.activity-group-heading h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  margin: 0;
+}
+.activity-group-heading > span {
+  font-size: 10px;
+  color: #9aa893;
+}
+.activity-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 14px;
+}
+.task.activity-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  border: 1px solid #394334;
+  border-radius: 10px;
+  padding: 17px;
+  background: #202720;
+  min-width: 0;
+}
+.activity-card.workout-card {
+  border-top: 3px solid #8f7ca7;
+}
+.activity-card.meal-card {
+  border-top: 3px solid #b69b6d;
+}
+.activity-card.care-card {
+  border-top: 3px solid #98b67e;
+}
+.activity-card.completed {
+  border-color: #748c5e;
+}
+.activity-card.skipped {
+  opacity: 0.78;
+}
+.activity-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.activity-card .task-meta {
+  font-size: 10px;
+}
+.activity-status {
+  font-size: 9px;
+  background: #30392d;
+  border-radius: 4px;
+  padding: 4px 7px;
+  color: #bbc7b1;
+}
+.activity-status.completed {
+  color: #d0e4be;
+  background: #35462b;
+}
+.activity-card .task-info {
+  flex: none;
+  overflow: visible;
+}
+.activity-card .task-info h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.activity-card .task-info h3 svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: #9bb389;
+}
+.activity-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #384332;
+}
+.activity-amount strong {
+  font-family: Manrope, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+}
+.activity-amount strong small {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #a5b29b;
+}
+.activity-amount > span {
+  color: #a5b29b;
+  font-size: 10px;
+}
+.quantity-label {
+  color: #9faa94;
+  display: block;
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+}
+.exercise-quantity {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+}
+.exercise-quantity + .exercise-quantity {
+  border-top: 1px solid #333d2d;
+}
+.exercise-quantity > span {
+  font-size: 12px;
+  line-height: 1.5;
+  min-width: 0;
+}
+.exercise-quantity > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  text-align: right;
+  flex-shrink: 0;
+  max-width: 54%;
+}
+.exercise-quantity strong {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #d3e3c4;
+  background: #303c29;
+  padding: 4px 6px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+.exercise-quantity small {
+  color: #a4af9a;
+  font-size: 10px;
+}
+.meal-portions ul,
+.routine-preview ul {
+  margin: 0;
+  padding-left: 17px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #b9c3af;
+}
+.remaining-details {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0 0;
+  font-size: 10px;
+  color: #afc99c;
+}
+.activity-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 14px;
+}
+.complete-task {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #627851;
+  border-radius: 6px;
+  padding: 9px 12px;
+  min-height: 36px;
+  color: #c5dbb5;
+  font-size: 11px;
+}
+.complete-task.checked {
+  background: #bfd7aa;
+  border-color: #bfd7aa;
+  color: #203019;
+}
+.activity-card .skip {
+  display: block;
+  font-size: 11px;
+  color: #a2b194;
+  min-height: 36px;
+}
 @media (max-width: 560px) {
+  .quantity-plan {
+    padding: 13px;
+  }
+  .task.activity-card {
+    padding: 16px;
+  }
   .plan-actions {
     width: 100%;
     justify-content: flex-start;

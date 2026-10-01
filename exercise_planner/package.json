@@ -7,6 +7,7 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test:e2e": "playwright test",
+    "test:unit": "node --test src/quantities.test.js",
     "format": "prettier --write src tests vite.config.js playwright.config.js"
   },
   "dependencies": {

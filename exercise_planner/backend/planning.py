@@ -57,7 +57,7 @@ class OpenAIProvider:
             raise PlanningError('The OpenAI request failed. Check the connection or model setting, then retry.') from None
     def generate(self, role, context, revision=''):
         brief = {
-            'workout': 'Generate only workouts/mobility/recovery. Balance body areas and rest. Include sets/reps in steps. Calories are estimated burn. daily_calorie_target=0. Honor available equipment.',
+            'workout': 'Generate only workouts/mobility/recovery. Balance body areas and rest. Every active task must include structured exercises, one entry per exercise, with a short name and sets/reps for strength or hold_seconds/minutes for timed movements. Reps can be a range such as "10-12 per side". Use null for quantities that do not apply. Include estimated minutes for each exercise when practical, including its rest time; their sum must not exceed the task duration. Task minutes are the total session duration, including rest, and must not double-count individual exercises. For a zero-minute rest day, exercises may be empty. Keep steps consistent with these quantities. Calories are estimated burn. daily_calorie_target=0. Honor available equipment.',
             'meal': 'Generate breakfast, lunch, dinner, and optional snack EVERY day. Include portions, ingredients, preparation steps and estimated calories. Honor ALL allergies and dietary preferences. Set a reasonable daily_calorie_target with transparent assumptions using height, weight, age, goal and level. Meal totals should approximate it. daily_burn_target=0.',
             'care': 'Generate only requested Skin care and/or Hair care. Suggest gentle product categories and patch testing, no brands needed. Calories and targets=0. Keep routines practical; avoid treating conditions.'
         }[role]
@@ -70,7 +70,8 @@ class OpenAIProvider:
     def review(self, context, plans):
         context = {k:v for k,v in context.items() if k != 'media'}
         return self.parse(POLICY+'''\nYou are the independent review agent. Review the combined plans for balance,
-rest, nutrition estimates, calorie totals, allergies, dietary restrictions, limitations,
+rest, exercise sets/repetitions/timed holds, consistency with workout duration and steps,
+nutrition estimates, calorie totals, allergies, dietary restrictions, limitations,
 available equipment and requested care focus. Any allergy conflict, unsafe instruction,
 missing daily meals or contradictory calorie target is major. If any major issue exists,
 approved must be false. Give concrete role-specific revision feedback. Do not approve
@@ -100,6 +101,18 @@ def validate_role(role, plan, profile):
             except ValueError: raise PlanningError('Invalid task time.') from None
             if not 0<=t.minutes<=120 or not 0<=t.calories<=2000 or not t.steps:
                 raise PlanningError('Invalid task duration, energy estimate or missing instructions.')
+            if role=='workout' and hasattr(t,'exercises'):
+                if t.minutes and not t.exercises:
+                    raise PlanningError('Active workouts need exercise quantities for the daily cards.')
+                for exercise in t.exercises:
+                    if exercise.reps is not None and not exercise.reps.strip():
+                        raise PlanningError('Exercise repetitions must contain a quantity.')
+                    if exercise.reps and exercise.sets is None:
+                        raise PlanningError('Strength exercises need both sets and repetitions.')
+                    if not (exercise.reps or exercise.hold_seconds or exercise.minutes):
+                        raise PlanningError('Each exercise needs repetitions or a timed duration.')
+                if sum(e.minutes or 0 for e in t.exercises)>t.minutes:
+                    raise PlanningError('Exercise durations exceed the total workout duration.')
 
 def generate(profile, media, start: date, progress=None, report=lambda *args:None, provider=None, *, days_count=28, journey_offset=0, preferences=None, current_plan=None, action='generate'):
     provider = provider or PROVIDERS[os.getenv('LLM_PROVIDER','openai')]()

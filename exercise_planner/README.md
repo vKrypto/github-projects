@@ -39,7 +39,9 @@ Admin credentials are `admin@example.com` / `admin123`, as requested. `ADMIN_EMA
 - Planning runs in the background with persisted job status, visible progress, retryable errors, and dashboard notifications. If the process restarts mid-job, the job becomes retryable. Previously published plans remain available when regeneration fails. Successful regeneration archives the previous plan and tracking totals, shown under Previous plans in Progress.
 - **Refine current plan** asks for a preference note and a duration of 1–28 days within the upcoming plan. Review-approved changes replace pending activities on those dates; completed and skipped activities remain intact. **Extend Plan** accepts the same inputs and appends 1–28 days after the current end date (or starts today if the plan has expired). Existing days and tracking stay intact. The 28-day limit applies to each request; the calendar supports all accumulated weeks.
 - Both actions persist the preference note for future generation, run through the planning and review roles, archive the previous version, and publish the result in the database and dashboard with a notification. Saved preferences are visible in Settings. Failed updates retain the current plan and can be retried without duplicating the preference note. Care timing follows the original journey rather than restarting its two-week delay on extension.
-- The dashboard and calendar show dated tasks, detailed routines/recipes, completed/skipped/pending status, day-specific calorie and movement totals, water logs, check-ins, weight trends, completion graphs, adherence summaries, and habit feedback. Saved user feedback is passed into subsequent planning.
+- The daily plan uses cards grouped into workouts, meals, and care. Daily totals show planned workout time, completed workout minutes, meal calories, and care time. Workout cards expose each exercise's sets/reps, timed holds, and any specified exercise duration; meal cards show portions and calories; care cards show practical steps. Completion/skipping, full routine/recipe details, and calendar navigation remain available.
+- New OpenAI workout plans provide structured exercise names, sets, reps, holds, duration, and rest intervals. Validation checks quantities and session totals. Existing saved plans expose explicit quantities from their instructions without regeneration or invented per-exercise timings.
+- The dashboard and calendar also show day-specific calorie and movement totals, water logs, check-ins, weight trends, completion graphs, adherence summaries, and habit feedback. Saved user feedback is passed into subsequent planning.
 - Admins can create/list/delete accounts, set passwords, and enter a user’s workspace. They also have their own profile and wellness pages alongside the Users screen. Impersonation has an explicit return-to-admin action. Deletion removes the tenant's database records and local files.
 - Database reads/writes and media endpoints derive ownership from the authenticated session. Different tenants cannot access one another’s data. Passwords use salted PBKDF2 hashes, and sessions use opaque HttpOnly cookies with hashed tokens stored in SQLite.
 
@@ -59,6 +61,7 @@ Calendar dates default to `Asia/Kolkata`. The current planner supports adults ag
 
 ```sh
 .venv/bin/python -m pytest backend/tests -q
+npm run test:unit
 npm run build
 npx playwright install chromium
 npm run test:e2e
@@ -67,6 +70,8 @@ npm run test:e2e
 Run the API and frontend before browser tests. The backend tests use isolated temporary databases and a controlled provider, so they do not incur API charges or send email. They cover persistent authentication, tenant isolation, uploads, task validation, admin CRUD/impersonation, background jobs, care timing, bounded review revisions, and preservation of previous plans after failures.
 
 Plan-adjustment tests also cover request limits, stored preferences reaching future generation, preservation of completed/skipped tasks, extension dates, archived versions, retries, concurrent-job rejection, and tenant isolation. Browser tests exercise both dialogs, saved notes, failure recovery, mobile layout, and navigation through extended weeks using intercepted planning responses; they leave the administrator's real plan unchanged.
+
+Quantity tests cover legacy sets/reps/holds, hour/minute formatting, structured-data precedence, and absent quantities. Backend checks exercise-field schema compatibility and validates durations. Card browser tests verify daily totals, portions, persisted completion/skipping, details, filters, and responsive layout with the saved admin plan.
 
 Authenticated adjustment endpoints are `POST /api/plans/refine` and `POST /api/plans/extend`, with JSON such as `{"days": 7, "preferences": "Keep workouts under 30 minutes."}`. Both return a queued job; poll `GET /api/jobs/{id}` and refresh `GET /api/me` after completion. `GET /api/preferences` returns the tenant's saved notes, and `POST /api/jobs/{id}/retry` retries a failed request.
 

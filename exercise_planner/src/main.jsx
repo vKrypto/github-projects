@@ -30,6 +30,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { api, localDate, dateObject, labelDate, shiftDate } from "./api";
+import PlanCards from "./PlanCards";
 import "./style.css";
 const DEFAULT_PROFILE = {
   name: "Sample User",
@@ -61,12 +62,6 @@ const NAV = [
   [Sparkles, "Care routines"],
   [TrendingUp, "Progress"],
 ];
-const taskIcon = (category) =>
-  category === "Workout"
-    ? Dumbbell
-    : category.includes("care")
-      ? Sparkles
-      : Utensils;
 const statusKey = (date, id) => `${date}/${id}`;
 function App() {
   const [history, setHistory] = useState([]);
@@ -1272,7 +1267,7 @@ function App() {
                                 {tasks.length} activities
                               </span>
                             </h2>
-                            <p>A little structure for a better day.</p>
+                            <p>Your exercises, portions, and daily totals.</p>
                           </div>
                           <button
                             className="text-button"
@@ -1347,76 +1342,20 @@ function App() {
                           </span>
                         </div>
                         <div className="task-list">
-                          {visibleTasks.map((t) => {
-                            const Icon = taskIcon(t.category);
-                            const status =
-                              statuses[statusKey(date, t.id)] || "pending";
-                            return (
-                              <div className={`task ${status}`} key={t.id}>
-                                <div className="task-time">
-                                  {t.time}
-                                  <small>
-                                    {labelDate(date, {
-                                      month: "short",
-                                      day: "numeric",
-                                    })}
-                                  </small>
-                                </div>
-                                <div
-                                  className={`task-icon ${t.role === "meal" ? "meal" : t.role === "care" ? "stretch" : "workout"}`}
-                                >
-                                  <Icon size={21} />
-                                </div>
-                                <button
-                                  className="task-info task-details-button"
-                                  onClick={() => {
-                                    setSelectedTask(t);
-                                    setModal("task");
-                                  }}
-                                >
-                                  <div className="task-meta">
-                                    <span>{t.category}</span>
-                                    <i />
-                                    <Clock size={11} />
-                                    {t.role === "meal"
-                                      ? `${t.calories} kcal`
-                                      : `${t.minutes} min`}
-                                  </div>
-                                  <h3>{t.title}</h3>
-                                  <p>{t.description}</p>
-                                </button>
-                                <button
-                                  disabled={busy}
-                                  className={`check-button ${status === "completed" ? "checked" : ""}`}
-                                  aria-label={`Mark ${t.title} ${status === "completed" ? "pending" : "completed"}`}
-                                  onClick={() =>
-                                    mark(
-                                      t,
-                                      status === "completed"
-                                        ? "pending"
-                                        : "completed",
-                                    )
-                                  }
-                                >
-                                  <Check size={16} />
-                                </button>
-                                <button
-                                  disabled={busy}
-                                  className="skip"
-                                  onClick={() =>
-                                    mark(
-                                      t,
-                                      status === "skipped"
-                                        ? "pending"
-                                        : "skipped",
-                                    )
-                                  }
-                                >
-                                  {status === "skipped" ? "Undo skip" : "Skip"}
-                                </button>
-                              </div>
-                            );
-                          })}
+                          {visibleTasks.length > 0 && (
+                            <PlanCards
+                              tasks={visibleTasks}
+                              date={date}
+                              today={date === localDate()}
+                              statuses={statuses}
+                              busy={busy}
+                              mark={mark}
+                              onDetails={(task) => {
+                                setSelectedTask(task);
+                                setModal("task");
+                              }}
+                            />
+                          )}
                           {visibleTasks.length === 0 && (
                             <div className="empty-state">
                               <Sparkles size={28} />
@@ -1432,7 +1371,7 @@ function App() {
                                     )
                                     ? `Care begins on day ${plan.care_start_day}. Select week 3 to see your routines, or start earlier below.`
                                     : "Add skin or hair care to your focus in Customize plan."
-                                  : "Select a date in your four-week plan."}
+                                  : "Select a date in your plan."}
                               </p>
                               {page === "Care routines" &&
                                 profile.focus.some((f) => f.includes("care")) &&
