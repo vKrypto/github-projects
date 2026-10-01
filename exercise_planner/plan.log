@@ -48,6 +48,9 @@ Extend Plan:
     on clickbutton --> ask for one input box and which will get stored as user preferences for future plan generation, and will be used to extend the current plan for next x days (max 4 week plan), and will be sent to the user on dashboard and also store in db.
 
 
+Admin page:
+    - all the static pages will list over there.
+    - with a tab static pages.
 
 Phase 2 (MCP support):
     - it will provide a mcp server to allow users to connect from agents like claude-cli, chatgpt etc..
