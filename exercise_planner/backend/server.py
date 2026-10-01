@@ -52,7 +52,7 @@ def init_db():
         ''')
         email=os.getenv('ADMIN_EMAIL','admin@example.com').lower()
         if not con.execute('SELECT id FROM accounts WHERE email=?',(email,)).fetchone():
-            con.execute('INSERT INTO accounts VALUES(?,?,?,?,?,?)',(str(uuid.uuid4()),email,'Administrator',hash_password(os.getenv('ADMIN_PASSWORD','admin')),'admin',now()))
+            con.execute('INSERT INTO accounts VALUES(?,?,?,?,?,?)',(str(uuid.uuid4()),email,'Administrator',hash_password(os.getenv('ADMIN_PASSWORD','admin123')),'admin',now()))
         con.execute("UPDATE jobs SET status='failed',message='Server restarted during planning. Please retry.',updated=? WHERE status IN ('queued','generating','reviewing','revising')",(now(),))
 
 def hash_password(value):

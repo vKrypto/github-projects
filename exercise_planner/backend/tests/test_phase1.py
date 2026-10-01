@@ -89,7 +89,7 @@ def test_upload_private_reencoded_and_deleted(client):
     assert client.get(item['url']).status_code==404
 
 def test_admin_crud_password_and_impersonation(client):
-    assert client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin'}).status_code==200
+    assert client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin123'}).status_code==200
     r=client.post('/api/admin/users',json={'name':'Alex','email':'alex@example.com'});assert r.status_code==201
     identifier=r.json()['id']
     assert len(client.get('/api/admin/users').json())==1
@@ -173,7 +173,7 @@ def test_successful_regeneration_archives_previous_tracking(client,monkeypatch):
 
 
 def test_admin_can_have_personal_profile_without_losing_admin_access(client,monkeypatch):
-    r=client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin'})
+    r=client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin123'})
     assert r.status_code==200
     identifier=r.json()['account']['id']
     assert client.put('/api/profile',json={**PROFILE,'name':'Administrator (sample)','email':'admin@example.com'}).status_code==200

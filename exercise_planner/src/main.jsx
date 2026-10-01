@@ -31,24 +31,24 @@ import {
 } from "lucide-react";
 import { api, localDate, dateObject, labelDate } from "./api";
 import "./style.css";
-const EMPTY = {
-  name: "",
-  email: "",
-  focus: ["Physique"],
-  body_areas: [],
-  custom_area: "",
-  diet: [],
-  allergies: "",
-  weight: "",
-  height: "",
-  age: "",
+const DEFAULT_PROFILE = {
+  name: "Sample User",
+  email: "admin@example.com",
+  focus: ["Physique", "Overall wellness", "Skin care", "Hair care"],
+  body_areas: ["Arms", "Legs", "Torso"],
+  custom_area: "Core stability and balanced strength",
+  diet: ["Vegetarian"],
+  allergies: "None",
+  weight: 75,
+  height: 175,
+  age: 29,
   level: "Beginner",
   goal: "Maintain & feel better",
-  skin_type: "",
-  hair_type: "",
+  skin_type: "Combination",
+  hair_type: "Wavy",
   care_early: false,
-  equipment: "",
-  limitations: "",
+  equipment: "Gym access with dumbbells, bench, treadmill and cable machine",
+  limitations: "No known limitations",
   notifications: true,
   timezone: "Asia/Kolkata",
 };
@@ -81,7 +81,7 @@ function App() {
     [checkins, setCheckins] = useState({}),
     [media, setMedia] = useState([]),
     [notifications, setNotifications] = useState([]);
-  const [form, setForm] = useState(EMPTY),
+  const [form, setForm] = useState(DEFAULT_PROFILE),
     [step, setStep] = useState(1),
     [files, setFiles] = useState({ equipment: [], body: [] }),
     [tab, setTab] = useState("All activities"),
@@ -201,7 +201,7 @@ function App() {
   }
   function openOnboarding() {
     setForm({
-      ...EMPTY,
+      ...DEFAULT_PROFILE,
       ...profile,
       name: profile?.name || account?.name || "",
       email: profile?.email || account?.email || "",
@@ -221,7 +221,7 @@ function App() {
       });
       setAccount(result.account);
       setForm({
-        ...EMPTY,
+        ...DEFAULT_PROFILE,
         name: result.account.name,
         email: result.account.email,
       });
@@ -241,7 +241,11 @@ function App() {
       const me = await api("/me");
       if (me.account.role === "admin") setPage("Users");
       else if (!me.profile) {
-        setForm({ ...EMPTY, name: me.account.name, email: me.account.email });
+        setForm({
+          ...DEFAULT_PROFILE,
+          name: me.account.name,
+          email: me.account.email,
+        });
         setStep(1);
         setModal("onboarding");
       }
@@ -1570,6 +1574,7 @@ function App() {
                     name="email"
                     type="email"
                     autoComplete="username"
+                    defaultValue="admin@example.com"
                     required
                   />
                 </label>
@@ -1579,6 +1584,7 @@ function App() {
                     name="password"
                     type="password"
                     autoComplete="current-password"
+                    defaultValue="admin123"
                     required
                   />
                 </label>
@@ -1603,7 +1609,8 @@ function App() {
                       : "Make it fit your life."}
                 </h2>
                 <p>
-                  Your preferences guide the workout, meal, and care agents.
+                  Sample defaults are prefilled. Review them to match your own
+                  body and preferences before preparing a plan.
                 </p>
                 {credentials && (
                   <div className="credential-box">

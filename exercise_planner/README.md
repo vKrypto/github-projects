@@ -26,7 +26,7 @@ npm run dev
 
 App: http://localhost:5173 · API docs: http://localhost:8000/docs · API health: http://localhost:8000/api/health
 
-Admin credentials are `admin@example.com` / `admin`, as requested. `ADMIN_EMAIL` and `ADMIN_PASSWORD` seed the administrator on the first database initialization. Subsequent password changes go through Settings. `COOKIE_SECURE=true` is available for HTTPS deployments.
+Admin credentials are `admin@example.com` / `admin123`, as requested. `ADMIN_EMAIL` and `ADMIN_PASSWORD` seed the administrator on the first database initialization. Subsequent password changes go through Settings. `COOKIE_SECURE=true` is available for HTTPS deployments.
 
 ## Phase 1 features
 
@@ -77,3 +77,5 @@ The seed helper preserves existing profiles and plans and resumes polling an act
 ```sh
 .venv/bin/python scripts/seed_admin_sample.py
 ```
+
+The login dialog prefills `admin@example.com` / `admin123` for the local sample workspace. New onboarding forms start with clearly labeled sample defaults; existing saved values take precedence. Photo inputs remain optional and require selecting actual files.

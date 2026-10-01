@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 client = httpx.Client(base_url=os.getenv('FORMA_API_URL','http://127.0.0.1:8000'), timeout=30)
 email = os.getenv('ADMIN_EMAIL','admin@example.com')
-response = client.post('/api/auth/login',json={'email':email,'password':os.getenv('ADMIN_PASSWORD','admin')})
+response = client.post('/api/auth/login',json={'email':email,'password':os.getenv('ADMIN_PASSWORD','admin123')})
 response.raise_for_status()
 me = client.get('/api/me').json()
 if not me['profile']:

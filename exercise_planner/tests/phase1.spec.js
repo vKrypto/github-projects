@@ -18,9 +18,20 @@ test("signup, conditional onboarding, persistence and honest planning errors", a
   await expect(
     dialog.getByRole("heading", { name: "What matters to you?" }),
   ).toBeVisible();
-  await dialog.getByRole("button", { name: "Skin care", exact: true }).click();
-  await dialog.getByRole("button", { name: "Arms", exact: true }).click();
+  await expect(
+    dialog.getByRole("button", { name: "Skin care", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    dialog.getByRole("button", { name: "Arms", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
   await dialog.getByRole("button", { name: "Continue" }).click();
+  await expect(dialog.getByLabel("Age", { exact: true })).toHaveValue("29");
+  await expect(dialog.getByLabel("Height (cm)")).toHaveValue("175");
+  await expect(dialog.getByLabel("Weight (kg)")).toHaveValue("75");
+  await expect(dialog.getByLabel("Skin type (optional)")).toHaveValue(
+    "Combination",
+  );
+  await expect(dialog.getByLabel("Hair type (optional)")).toHaveValue("Wavy");
   await dialog.getByLabel("Age", { exact: true }).fill("28");
   await dialog.getByLabel("Height (cm)").fill("172");
   await dialog.getByLabel("Weight (kg)").fill("72.5");
@@ -59,7 +70,7 @@ test("signup, conditional onboarding, persistence and honest planning errors", a
   expect(me.profile.skin_type).toBe("Dry");
   expect(me.profile.care_early).toBe(true);
   expect(me.profile.diet).toEqual(["Vegan"]);
-  expect(me.profile.body_areas).toEqual(["Arms"]);
+  expect(me.profile.body_areas).toContain("Arms");
   await page.reload();
   await expect(
     page.getByRole("heading", { name: "A fresh day, Browser." }),
@@ -67,7 +78,7 @@ test("signup, conditional onboarding, persistence and honest planning errors", a
   expect(errors).toEqual([]);
   // Remove the temporary tenant through the real administrator API.
   await page.request.post("/api/auth/login", {
-    data: { email: "admin@example.com", password: "admin" },
+    data: { email: "admin@example.com", password: "admin123" },
   });
   expect(
     (await page.request.delete("/api/admin/users/" + me.account.id)).ok(),
@@ -88,7 +99,7 @@ test("persistent administrator CRUD, password and impersonation", async ({
   await page
     .getByRole("dialog")
     .getByLabel("Password", { exact: true })
-    .fill("admin");
+    .fill("admin123");
   await page
     .getByRole("dialog")
     .getByRole("button", { name: "Sign in", exact: true })
@@ -154,7 +165,12 @@ test("administrator can open personal wellness workspace and keep user managemen
   await page.getByRole("button", { name: "Administrator sign in" }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByLabel("Email", { exact: true }).fill("admin@example.com");
-  await dialog.getByLabel("Password", { exact: true }).fill("admin");
+  await expect(dialog.getByLabel("Email", { exact: true })).toHaveValue(
+    "admin@example.com",
+  );
+  await expect(dialog.getByLabel("Password", { exact: true })).toHaveValue(
+    "admin123",
+  );
   await dialog.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Users", exact: true }),
