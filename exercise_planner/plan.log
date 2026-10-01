@@ -42,6 +42,10 @@ Planning:
         - home page will mention the current day plan and progress summary with a link to the calendar view for detailed tracking.
     
 
+Refine current plan:
+    
+
+
 Phase 2 (MCP support):
     - it will provide a mcp server to allow users to connect from agents like claude-cli, chatgpt etc..
     - following things will be exposed, regenerate plan for next x days (max  4 week plan), get current day plan, get progress summary, mark task as completed or skipped, get detailed tracking for a specific date
