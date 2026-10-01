@@ -1,0 +1,2421 @@
+{
+  "type": "exercise",
+  "label": "Exercise",
+  "note": "Guide mapping for /exercise/?q=<id>. Aliases are matched against plan text (lowercased, punctuation removed, whole words, optional plural).",
+  "items": {
+    "dumbbell-row": {
+      "name": "Bent-Over Dumbbell Row",
+      "summary": "A hinged pulling exercise that strengthens the upper back.",
+      "facts": {
+        "Targets": "Upper back, lats, biceps",
+        "Equipment": "Pair of dumbbells",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-row-1.webp",
+          "thumb": "/library/exercise/dumbbell-row-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Bent-Over Dumbbell Row: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-row-2.webp",
+          "thumb": "/library/exercise/dumbbell-row-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Bent-Over Dumbbell Row: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Hold a dumbbell in each hand and hinge forward from your hips with a flat back and soft knees.",
+        "Let the dumbbells hang straight down below your shoulders.",
+        "Breathe out and pull the dumbbells toward your lower ribs, squeezing your shoulder blades.",
+        "Lower slowly until your arms are straight."
+      ],
+      "tips": [
+        "Keep your back flat and neck neutral.",
+        "Lead with your elbows; avoid shrugging your shoulders toward your ears."
+      ],
+      "aliases": [
+        "bent over row",
+        "dumbbell row",
+        "bent over dumbbell row"
+      ]
+    },
+    "bird-dog": {
+      "name": "Bird Dog",
+      "summary": "An all-fours exercise that trains the core and back muscles to keep the spine stable.",
+      "facts": {
+        "Targets": "Core, lower back, glutes, shoulders",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/bird-dog-1.webp",
+          "thumb": "/library/exercise/bird-dog-1.thumb.webp",
+          "width": 500,
+          "height": 333,
+          "caption": "Arm and opposite leg extended",
+          "alt": "Bird Dog: arm and opposite leg extended",
+          "credit": "PTPioneer",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Bird_dog_exercise.jpg"
+        },
+        {
+          "src": "/library/exercise/bird-dog-2.webp",
+          "thumb": "/library/exercise/bird-dog-2.thumb.webp",
+          "width": 500,
+          "height": 333,
+          "caption": "Holding a long, level line",
+          "alt": "Bird Dog: holding a long, level line",
+          "credit": "PTPioneer",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Girl_doing_bird_dog_yoga_pose_2.jpg"
+        }
+      ],
+      "steps": [
+        "Start on hands and knees with hands under shoulders and knees under hips.",
+        "Brace your stomach so your back stays flat.",
+        "Slowly reach your right arm forward and your left leg back until both are level with your body.",
+        "Hold for a breath, then return to the start with control.",
+        "Repeat with the left arm and right leg; that is one rep per side."
+      ],
+      "tips": [
+        "Imagine balancing a glass of water on your lower back — don't let it tip.",
+        "Reach long rather than high; lifting too far arches the back."
+      ],
+      "aliases": [
+        "bird dog"
+      ]
+    },
+    "bodyweight-squat": {
+      "name": "Bodyweight Squat",
+      "summary": "The basic sit-and-stand pattern that builds strength in the legs and hips.",
+      "facts": {
+        "Targets": "Quads, glutes, hamstrings",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/bodyweight-squat-1.webp",
+          "thumb": "/library/exercise/bodyweight-squat-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Standing tall",
+          "alt": "Bodyweight Squat: standing tall",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/bodyweight-squat-2.webp",
+          "thumb": "/library/exercise/bodyweight-squat-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Bottom of the squat",
+          "alt": "Bodyweight Squat: bottom of the squat",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand with feet shoulder-width apart, toes turned out slightly.",
+        "Brace your stomach and push your hips back as if sitting into a chair.",
+        "Bend your knees and lower until your thighs are about parallel with the floor, or as low as is comfortable.",
+        "Keep your chest up and your heels on the floor.",
+        "Push through your whole foot to stand back up, breathing out as you rise."
+      ],
+      "tips": [
+        "Let your knees track in line with your toes rather than caving inward.",
+        "Squat to a chair or bench if you need a depth target."
+      ],
+      "aliases": [
+        "bodyweight squat",
+        "air squat",
+        "squat"
+      ]
+    },
+    "bridge-march": {
+      "name": "Bridge March",
+      "summary": "A glute bridge where you lift one foot at a time, adding a balance and core challenge.",
+      "facts": {
+        "Targets": "Glutes, hamstrings, core",
+        "Equipment": "Mat",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/bridge-march-1.webp",
+          "thumb": "/library/exercise/bridge-march-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "One leg lifted while holding the bridge",
+          "alt": "Bridge March: one leg lifted while holding the bridge",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/bridge-march-2.webp",
+          "thumb": "/library/exercise/bridge-march-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lifted leg extended",
+          "alt": "Bridge March: lifted leg extended",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your back with knees bent and feet flat, then lift your hips into a glute bridge.",
+        "Keeping your hips level, lift your right foot a few centimetres and bring the knee toward your chest.",
+        "Place the foot back down and repeat with the left leg.",
+        "Keep alternating for the planned reps without letting your hips drop.",
+        "Lower your hips to the floor to finish."
+      ],
+      "tips": [
+        "Move slowly; the goal is to keep your pelvis still while each leg lifts.",
+        "Hold a plain glute bridge first if your hips sag."
+      ],
+      "aliases": [
+        "bridge march",
+        "marching bridge",
+        "glute bridge march"
+      ]
+    },
+    "cable-bicep-curl": {
+      "name": "Cable Bicep Curl",
+      "summary": "A bicep curl on the low pulley that keeps the muscle under tension through the whole movement.",
+      "facts": {
+        "Targets": "Biceps, forearms",
+        "Equipment": "Cable machine with straight bar",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/cable-bicep-curl-1.webp",
+          "thumb": "/library/exercise/cable-bicep-curl-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Cable Bicep Curl: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/cable-bicep-curl-2.webp",
+          "thumb": "/library/exercise/cable-bicep-curl-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Cable Bicep Curl: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Attach a straight bar to the low pulley and set a light weight.",
+        "Hold the bar with palms facing up, hands shoulder-width apart, and step back so the cable is taut.",
+        "Keep your elbows at your sides and curl the bar up toward your chest while breathing out.",
+        "Squeeze at the top, then lower the bar slowly until your arms are straight."
+      ],
+      "tips": [
+        "Keep your upper arms still; only the forearms should move.",
+        "In interval work, keep a steady rhythm for the full minute rather than rushing early reps."
+      ],
+      "aliases": [
+        "cable bicep curl",
+        "cable biceps curl",
+        "cable curl"
+      ]
+    },
+    "glute-kickback": {
+      "name": "Cable Glute Kickback",
+      "summary": "A standing kickback that isolates the glutes.",
+      "facts": {
+        "Targets": "Glutes, hamstrings",
+        "Equipment": "Cable machine with ankle strap",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/glute-kickback-1.webp",
+          "thumb": "/library/exercise/glute-kickback-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Cable Glute Kickback: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/glute-kickback-2.webp",
+          "thumb": "/library/exercise/glute-kickback-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Cable Glute Kickback: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Attach an ankle strap to the low pulley and fasten it around one ankle.",
+        "Face the machine, hold it for support and hinge forward slightly.",
+        "Squeeze your glute and push the strapped leg straight back.",
+        "Pause, then return slowly. Finish the reps and switch legs."
+      ],
+      "tips": [
+        "Keep your back flat — the movement comes from the hip, not the lower back.",
+        "Keep the standing knee slightly bent."
+      ],
+      "aliases": [
+        "glute kickback",
+        "cable kickback"
+      ]
+    },
+    "leg-curl": {
+      "name": "Cable Leg Curl",
+      "summary": "A single-leg curl that isolates the hamstrings.",
+      "facts": {
+        "Targets": "Hamstrings",
+        "Equipment": "Cable machine with ankle strap, or leg curl machine",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/leg-curl-1.webp",
+          "thumb": "/library/exercise/leg-curl-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Cable Leg Curl: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/leg-curl-2.webp",
+          "thumb": "/library/exercise/leg-curl-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Cable Leg Curl: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Attach an ankle strap to the low pulley and fasten it around one ankle.",
+        "Face the machine and hold it for support, standing tall.",
+        "Breathe out and bend the knee to curl your heel toward your glutes.",
+        "Pause, then lower slowly. Finish the reps and switch legs."
+      ],
+      "tips": [
+        "Keep your thighs in line; only the lower leg should move.",
+        "Use a light weight and control both directions."
+      ],
+      "aliases": [
+        "leg curl",
+        "hamstring curl"
+      ]
+    },
+    "tricep-pushdown": {
+      "name": "Cable Tricep Pushdown",
+      "summary": "A cable exercise that isolates the triceps.",
+      "facts": {
+        "Targets": "Triceps",
+        "Equipment": "Cable machine with bar or rope",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/tricep-pushdown-1.webp",
+          "thumb": "/library/exercise/tricep-pushdown-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Cable Tricep Pushdown: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/tricep-pushdown-2.webp",
+          "thumb": "/library/exercise/tricep-pushdown-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Cable Tricep Pushdown: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Attach a bar or rope to the high pulley and stand facing it.",
+        "Hold the attachment with elbows bent and tucked at your sides.",
+        "Breathe out and push down until your arms are straight.",
+        "Pause, then let the attachment rise slowly until your forearms are just above parallel."
+      ],
+      "tips": [
+        "Keep your elbows pinned at your sides.",
+        "Stand tall and avoid leaning over the weight."
+      ],
+      "aliases": [
+        "tricep pushdown",
+        "triceps pushdown",
+        "cable tricep pushdown",
+        "pushdown"
+      ]
+    },
+    "cat-cow": {
+      "name": "Cat-Cow Stretch",
+      "summary": "A gentle flow between rounding and arching the spine to loosen the back.",
+      "facts": {
+        "Targets": "Spine, upper and lower back",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/cat-cow-1.webp",
+          "thumb": "/library/exercise/cat-cow-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Cat — back rounded",
+          "alt": "Cat-Cow Stretch: cat — back rounded",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/cat-cow-2.webp",
+          "thumb": "/library/exercise/cat-cow-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Cow — back gently arched",
+          "alt": "Cat-Cow Stretch: cow — back gently arched",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Start on hands and knees with a flat back.",
+        "Breathe in and let your stomach sink, lifting your chest and tailbone (cow).",
+        "Breathe out and round your back toward the ceiling, tucking your chin and tailbone (cat).",
+        "Move slowly between the two positions with your breath for the planned time."
+      ],
+      "tips": [
+        "Move within a comfortable range; this is a mobility drill, not a stretch to force.",
+        "Keep your arms straight and weight evenly spread between hands and knees."
+      ],
+      "aliases": [
+        "cat cow",
+        "cat camel",
+        "cat stretch"
+      ]
+    },
+    "chest-opener-stretch": {
+      "name": "Chest Opener Stretch",
+      "summary": "A standing stretch that opens the chest and the front of the shoulders.",
+      "facts": {
+        "Targets": "Chest, front shoulders",
+        "Equipment": "None (a stick or towel optional)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/chest-opener-stretch-1.webp",
+          "thumb": "/library/exercise/chest-opener-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Holding a stick at hip height",
+          "alt": "Chest Opener Stretch: holding a stick at hip height",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/chest-opener-stretch-2.webp",
+          "thumb": "/library/exercise/chest-opener-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lifting to open the chest",
+          "alt": "Chest Opener Stretch: lifting to open the chest",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand tall and clasp your hands behind your back, or hold a stick or towel with a wide grip.",
+        "Squeeze your shoulder blades together and lift your chest.",
+        "Gently raise your arms until you feel a stretch across your chest and shoulders.",
+        "Hold for the planned time, breathing slowly."
+      ],
+      "tips": [
+        "Keep your ribs down; don't over-arch your lower back.",
+        "Use a wider grip on the stick if the stretch feels too strong."
+      ],
+      "aliases": [
+        "chest opener",
+        "chest stretch",
+        "chest and shoulder stretch"
+      ]
+    },
+    "childs-pose": {
+      "name": "Child's Pose",
+      "summary": "A resting stretch for the back, hips and shoulders.",
+      "facts": {
+        "Targets": "Lower back, hips, shoulders",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/childs-pose-1.webp",
+          "thumb": "/library/exercise/childs-pose-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Sitting back toward the heels",
+          "alt": "Child's Pose: sitting back toward the heels",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/childs-pose-2.webp",
+          "thumb": "/library/exercise/childs-pose-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Resting forward into the pose",
+          "alt": "Child's Pose: resting forward into the pose",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Kneel on a mat with big toes together and knees hip-width apart.",
+        "Sit your hips back toward your heels.",
+        "Walk your hands forward and lower your chest toward the floor, resting your forehead on the mat.",
+        "Breathe slowly into your back and hold for the planned time."
+      ],
+      "tips": [
+        "Place a cushion under your hips or forehead if they don't reach.",
+        "Widen your knees for more room if your stomach feels compressed."
+      ],
+      "aliases": [
+        "childs pose",
+        "child pose",
+        "balasana"
+      ]
+    },
+    "shoulder-stretch": {
+      "name": "Cross-Body Shoulder Stretch",
+      "summary": "A simple stretch for the back of the shoulder and upper back.",
+      "facts": {
+        "Targets": "Rear shoulder, upper back",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/shoulder-stretch-1.webp",
+          "thumb": "/library/exercise/shoulder-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Standing tall",
+          "alt": "Cross-Body Shoulder Stretch: standing tall",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/shoulder-stretch-2.webp",
+          "thumb": "/library/exercise/shoulder-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Arm drawn across the chest",
+          "alt": "Cross-Body Shoulder Stretch: arm drawn across the chest",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand or sit tall with shoulders relaxed.",
+        "Bring one arm straight across your chest.",
+        "Use the other hand to gently press the arm closer to your chest, just above the elbow.",
+        "Hold for the planned time, then switch arms."
+      ],
+      "tips": [
+        "Keep the stretched shoulder down, away from your ear.",
+        "Press on the upper arm, not the elbow joint."
+      ],
+      "aliases": [
+        "shoulder stretch",
+        "cross body shoulder stretch"
+      ]
+    },
+    "dead-bug": {
+      "name": "Dead Bug",
+      "summary": "A back-lying core exercise that teaches you to move your limbs while keeping the lower back still.",
+      "facts": {
+        "Targets": "Abdominals, hip flexors",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dead-bug-1.webp",
+          "thumb": "/library/exercise/dead-bug-1.thumb.webp",
+          "width": 1200,
+          "height": 675,
+          "caption": "Arms and legs raised",
+          "alt": "Dead Bug: arms and legs raised",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dead-bug-2.webp",
+          "thumb": "/library/exercise/dead-bug-2.thumb.webp",
+          "width": 1200,
+          "height": 675,
+          "caption": "Opposite arm and leg lowered",
+          "alt": "Dead Bug: opposite arm and leg lowered",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your back with arms pointing to the ceiling and knees bent to 90° above your hips.",
+        "Press your lower back gently into the floor.",
+        "Slowly lower your right arm overhead and straighten your left leg toward the floor.",
+        "Stop just before your lower back lifts, then return to the start.",
+        "Repeat on the other side and keep alternating."
+      ],
+      "tips": [
+        "Breathe out as you extend your arm and leg.",
+        "Keep the range small at first; control matters more than distance."
+      ],
+      "aliases": [
+        "dead bug"
+      ]
+    },
+    "deep-breathing": {
+      "name": "Deep Breathing",
+      "summary": "Slow belly breathing to calm the nervous system and aid recovery.",
+      "facts": {
+        "Targets": "Diaphragm, relaxation",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/deep-breathing-1.webp",
+          "thumb": "/library/exercise/deep-breathing-1.thumb.webp",
+          "width": 500,
+          "height": 333,
+          "caption": "Seated in a comfortable position",
+          "alt": "Deep Breathing: seated in a comfortable position",
+          "credit": "yoga mats store",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Yoga_woman-3053492_1920.jpg"
+        },
+        {
+          "src": "/library/exercise/deep-breathing-2.webp",
+          "thumb": "/library/exercise/deep-breathing-2.thumb.webp",
+          "width": 550,
+          "height": 400,
+          "caption": "How the diaphragm moves as you breathe",
+          "alt": "Deep Breathing: how the diaphragm moves as you breathe",
+          "credit": "John Pierce",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Diaphragmatic_breathing.gif"
+        }
+      ],
+      "steps": [
+        "Sit comfortably or lie down with one hand on your chest and one on your stomach.",
+        "Breathe in slowly through your nose for about four seconds, letting your stomach rise.",
+        "Pause briefly.",
+        "Breathe out through your mouth for about six seconds, letting your stomach fall.",
+        "Repeat for the planned time, keeping the hand on your chest fairly still."
+      ],
+      "tips": [
+        "Longer out-breaths than in-breaths help the body relax.",
+        "If you feel light-headed, return to normal breathing for a moment."
+      ],
+      "aliases": [
+        "deep breathing",
+        "breathing exercise",
+        "diaphragmatic breathing",
+        "belly breathing"
+      ]
+    },
+    "downward-dog": {
+      "name": "Downward Dog",
+      "summary": "A yoga pose that stretches the hamstrings and calves while strengthening the shoulders.",
+      "facts": {
+        "Targets": "Hamstrings, calves, shoulders, back",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/downward-dog-1.webp",
+          "thumb": "/library/exercise/downward-dog-1.thumb.webp",
+          "width": 500,
+          "height": 267,
+          "caption": "Hips lifted, body in an inverted V",
+          "alt": "Downward Dog: hips lifted, body in an inverted V",
+          "credit": "Iveto",
+          "license": "CC BY 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Downward-Facing-Dog.JPG"
+        },
+        {
+          "src": "/library/exercise/downward-dog-2.webp",
+          "thumb": "/library/exercise/downward-dog-2.thumb.webp",
+          "width": 500,
+          "height": 358,
+          "caption": "Heels reaching toward the floor",
+          "alt": "Downward Dog: heels reaching toward the floor",
+          "credit": "Dave Rosenblum",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Yoga_(9707545272).jpg"
+        }
+      ],
+      "steps": [
+        "Start on hands and knees with hands slightly in front of your shoulders.",
+        "Tuck your toes and lift your hips up and back, straightening your legs as much as is comfortable.",
+        "Press the floor away with your hands and let your head hang between your arms.",
+        "Hold, breathing slowly, and let your heels sink toward the floor."
+      ],
+      "tips": [
+        "Bend your knees if your back rounds; a long spine matters more than straight legs.",
+        "Spread your fingers wide to share the load through your hands."
+      ],
+      "aliases": [
+        "downward dog",
+        "downward facing dog",
+        "adho mukha svanasana"
+      ]
+    },
+    "dumbbell-bicep-curl": {
+      "name": "Dumbbell Bicep Curl",
+      "summary": "A simple elbow-bending lift that builds the front of the upper arm.",
+      "facts": {
+        "Targets": "Biceps, forearms",
+        "Equipment": "Pair of dumbbells",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-bicep-curl-1.webp",
+          "thumb": "/library/exercise/dumbbell-bicep-curl-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Dumbbell Bicep Curl: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-bicep-curl-2.webp",
+          "thumb": "/library/exercise/dumbbell-bicep-curl-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Dumbbell Bicep Curl: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand tall with feet hip-width apart, a dumbbell in each hand, arms straight and palms facing forward.",
+        "Pin your elbows to your sides and brace your stomach lightly.",
+        "Breathe out and curl both dumbbells toward your shoulders, moving only your forearms.",
+        "Pause for a moment at the top and squeeze the biceps.",
+        "Breathe in and lower the weights slowly until your arms are straight again."
+      ],
+      "tips": [
+        "Don't swing your back or hips to lift the weight; choose a lighter dumbbell instead.",
+        "Lower the weight more slowly than you lift it — about two to three seconds."
+      ],
+      "aliases": [
+        "bicep curl",
+        "biceps curl",
+        "dumbbell curl"
+      ]
+    },
+    "dumbbell-chest-press": {
+      "name": "Dumbbell Chest Press",
+      "summary": "A pressing exercise on a bench that builds the chest, shoulders and triceps.",
+      "facts": {
+        "Targets": "Chest, shoulders, triceps",
+        "Equipment": "Pair of dumbbells and flat bench",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-chest-press-1.webp",
+          "thumb": "/library/exercise/dumbbell-chest-press-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Dumbbells lowered to chest level",
+          "alt": "Dumbbell Chest Press: dumbbells lowered to chest level",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-chest-press-2.webp",
+          "thumb": "/library/exercise/dumbbell-chest-press-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Dumbbells pressed up",
+          "alt": "Dumbbell Chest Press: dumbbells pressed up",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on a flat bench with feet on the floor and a dumbbell in each hand at chest level.",
+        "Turn your palms to face your feet, elbows about 45° from your body.",
+        "Breathe out and press the dumbbells up until your arms are nearly straight.",
+        "Lower them slowly back to chest level."
+      ],
+      "tips": [
+        "Keep your shoulder blades pulled back against the bench.",
+        "Choose a weight you can lower with control — no bouncing."
+      ],
+      "aliases": [
+        "chest press",
+        "bench press"
+      ]
+    },
+    "dumbbell-deadlift": {
+      "name": "Dumbbell Deadlift",
+      "summary": "A hip-hinge lift that builds the hamstrings, glutes and back.",
+      "facts": {
+        "Targets": "Hamstrings, glutes, lower back",
+        "Equipment": "Pair of dumbbells",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-deadlift-1.webp",
+          "thumb": "/library/exercise/dumbbell-deadlift-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Dumbbell Deadlift: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-deadlift-2.webp",
+          "thumb": "/library/exercise/dumbbell-deadlift-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Dumbbell Deadlift: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand with feet hip-width apart, holding dumbbells in front of your thighs.",
+        "Keep a slight bend in your knees and brace your core.",
+        "Push your hips back and lower the dumbbells along your legs, keeping your back flat.",
+        "Lower until you feel a stretch in your hamstrings (around mid-shin).",
+        "Drive your hips forward to stand tall, squeezing your glutes at the top."
+      ],
+      "tips": [
+        "Keep the weights close to your legs throughout.",
+        "Your back should stay flat — stop lowering before it starts to round."
+      ],
+      "aliases": [
+        "deadlift",
+        "romanian deadlift",
+        "dumbbell deadlift"
+      ]
+    },
+    "dumbbell-lunge": {
+      "name": "Dumbbell Lunge",
+      "summary": "A split-stance step that builds single-leg strength and balance.",
+      "facts": {
+        "Targets": "Quads, glutes, hamstrings",
+        "Equipment": "Pair of dumbbells (optional)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-lunge-1.webp",
+          "thumb": "/library/exercise/dumbbell-lunge-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Standing with dumbbells",
+          "alt": "Dumbbell Lunge: standing with dumbbells",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-lunge-2.webp",
+          "thumb": "/library/exercise/dumbbell-lunge-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lowered into the lunge",
+          "alt": "Dumbbell Lunge: lowered into the lunge",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand tall holding a dumbbell in each hand at your sides.",
+        "Take a long step forward with one leg.",
+        "Lower your hips until both knees are bent to about 90°, back knee hovering above the floor.",
+        "Push through the front heel to return to standing.",
+        "Complete the planned reps on one leg, then switch (or alternate legs)."
+      ],
+      "tips": [
+        "Keep your front knee over your ankle, not drifting past your toes.",
+        "Practise without weights first if you feel unsteady."
+      ],
+      "aliases": [
+        "lunge"
+      ]
+    },
+    "dumbbell-shoulder-press": {
+      "name": "Dumbbell Shoulder Press",
+      "summary": "A pressing movement that strengthens the shoulders and upper arms.",
+      "facts": {
+        "Targets": "Shoulders, triceps, upper chest",
+        "Equipment": "Pair of dumbbells, bench with back support",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-shoulder-press-1.webp",
+          "thumb": "/library/exercise/dumbbell-shoulder-press-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Dumbbell Shoulder Press: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-shoulder-press-2.webp",
+          "thumb": "/library/exercise/dumbbell-shoulder-press-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Dumbbell Shoulder Press: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Sit on an upright bench with your back against the pad and feet flat on the floor.",
+        "Raise the dumbbells to shoulder height, palms facing forward and elbows below your wrists.",
+        "Breathe out and press the dumbbells overhead until your arms are nearly straight.",
+        "Pause, then lower them slowly back to shoulder height."
+      ],
+      "tips": [
+        "Keep your lower back against the pad; don't arch to push the weight up.",
+        "Stop just short of locking the elbows at the top."
+      ],
+      "aliases": [
+        "shoulder press",
+        "overhead press"
+      ]
+    },
+    "dumbbell-side-bend": {
+      "name": "Dumbbell Side Bend",
+      "summary": "A standing side-bend that strengthens the obliques.",
+      "facts": {
+        "Targets": "Obliques, core",
+        "Equipment": "One dumbbell",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/dumbbell-side-bend-1.webp",
+          "thumb": "/library/exercise/dumbbell-side-bend-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Bending toward the dumbbell",
+          "alt": "Dumbbell Side Bend: bending toward the dumbbell",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/dumbbell-side-bend-2.webp",
+          "thumb": "/library/exercise/dumbbell-side-bend-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Returning upright",
+          "alt": "Dumbbell Side Bend: returning upright",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand tall with feet hip-width apart, a dumbbell in one hand and the other hand on your hip or behind your head.",
+        "Bend sideways toward the dumbbell, sliding it down your leg.",
+        "Use your opposite side's obliques to return upright.",
+        "Complete the planned reps, then switch hands."
+      ],
+      "tips": [
+        "Bend directly sideways — don't twist or lean forward.",
+        "Use a moderate weight; heavy weights shift the work away from your waist."
+      ],
+      "aliases": [
+        "side bend",
+        "weighted side bend"
+      ]
+    },
+    "sumo-squat": {
+      "name": "Dumbbell Sumo Squat",
+      "summary": "A wide-stance squat that puts more work into the inner thighs and glutes.",
+      "facts": {
+        "Targets": "Inner thighs, glutes, quads",
+        "Equipment": "One dumbbell",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/sumo-squat-1.webp",
+          "thumb": "/library/exercise/sumo-squat-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Dumbbell Sumo Squat: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/sumo-squat-2.webp",
+          "thumb": "/library/exercise/sumo-squat-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Dumbbell Sumo Squat: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand with feet wide apart and toes pointed out about 45°.",
+        "Hold one dumbbell with both hands at arm's length between your legs.",
+        "Bend your knees and lower your hips straight down, keeping your back upright.",
+        "Pause when your thighs are near parallel, then push back up and squeeze your glutes at the top."
+      ],
+      "tips": [
+        "Push your knees out in line with your toes.",
+        "Keep your torso upright rather than leaning forward."
+      ],
+      "aliases": [
+        "sumo squat",
+        "plie squat"
+      ]
+    },
+    "foam-rolling": {
+      "name": "Foam Rolling",
+      "summary": "Self-massage with a foam roller to ease muscle tightness after training.",
+      "facts": {
+        "Targets": "Quads, back, calves, glutes",
+        "Equipment": "Foam roller (optional)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/foam-rolling-1.webp",
+          "thumb": "/library/exercise/foam-rolling-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Rolling the front of the thighs",
+          "alt": "Foam Rolling: rolling the front of the thighs",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/foam-rolling-2.webp",
+          "thumb": "/library/exercise/foam-rolling-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Rolling the lower back area",
+          "alt": "Foam Rolling: rolling the lower back area",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Place the roller under the muscle you want to target, such as the front of your thighs.",
+        "Support yourself with your hands or forearms and roll slowly along the muscle.",
+        "When you find a tender spot, pause for 20–30 seconds and breathe.",
+        "Move on to the next area for the planned time."
+      ],
+      "tips": [
+        "Avoid rolling directly over joints or bones.",
+        "No roller? Use your hands or a tennis ball for gentle self-massage."
+      ],
+      "aliases": [
+        "foam rolling",
+        "foam roll",
+        "self massage",
+        "foam roller"
+      ]
+    },
+    "full-body-stretch": {
+      "name": "Full-Body Stretch",
+      "summary": "A gentle sequence of standing stretches to finish a session or ease stiffness.",
+      "facts": {
+        "Targets": "Whole body",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/full-body-stretch-1.webp",
+          "thumb": "/library/exercise/full-body-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Reaching overhead",
+          "alt": "Full-Body Stretch: reaching overhead",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/full-body-stretch-2.webp",
+          "thumb": "/library/exercise/full-body-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Side stretch",
+          "alt": "Full-Body Stretch: side stretch",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Reach both arms overhead and stretch tall for a few breaths.",
+        "Lean gently to each side to stretch along your ribs.",
+        "Fold forward with soft knees to stretch the back of your legs.",
+        "Add shoulder, chest and calf stretches, holding each for about 20–30 seconds.",
+        "Continue for the planned time, breathing slowly."
+      ],
+      "tips": [
+        "Hold each stretch steadily without bouncing.",
+        "Aim for a gentle pull, never pain."
+      ],
+      "aliases": [
+        "full body stretch",
+        "static stretching",
+        "static stretch",
+        "standing stretch"
+      ]
+    },
+    "glute-bridge": {
+      "name": "Glute Bridge",
+      "summary": "A floor exercise that strengthens the glutes and supports a healthy lower back.",
+      "facts": {
+        "Targets": "Glutes, hamstrings, lower back",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/glute-bridge-1.webp",
+          "thumb": "/library/exercise/glute-bridge-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lying with knees bent",
+          "alt": "Glute Bridge: lying with knees bent",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/glute-bridge-2.webp",
+          "thumb": "/library/exercise/glute-bridge-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Hips lifted into the bridge",
+          "alt": "Glute Bridge: hips lifted into the bridge",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your back with knees bent, feet flat on the floor hip-width apart, arms by your sides.",
+        "Press through your heels and squeeze your glutes to lift your hips.",
+        "Rise until your body forms a straight line from shoulders to knees.",
+        "Hold for a second at the top, then lower slowly to the floor."
+      ],
+      "tips": [
+        "Lift with your glutes, not by arching your lower back.",
+        "Keep your knees pointing forward, not falling in or out."
+      ],
+      "aliases": [
+        "glute bridge",
+        "hip bridge",
+        "bridge"
+      ]
+    },
+    "goblet-squat": {
+      "name": "Goblet Squat",
+      "summary": "A squat holding one weight at the chest, which encourages an upright posture.",
+      "facts": {
+        "Targets": "Quads, glutes, core",
+        "Equipment": "One dumbbell",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/goblet-squat-1.webp",
+          "thumb": "/library/exercise/goblet-squat-1.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Standing with the dumbbell at the chest",
+          "alt": "Goblet Squat: standing with the dumbbell at the chest",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/goblet-squat-2.webp",
+          "thumb": "/library/exercise/goblet-squat-2.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Bottom of the squat",
+          "alt": "Goblet Squat: bottom of the squat",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Hold one end of a dumbbell vertically against your chest with both hands.",
+        "Stand with feet slightly wider than shoulder-width, toes turned out a little.",
+        "Push your hips back and bend your knees to lower between your legs, keeping your chest tall.",
+        "Go as low as you can while keeping your heels down, elbows inside your knees.",
+        "Drive through your feet to stand up, breathing out on the way up."
+      ],
+      "tips": [
+        "Keep the dumbbell close to your chest throughout.",
+        "In timed intervals, pick a pace you can hold with good form for the whole minute."
+      ],
+      "aliases": [
+        "goblet squat"
+      ]
+    },
+    "hamstring-stretch": {
+      "name": "Hamstring Stretch",
+      "summary": "A stretch for the back of the thighs, done standing or seated.",
+      "facts": {
+        "Targets": "Hamstrings, calves",
+        "Equipment": "None (mat for seated)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/hamstring-stretch-1.webp",
+          "thumb": "/library/exercise/hamstring-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Standing version — folding toward the toes",
+          "alt": "Hamstring Stretch: standing version — folding toward the toes",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/hamstring-stretch-2.webp",
+          "thumb": "/library/exercise/hamstring-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Seated version — reaching for one foot",
+          "alt": "Hamstring Stretch: seated version — reaching for one foot",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Standing: place one heel slightly in front of you with toes up, or stand with feet together.",
+        "Keep your back long and hinge forward from your hips until you feel a stretch behind the thigh.",
+        "Seated: sit with one leg straight and the other bent, foot against the inner thigh, then reach toward the straight leg's foot.",
+        "Hold the stretch for the planned time, breathing slowly, then switch legs."
+      ],
+      "tips": [
+        "Stretch to mild tension only — never to pain.",
+        "Keep a slight bend in the knee if you feel pulling behind the knee joint."
+      ],
+      "aliases": [
+        "hamstring stretch",
+        "standing hamstring stretch",
+        "seated hamstring stretch"
+      ]
+    },
+    "mobility-circles": {
+      "name": "Joint Mobility Circles",
+      "summary": "Gentle circles for the arms, shoulders, hips and ankles to warm up joints and ease stiffness.",
+      "facts": {
+        "Targets": "Shoulders, hips, ankles",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/mobility-circles-1.webp",
+          "thumb": "/library/exercise/mobility-circles-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Arm circles",
+          "alt": "Joint Mobility Circles: arm circles",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/mobility-circles-2.webp",
+          "thumb": "/library/exercise/mobility-circles-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Shoulder circles",
+          "alt": "Joint Mobility Circles: shoulder circles",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/mobility-circles-3.webp",
+          "thumb": "/library/exercise/mobility-circles-3.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Hip circles on one leg",
+          "alt": "Joint Mobility Circles: hip circles on one leg",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Arm circles: hold your arms out to the sides and draw small circles, gradually making them bigger, then reverse.",
+        "Shoulder circles: roll your shoulders up, back and down in slow circles, then reverse.",
+        "Hip circles: stand on one leg (hold a wall if needed), lift the other knee and draw circles with it, then switch.",
+        "Ankle circles: lift one foot and slowly circle the ankle in each direction, then switch.",
+        "Complete the planned reps for each movement."
+      ],
+      "tips": [
+        "Move slowly and stay within a pain-free range.",
+        "These work well as a warm-up before strength sessions."
+      ],
+      "aliases": [
+        "hip circle",
+        "arm circle",
+        "shoulder circle",
+        "ankle circle",
+        "mobility drill",
+        "arm swing",
+        "shoulder roll",
+        "ankle roll"
+      ]
+    },
+    "hip-flexor-stretch": {
+      "name": "Kneeling Hip Flexor Stretch",
+      "summary": "A half-kneeling stretch for the front of the hip, which tightens with long periods of sitting.",
+      "facts": {
+        "Targets": "Hip flexors, quadriceps",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/hip-flexor-stretch-1.webp",
+          "thumb": "/library/exercise/hip-flexor-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Half-kneeling",
+          "alt": "Kneeling Hip Flexor Stretch: half-kneeling",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/hip-flexor-stretch-2.webp",
+          "thumb": "/library/exercise/hip-flexor-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Shifting forward into the stretch",
+          "alt": "Kneeling Hip Flexor Stretch: shifting forward into the stretch",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Kneel on one knee with the other foot in front, both knees at about 90°.",
+        "Tuck your tailbone and squeeze the glute of the kneeling leg.",
+        "Shift your hips gently forward until you feel a stretch at the front of the back hip.",
+        "Hold for the planned time, then switch sides."
+      ],
+      "tips": [
+        "Put a folded towel under your knee for comfort.",
+        "Keep your torso upright; don't arch your lower back."
+      ],
+      "aliases": [
+        "hip flexor stretch",
+        "hip flexor"
+      ]
+    },
+    "knees-to-chest": {
+      "name": "Knees-to-Chest Stretch",
+      "summary": "A lying stretch that gently releases the lower back.",
+      "facts": {
+        "Targets": "Lower back, glutes",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/knees-to-chest-1.webp",
+          "thumb": "/library/exercise/knees-to-chest-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lying with knees bent",
+          "alt": "Knees-to-Chest Stretch: lying with knees bent",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/knees-to-chest-2.webp",
+          "thumb": "/library/exercise/knees-to-chest-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Hugging the knees to the chest",
+          "alt": "Knees-to-Chest Stretch: hugging the knees to the chest",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your back with knees bent and feet flat.",
+        "Bring one knee, then the other, toward your chest.",
+        "Hold behind your thighs or over your shins and draw your knees gently closer.",
+        "Hold for the planned time, breathing slowly; rock gently side to side if it feels good."
+      ],
+      "tips": [
+        "Keep your head and shoulders relaxed on the floor.",
+        "Hold behind the thighs if holding the shins puts pressure on your knees."
+      ],
+      "aliases": [
+        "lower back stretch",
+        "knees to chest",
+        "knee to chest"
+      ]
+    },
+    "leg-raise": {
+      "name": "Lying Leg Raise",
+      "summary": "A lying exercise that works the lower abdominals.",
+      "facts": {
+        "Targets": "Lower abdominals, hip flexors",
+        "Equipment": "Mat or flat bench",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/leg-raise-1.webp",
+          "thumb": "/library/exercise/leg-raise-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Legs lowered",
+          "alt": "Lying Leg Raise: legs lowered",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/leg-raise-2.webp",
+          "thumb": "/library/exercise/leg-raise-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Legs raised",
+          "alt": "Lying Leg Raise: legs raised",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your back with legs straight and hands under your hips or by your sides.",
+        "Press your lower back into the floor.",
+        "Breathe out and raise your legs until they point toward the ceiling.",
+        "Lower slowly, stopping before your lower back lifts."
+      ],
+      "tips": [
+        "Bend your knees to make it easier.",
+        "Move slowly; don't let the legs drop."
+      ],
+      "aliases": [
+        "leg raise",
+        "lying leg raise"
+      ]
+    },
+    "windshield-wiper": {
+      "name": "Lying Windshield Wipers",
+      "summary": "A lying twist where the legs sway side to side, working the obliques and easing the spine.",
+      "facts": {
+        "Targets": "Obliques, lower back, hips",
+        "Equipment": "Mat",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/windshield-wiper-1.webp",
+          "thumb": "/library/exercise/windshield-wiper-1.thumb.webp",
+          "width": 789,
+          "height": 397,
+          "caption": "Knees lowered to one side",
+          "alt": "Lying Windshield Wipers: knees lowered to one side",
+          "credit": "Mr. Yoga",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Mr-yoga-svastika-legs-twist.jpg"
+        },
+        {
+          "src": "/library/exercise/windshield-wiper-2.webp",
+          "thumb": "/library/exercise/windshield-wiper-2.thumb.webp",
+          "width": 1024,
+          "height": 526,
+          "caption": "Legs lowered to one side",
+          "alt": "Lying Windshield Wipers: legs lowered to one side",
+          "credit": "Satheesan.vn",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Waist_Rotating_Pose.jpg"
+        }
+      ],
+      "steps": [
+        "Lie on your back with arms out to the sides and knees bent above your hips.",
+        "Keep your shoulders on the floor and slowly lower both knees to one side.",
+        "Use your stomach muscles to bring them back to the centre.",
+        "Lower to the other side; one side and back is one rep.",
+        "For more challenge, straighten your legs."
+      ],
+      "tips": [
+        "Only lower as far as you can while keeping both shoulders down.",
+        "Breathe out as you bring the legs back to the centre."
+      ],
+      "aliases": [
+        "windshield wiper",
+        "lying windshield wiper"
+      ]
+    },
+    "mountain-climber": {
+      "name": "Mountain Climbers",
+      "summary": "A plank-based movement that combines core work with light cardio.",
+      "facts": {
+        "Targets": "Core, shoulders, hip flexors",
+        "Equipment": "None",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/mountain-climber-1.webp",
+          "thumb": "/library/exercise/mountain-climber-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "High plank with one knee driven forward",
+          "alt": "Mountain Climbers: high plank with one knee driven forward",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/mountain-climber-2.webp",
+          "thumb": "/library/exercise/mountain-climber-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Switching legs",
+          "alt": "Mountain Climbers: switching legs",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Start in a high plank with hands under your shoulders.",
+        "Bring your right knee toward your chest.",
+        "Return it and bring the left knee forward.",
+        "Keep alternating at the planned pace — slow and controlled to start."
+      ],
+      "tips": [
+        "Keep your hips level with your shoulders.",
+        "Slow pace works the core more; faster pace adds cardio."
+      ],
+      "aliases": [
+        "mountain climber"
+      ]
+    },
+    "outdoor-walk": {
+      "name": "Outdoor Walk",
+      "summary": "An easy walk outdoors for active recovery and fresh air.",
+      "facts": {
+        "Targets": "Heart and lungs, legs",
+        "Equipment": "Comfortable shoes",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/outdoor-walk-1.webp",
+          "thumb": "/library/exercise/outdoor-walk-1.thumb.webp",
+          "width": 850,
+          "height": 565,
+          "caption": "Walking at a comfortable pace",
+          "alt": "Outdoor Walk: walking at a comfortable pace",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/outdoor-walk-2.webp",
+          "thumb": "/library/exercise/outdoor-walk-2.thumb.webp",
+          "width": 850,
+          "height": 565,
+          "caption": "Easy stride outdoors",
+          "alt": "Outdoor Walk: easy stride outdoors",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Wear comfortable shoes and pick a safe, familiar route.",
+        "Start at an easy pace for the first few minutes.",
+        "Walk at a comfortable pace for the planned time, swinging your arms naturally.",
+        "Slow down for the last couple of minutes."
+      ],
+      "tips": [
+        "Carry water on warm days.",
+        "This is a recovery walk — you should finish feeling refreshed, not tired."
+      ],
+      "aliases": [
+        "walk outside",
+        "outdoor walk",
+        "light walk outside"
+      ]
+    },
+    "pelvic-tilt": {
+      "name": "Pelvic Tilt",
+      "summary": "A small floor movement that wakes up the deep core and eases the lower back.",
+      "facts": {
+        "Targets": "Deep core, lower back, glutes",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/pelvic-tilt-1.webp",
+          "thumb": "/library/exercise/pelvic-tilt-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lying with knees bent",
+          "alt": "Pelvic Tilt: lying with knees bent",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/pelvic-tilt-2.webp",
+          "thumb": "/library/exercise/pelvic-tilt-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Tilting the pelvis and lifting slightly",
+          "alt": "Pelvic Tilt: tilting the pelvis and lifting slightly",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your back with knees bent and feet flat on the floor.",
+        "Breathe out and gently flatten your lower back into the floor by tilting your pelvis upward.",
+        "Hold for two to three seconds.",
+        "Breathe in and release back to a neutral position."
+      ],
+      "tips": [
+        "The movement is small — think of tucking your tailbone.",
+        "Keep your glutes and shoulders relaxed; the work comes from the lower stomach."
+      ],
+      "aliases": [
+        "pelvic tilt"
+      ]
+    },
+    "plank": {
+      "name": "Plank",
+      "summary": "A static hold that teaches the core to keep the spine steady.",
+      "facts": {
+        "Targets": "Abdominals, lower back, shoulders",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/plank-1.webp",
+          "thumb": "/library/exercise/plank-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Setting up on the forearms",
+          "alt": "Plank: setting up on the forearms",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/plank-2.webp",
+          "thumb": "/library/exercise/plank-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Holding the plank",
+          "alt": "Plank: holding the plank",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Kneel on a mat and place your forearms on the floor, elbows under your shoulders.",
+        "Step your feet back one at a time until your body forms a straight line from head to heels.",
+        "Tighten your stomach and glutes as if bracing for a light poke in the belly.",
+        "Hold the position for the planned time while breathing slowly and steadily.",
+        "Lower your knees to the mat to finish."
+      ],
+      "tips": [
+        "Don't let your hips sag or rise; picture a straight plank of wood.",
+        "If your form breaks, rest on your knees and restart rather than holding a sagging plank."
+      ],
+      "aliases": [
+        "plank",
+        "front plank",
+        "forearm plank"
+      ]
+    },
+    "plank-shoulder-tap": {
+      "name": "Plank with Shoulder Taps",
+      "summary": "A high plank where you lift one hand at a time, training the core to resist twisting.",
+      "facts": {
+        "Targets": "Abdominals, obliques, shoulders",
+        "Equipment": "None",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/plank-shoulder-tap-1.webp",
+          "thumb": "/library/exercise/plank-shoulder-tap-1.thumb.webp",
+          "width": 500,
+          "height": 383,
+          "caption": "High plank position",
+          "alt": "Plank with Shoulder Taps: high plank position",
+          "credit": "U.S. Army 10AAMDC by Sgt. Yesenia Cadavid",
+          "license": "Public domain",
+          "source": "https://commons.wikimedia.org/wiki/File:10th_AAMDC_host_%E2%80%9CKey_Leader_Physical_Readiness_Training%E2%80%9D_(8448513).jpg"
+        },
+        {
+          "src": "/library/exercise/plank-shoulder-tap-2.webp",
+          "thumb": "/library/exercise/plank-shoulder-tap-2.thumb.webp",
+          "width": 500,
+          "height": 400,
+          "caption": "Tapping the opposite shoulder",
+          "alt": "Plank with Shoulder Taps: tapping the opposite shoulder",
+          "credit": "U.S. Army 10AAMDC by Sgt. Yesenia Cadavid",
+          "license": "Public domain",
+          "source": "https://commons.wikimedia.org/wiki/File:10th_AAMDC_host_%E2%80%9CKey_Leader_Physical_Readiness_Training%E2%80%9D_(8448514).jpg"
+        }
+      ],
+      "steps": [
+        "Start in a high plank with hands under your shoulders and feet slightly wider than hip-width.",
+        "Brace your stomach and glutes so your body is a straight line.",
+        "Lift your right hand and tap your left shoulder, then return the hand to the floor.",
+        "Repeat with the left hand to the right shoulder; each tap counts as one rep.",
+        "Keep alternating at a slow, controlled pace."
+      ],
+      "tips": [
+        "Keep your hips level; avoid rocking side to side as each hand lifts.",
+        "Widen your feet to make it easier, or bring them closer for a greater challenge."
+      ],
+      "aliases": [
+        "plank with shoulder tap",
+        "plank shoulder tap",
+        "shoulder tap"
+      ]
+    },
+    "quad-stretch": {
+      "name": "Quadriceps Stretch",
+      "summary": "A stretch for the front of the thigh.",
+      "facts": {
+        "Targets": "Quadriceps, hip flexors",
+        "Equipment": "None (mat or strap optional)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/quad-stretch-1.webp",
+          "thumb": "/library/exercise/quad-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lying version with a strap",
+          "alt": "Quadriceps Stretch: lying version with a strap",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/quad-stretch-2.webp",
+          "thumb": "/library/exercise/quad-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Side-lying version",
+          "alt": "Quadriceps Stretch: side-lying version",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Standing: hold a wall for balance, bend one knee and hold the ankle behind you.",
+        "Lying on your side: bend the top knee and hold the ankle, or loop a strap around it.",
+        "Gently draw the heel toward your glutes while keeping your knees close together.",
+        "Hold for the planned time, then switch legs."
+      ],
+      "tips": [
+        "Tuck your tailbone slightly to feel the stretch higher up the thigh.",
+        "Avoid pulling the heel hard into the glutes if your knee feels strained."
+      ],
+      "aliases": [
+        "quadriceps stretch",
+        "quad stretch"
+      ]
+    },
+    "russian-twist": {
+      "name": "Russian Twist",
+      "summary": "A seated rotation that works the obliques and deep core.",
+      "facts": {
+        "Targets": "Obliques, abdominals",
+        "Equipment": "Mat; light dumbbell or plate (optional)",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/russian-twist-1.webp",
+          "thumb": "/library/exercise/russian-twist-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Leaning back with weight centred",
+          "alt": "Russian Twist: leaning back with weight centred",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/russian-twist-2.webp",
+          "thumb": "/library/exercise/russian-twist-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Rotating to the side",
+          "alt": "Russian Twist: rotating to the side",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Sit with knees bent and heels on the floor.",
+        "Lean back slightly with a long, straight spine and hold your hands (or a light weight) at your chest.",
+        "Rotate your torso to one side, then through the centre to the other side.",
+        "Each turn to a side counts as one rep; keep breathing steadily."
+      ],
+      "tips": [
+        "Rotate through your ribs and shoulders, not just your arms.",
+        "Keep your feet on the floor until you can keep a straight back throughout."
+      ],
+      "aliases": [
+        "russian twist"
+      ]
+    },
+    "cable-row": {
+      "name": "Seated Cable Row",
+      "summary": "A pulling exercise that strengthens the upper back and supports good posture.",
+      "facts": {
+        "Targets": "Upper back, lats, biceps",
+        "Equipment": "Cable row machine",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/cable-row-1.webp",
+          "thumb": "/library/exercise/cable-row-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Seated Cable Row: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/cable-row-2.webp",
+          "thumb": "/library/exercise/cable-row-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Seated Cable Row: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Sit at the cable row station with feet on the platform and knees slightly bent.",
+        "Hold the handle with arms extended and sit tall.",
+        "Breathe out and pull the handle toward your lower ribs, squeezing your shoulder blades together.",
+        "Pause, then extend your arms slowly to return."
+      ],
+      "tips": [
+        "Keep your torso still; don't rock back to pull the weight.",
+        "Lead with your elbows and keep your shoulders down, away from your ears."
+      ],
+      "aliases": [
+        "cable row",
+        "seated row",
+        "seated cable row"
+      ]
+    },
+    "seated-forward-fold": {
+      "name": "Seated Forward Fold",
+      "summary": "A seated stretch for the hamstrings and back of the body.",
+      "facts": {
+        "Targets": "Hamstrings, calves, lower back",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/seated-forward-fold-1.webp",
+          "thumb": "/library/exercise/seated-forward-fold-1.thumb.webp",
+          "width": 884,
+          "height": 518,
+          "caption": "Reaching toward the feet",
+          "alt": "Seated Forward Fold: reaching toward the feet",
+          "credit": "Joseph RENGER",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Paschimottanasana.jpg"
+        },
+        {
+          "src": "/library/exercise/seated-forward-fold-2.webp",
+          "thumb": "/library/exercise/seated-forward-fold-2.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Folding over straight legs",
+          "alt": "Seated Forward Fold: folding over straight legs",
+          "credit": "Thamizhpparithi Maari",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:An_art_of_Paschimottanasana_1.JPG"
+        }
+      ],
+      "steps": [
+        "Sit on a mat with legs straight in front of you and feet flexed.",
+        "Sit up tall and breathe in.",
+        "Breathe out and hinge forward from your hips, reaching toward your shins, ankles or feet.",
+        "Hold where you feel a gentle stretch, breathing slowly for the planned time.",
+        "Roll up slowly to sit tall again."
+      ],
+      "tips": [
+        "Bend your knees slightly if your lower back rounds a lot.",
+        "Lead with your chest rather than pulling your head toward your knees."
+      ],
+      "aliases": [
+        "seated forward fold",
+        "forward fold",
+        "seated forward bend"
+      ]
+    },
+    "seated-spinal-twist": {
+      "name": "Seated Spinal Twist",
+      "summary": "A seated rotation that eases stiffness in the back and hips.",
+      "facts": {
+        "Targets": "Spine, obliques, outer hips",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/seated-spinal-twist-1.webp",
+          "thumb": "/library/exercise/seated-spinal-twist-1.thumb.webp",
+          "width": 730,
+          "height": 671,
+          "caption": "Twisting over the bent knee",
+          "alt": "Seated Spinal Twist: twisting over the bent knee",
+          "credit": "Kennguru",
+          "license": "CC BY 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Ardha-Matsyendrasana_Yoga-Asana_Nina-Mel.jpg"
+        },
+        {
+          "src": "/library/exercise/seated-spinal-twist-2.webp",
+          "thumb": "/library/exercise/seated-spinal-twist-2.thumb.webp",
+          "width": 500,
+          "height": 575,
+          "caption": "Holding the twist",
+          "alt": "Seated Spinal Twist: holding the twist",
+          "credit": "lululemon athletica",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Ardha_Matyendrasana_-_Half_Lord_of_the_Fishes_Pose_-_Bound_Arm_Variation.jpg"
+        }
+      ],
+      "steps": [
+        "Sit tall with legs straight in front of you.",
+        "Bend your right knee and place your right foot outside your left knee.",
+        "Breathe in to lengthen your spine, then breathe out and rotate toward your right knee.",
+        "Hug the knee with your left arm, place your right hand behind you, and hold.",
+        "Unwind slowly and repeat on the other side."
+      ],
+      "tips": [
+        "Grow taller on each in-breath and twist a little more on each out-breath.",
+        "Keep both sitting bones grounded."
+      ],
+      "aliases": [
+        "spinal twist",
+        "seated twist",
+        "seated spinal twist"
+      ]
+    },
+    "neck-stretch": {
+      "name": "Side Neck Stretch",
+      "summary": "A gentle stretch for the sides of the neck and upper shoulders.",
+      "facts": {
+        "Targets": "Neck, upper trapezius",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/neck-stretch-1.webp",
+          "thumb": "/library/exercise/neck-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Standing tall",
+          "alt": "Side Neck Stretch: standing tall",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/neck-stretch-2.webp",
+          "thumb": "/library/exercise/neck-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Tilting the ear toward the shoulder",
+          "alt": "Side Neck Stretch: tilting the ear toward the shoulder",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Sit or stand tall with shoulders relaxed.",
+        "Slowly tilt your right ear toward your right shoulder.",
+        "For a little more stretch, rest your right hand lightly on your head.",
+        "Hold for the planned time, then return to centre and switch sides."
+      ],
+      "tips": [
+        "Keep the opposite shoulder down.",
+        "Never pull hard on your head; let gravity do most of the work."
+      ],
+      "aliases": [
+        "neck stretch"
+      ]
+    },
+    "side-plank": {
+      "name": "Side Plank",
+      "summary": "A side-lying hold that strengthens the obliques and hip stabilisers.",
+      "facts": {
+        "Targets": "Obliques, hips, shoulders",
+        "Equipment": "Mat",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/side-plank-1.webp",
+          "thumb": "/library/exercise/side-plank-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Lying on one side",
+          "alt": "Side Plank: lying on one side",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/side-plank-2.webp",
+          "thumb": "/library/exercise/side-plank-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Hips lifted into the side plank",
+          "alt": "Side Plank: hips lifted into the side plank",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Lie on your side with your elbow under your shoulder and legs stacked.",
+        "Brace your core and lift your hips so your body forms a straight line from head to feet.",
+        "Hold for the planned time while breathing steadily.",
+        "Lower your hips slowly, then repeat on the other side."
+      ],
+      "tips": [
+        "Drop the bottom knee to the floor for an easier version.",
+        "Keep your top hip stacked over the bottom hip rather than rolling forward."
+      ],
+      "aliases": [
+        "side plank",
+        "side bridge"
+      ]
+    },
+    "single-leg-balance": {
+      "name": "Single-Leg Balance",
+      "summary": "Standing on one leg to improve balance, ankle stability and core control.",
+      "facts": {
+        "Targets": "Ankles, hips, core",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/single-leg-balance-1.webp",
+          "thumb": "/library/exercise/single-leg-balance-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Standing on one leg with knee lifted",
+          "alt": "Single-Leg Balance: standing on one leg with knee lifted",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/single-leg-balance-2.webp",
+          "thumb": "/library/exercise/single-leg-balance-2.thumb.webp",
+          "width": 493,
+          "height": 922,
+          "caption": "Tree pose variation",
+          "alt": "Single-Leg Balance: tree pose variation",
+          "credit": "Kennguru",
+          "license": "CC BY 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vriksasana_Yoga-Asana_Nina-Mel.jpg"
+        }
+      ],
+      "steps": [
+        "Stand tall near a wall or chair for support if needed.",
+        "Shift your weight onto one foot and lift the other foot off the floor.",
+        "Keep your standing knee soft and your hips level.",
+        "Hold for the planned time, breathing steadily, then switch legs."
+      ],
+      "tips": [
+        "Fix your gaze on a point in front of you to steady yourself.",
+        "To progress, place the lifted foot on your inner calf (tree pose) or close your eyes briefly."
+      ],
+      "aliases": [
+        "single leg balance",
+        "single leg stand",
+        "one leg stand",
+        "single leg stance",
+        "one leg balance"
+      ]
+    },
+    "calf-stretch": {
+      "name": "Standing Calf Stretch",
+      "summary": "A wall stretch for the calf muscles and Achilles tendon.",
+      "facts": {
+        "Targets": "Calves, Achilles tendon",
+        "Equipment": "Wall",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/calf-stretch-1.webp",
+          "thumb": "/library/exercise/calf-stretch-1.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Leaning into the wall",
+          "alt": "Standing Calf Stretch: leaning into the wall",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/calf-stretch-2.webp",
+          "thumb": "/library/exercise/calf-stretch-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Back heel pressed down",
+          "alt": "Standing Calf Stretch: back heel pressed down",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand facing a wall with your hands on it at shoulder height.",
+        "Step one foot back and keep that leg straight with the heel on the floor.",
+        "Bend the front knee and lean toward the wall until you feel a stretch in the back calf.",
+        "Hold for the planned time, then switch legs."
+      ],
+      "tips": [
+        "Point both feet straight ahead.",
+        "Bend the back knee slightly to shift the stretch lower into the calf."
+      ],
+      "aliases": [
+        "calf stretch"
+      ]
+    },
+    "calf-raise": {
+      "name": "Standing Dumbbell Calf Raise",
+      "summary": "A simple rise onto the toes that strengthens the calves and ankles.",
+      "facts": {
+        "Targets": "Calves",
+        "Equipment": "Pair of dumbbells (optional)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/calf-raise-1.webp",
+          "thumb": "/library/exercise/calf-raise-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Standing Dumbbell Calf Raise: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/calf-raise-2.webp",
+          "thumb": "/library/exercise/calf-raise-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Standing Dumbbell Calf Raise: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Stand tall with feet hip-width apart, holding a dumbbell in each hand at your sides.",
+        "Breathe out and push through the balls of your feet to raise your heels as high as you can.",
+        "Pause briefly at the top.",
+        "Lower your heels slowly back to the floor."
+      ],
+      "tips": [
+        "Stand near a wall and touch it lightly if you need balance.",
+        "Do the movement slowly; bouncing reduces the work for the calves."
+      ],
+      "aliases": [
+        "calf raise",
+        "heel raise"
+      ]
+    },
+    "treadmill-run": {
+      "name": "Treadmill Run / Jog",
+      "summary": "Jogging or running intervals to build cardiovascular fitness.",
+      "facts": {
+        "Targets": "Heart and lungs, legs",
+        "Equipment": "Treadmill",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/treadmill-run-1.webp",
+          "thumb": "/library/exercise/treadmill-run-1.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Running on the treadmill",
+          "alt": "Treadmill Run / Jog: running on the treadmill",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/treadmill-run-2.webp",
+          "thumb": "/library/exercise/treadmill-run-2.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Mid-stride",
+          "alt": "Treadmill Run / Jog: mid-stride",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Warm up with a few minutes of walking.",
+        "Increase the speed to a light jog or the planned running pace.",
+        "Land softly under your hips with short, quick steps and relaxed shoulders.",
+        "For intervals, alternate the faster pace with slow walking as planned.",
+        "Finish with a few minutes of walking to cool down."
+      ],
+      "tips": [
+        "A comfortable steady pace lets you speak in short sentences.",
+        "Learn where the stop button or safety clip is before speeding up."
+      ],
+      "aliases": [
+        "run",
+        "running",
+        "jog",
+        "jogging",
+        "treadmill run",
+        "treadmill jog"
+      ]
+    },
+    "treadmill-walk": {
+      "name": "Treadmill Walk",
+      "summary": "Steady walking for warm-ups, cool-downs and easy cardio.",
+      "facts": {
+        "Targets": "Heart and lungs, legs",
+        "Equipment": "Treadmill (or walk outdoors)",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/treadmill-walk-1.webp",
+          "thumb": "/library/exercise/treadmill-walk-1.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Walking at an easy pace",
+          "alt": "Treadmill Walk: walking at an easy pace",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/treadmill-walk-2.webp",
+          "thumb": "/library/exercise/treadmill-walk-2.thumb.webp",
+          "width": 850,
+          "height": 569,
+          "caption": "Upright posture on the treadmill",
+          "alt": "Treadmill Walk: upright posture on the treadmill",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Step onto the side rails and start the belt at a slow speed.",
+        "Step on and walk, then raise the speed to the planned pace (easy: about 3–4 km/h; brisk: 4–5 km/h).",
+        "Stand tall, swing your arms naturally and look ahead.",
+        "Slow the belt gradually for the last minute before stopping."
+      ],
+      "tips": [
+        "Avoid holding the handrails, which changes your posture.",
+        "At an easy pace you should be able to hold a conversation."
+      ],
+      "aliases": [
+        "treadmill walk",
+        "walk",
+        "walking",
+        "brisk walk"
+      ]
+    },
+    "tricep-kickback": {
+      "name": "Tricep Kickback",
+      "summary": "A one-arm extension that isolates the back of the upper arm.",
+      "facts": {
+        "Targets": "Triceps",
+        "Equipment": "Dumbbell and bench",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/tricep-kickback-1.webp",
+          "thumb": "/library/exercise/tricep-kickback-1.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Starting position",
+          "alt": "Tricep Kickback: starting position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        },
+        {
+          "src": "/library/exercise/tricep-kickback-2.webp",
+          "thumb": "/library/exercise/tricep-kickback-2.thumb.webp",
+          "width": 850,
+          "height": 567,
+          "caption": "Finishing position",
+          "alt": "Tricep Kickback: finishing position",
+          "credit": "free-exercise-db",
+          "license": "Unlicense (public domain)",
+          "source": "https://github.com/yuhonas/free-exercise-db"
+        }
+      ],
+      "steps": [
+        "Place your left knee and left hand on a bench so your back is flat and roughly parallel to the floor.",
+        "Hold a dumbbell in your right hand with your upper arm tucked against your side and elbow bent to 90°.",
+        "Breathe out and straighten your elbow, pushing the dumbbell back until your arm is straight.",
+        "Pause, then bend the elbow to return to the start.",
+        "Finish all reps, then switch sides."
+      ],
+      "tips": [
+        "Keep the upper arm fixed — only the forearm moves.",
+        "Keep your neck in line with your spine; look at the floor just ahead of the bench."
+      ],
+      "aliases": [
+        "tricep kickback",
+        "triceps kickback",
+        "tricep dumbbell kickback",
+        "triceps dumbbell kickback"
+      ]
+    }
+  }
+}

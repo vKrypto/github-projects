@@ -1,0 +1,1429 @@
+{
+  "type": "food",
+  "label": "Food",
+  "note": "Guide mapping for /food/?q=<id>. Aliases are matched against plan text (lowercased, punctuation removed, whole words, optional plural).",
+  "items": {
+    "avocado-toast": {
+      "name": "Avocado Toast with Tomato & Spinach",
+      "summary": "Whole grain toast topped with mashed avocado, greens and tomatoes — a filling breakfast with healthy fats and fibre.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian · vegan without butter",
+        "Good source of": "Healthy fats, fibre, potassium, folate",
+        "Commonly contains": "Gluten (bread)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/avocado-toast.webp",
+          "thumb": "/library/food/avocado-toast.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Smashed avocado on toast with greens and tomatoes",
+          "alt": "Avocado Toast with Tomato & Spinach: smashed avocado on toast with greens and tomatoes",
+          "credit": "Andy Li",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Smashed_Avocado_on_Sourdough_Toast_with_Chai_Latte_-_M%26S_cafe_2023-08-08.jpg"
+        }
+      ],
+      "steps": [
+        "Toast the bread until golden and firm enough to hold toppings.",
+        "Mash the avocado with lemon juice, salt and pepper.",
+        "Quickly wilt the spinach in a pan with a little olive oil.",
+        "Spread the avocado on the toast and top with spinach and sliced tomatoes.",
+        "Eat straight away, before the toast softens."
+      ],
+      "tips": [
+        "Pair with a protein such as yogurt, an egg or a glass of milk to stay full longer.",
+        "Half an avocado is a typical portion; it is calorie-dense, so measure it if you track calories.",
+        "Mash avocado only when you are ready to eat; lemon juice slows browning."
+      ],
+      "aliases": [
+        "avocado toast with tomato and spinach",
+        "avocado toast"
+      ]
+    },
+    "chia-pudding": {
+      "name": "Chia Pudding",
+      "summary": "Chia seeds soaked in milk until they set into a creamy pudding, topped with fruit.",
+      "facts": {
+        "Best for": "Breakfast or snack",
+        "Diet": "Vegetarian · vegan with plant milk",
+        "Good source of": "Fibre, omega-3 (ALA), calcium",
+        "Commonly contains": "Tree nuts (almond milk), coconut"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chia-pudding.webp",
+          "thumb": "/library/food/chia-pudding.thumb.webp",
+          "width": 750,
+          "height": 751,
+          "caption": "Chia seed pudding topped with fruit",
+          "alt": "Chia Pudding: chia seed pudding topped with fruit",
+          "credit": "Miscellaneous contributor",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Chia_seed_pudding_in_a_tea_cup.jpg"
+        }
+      ],
+      "steps": [
+        "Stir 3 tbsp chia seeds into about 3/4 cup milk (almond, coconut or dairy).",
+        "Stir again after 5 minutes to break up clumps.",
+        "Cover and refrigerate for at least 2 hours, or overnight.",
+        "Top with fresh fruit such as berries or mango before serving."
+      ],
+      "tips": [
+        "Make it the night before for a grab-and-go breakfast.",
+        "Chia seeds absorb a lot of water — drink a glass of water alongside.",
+        "Keeps covered in the fridge for up to 3 days; add fruit just before eating."
+      ],
+      "aliases": [
+        "chia pudding with almond milk and fresh fruit",
+        "chia pudding with mango and coconut",
+        "chia pudding"
+      ]
+    },
+    "chickpea-quinoa-salad": {
+      "name": "Chickpea and Quinoa Salad",
+      "summary": "Quinoa and chickpeas tossed with crunchy vegetables and a lemon or tahini dressing.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, iron, magnesium",
+        "Commonly contains": "Sesame (tahini dressing)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chickpea-quinoa-salad.webp",
+          "thumb": "/library/food/chickpea-quinoa-salad.thumb.webp",
+          "width": 1200,
+          "height": 1181,
+          "caption": "Chickpea salad with chopped vegetables",
+          "alt": "Chickpea and Quinoa Salad: chickpea salad with chopped vegetables",
+          "credit": "Cajsa Lilliehook from Portland",
+          "license": "CC BY-SA 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Chickpea_Chop_Salad_(9484308160).jpg"
+        }
+      ],
+      "steps": [
+        "Cook quinoa and let it cool.",
+        "Combine with chickpeas, diced cucumber, pepper, tomatoes and herbs.",
+        "Whisk lemon juice with tahini or olive oil, salt and pepper.",
+        "Toss everything together just before eating."
+      ],
+      "tips": [
+        "Keeps well for packed lunches — store the dressing separately.",
+        "Add greens just before serving so they stay crisp."
+      ],
+      "aliases": [
+        "chickpea and quinoa salad",
+        "chickpea salad with quinoa and mixed greens",
+        "chickpea salad",
+        "quinoa salad"
+      ]
+    },
+    "cottage-cheese-toast": {
+      "name": "Cottage Cheese and Berry Toast",
+      "summary": "Toast topped with creamy cottage cheese and fresh berries — high in protein and quick to make.",
+      "facts": {
+        "Best for": "Breakfast or snack",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, vitamin C",
+        "Commonly contains": "Dairy, gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/cottage-cheese-toast.webp",
+          "thumb": "/library/food/cottage-cheese-toast.thumb.webp",
+          "width": 1200,
+          "height": 800,
+          "caption": "Toasts topped with soft cheese and fresh berries",
+          "alt": "Cottage Cheese and Berry Toast: toasts topped with soft cheese and fresh berries",
+          "credit": "Mihail Verbal",
+          "license": "CC BY 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:%D0%9B%D0%B5%D1%81%D0%B5%D0%BD_%D1%83%D1%82%D1%80%D0%B8%D0%BD%D1%81%D0%BA%D0%B8_%D0%BF%D0%BE%D1%98%D0%B0%D0%B4%D0%BE%D0%BA.jpg"
+        }
+      ],
+      "steps": [
+        "Toast whole grain bread.",
+        "Spread a generous layer of cottage cheese.",
+        "Top with fresh berries.",
+        "Finish with a sprinkle of cinnamon or a few seeds if you like."
+      ],
+      "tips": [
+        "Drain watery cottage cheese briefly so the toast stays crisp.",
+        "Eat soon after assembling."
+      ],
+      "aliases": [
+        "cottage cheese and berry toast",
+        "cottage cheese toast",
+        "ricotta toast"
+      ]
+    },
+    "cottage-cheese-pineapple": {
+      "name": "Cottage Cheese with Pineapple",
+      "summary": "Cottage cheese topped with sweet pineapple — a high-protein snack.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, vitamin C",
+        "Commonly contains": "Dairy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/cottage-cheese-pineapple.webp",
+          "thumb": "/library/food/cottage-cheese-pineapple.thumb.webp",
+          "width": 1200,
+          "height": 954,
+          "caption": "A bowl of cottage cheese",
+          "alt": "Cottage Cheese with Pineapple: a bowl of cottage cheese",
+          "credit": "Fastily",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Cottagecheese200px.jpg"
+        }
+      ],
+      "steps": [
+        "Spoon about 1/2 cup cottage cheese into a bowl.",
+        "Top with fresh or drained canned pineapple chunks.",
+        "Add a sprinkle of cinnamon or seeds if you like."
+      ],
+      "tips": [
+        "Choose pineapple canned in juice rather than syrup.",
+        "A good evening snack — cottage cheese protein digests slowly."
+      ],
+      "aliases": [
+        "cottage cheese with pineapple",
+        "cottage cheese and pineapple",
+        "cottage cheese"
+      ]
+    },
+    "falafel-bowl": {
+      "name": "Falafel Salad Bowl with Tahini",
+      "summary": "Crisp falafel over salad, finished with a creamy tahini dressing.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, healthy fats",
+        "Commonly contains": "Sesame (tahini), possibly gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/falafel-bowl.webp",
+          "thumb": "/library/food/falafel-bowl.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Falafel served with salad",
+          "alt": "Falafel Salad Bowl with Tahini: falafel served with salad",
+          "credit": "Bahnfrend",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:4pcs_Falafel,_Petra_Restaurant,_2026_(01).jpg"
+        }
+      ],
+      "steps": [
+        "Bake or air-fry falafel until crisp (frying adds many calories).",
+        "Fill a bowl with greens, tomato, cucumber, pickled onion and a scoop of grains.",
+        "Thin tahini with lemon juice and water until pourable.",
+        "Top the bowl with falafel and drizzle with the dressing."
+      ],
+      "tips": [
+        "Baked falafel has far less fat than deep-fried.",
+        "Add hummus for extra protein instead of more dressing."
+      ],
+      "aliases": [
+        "falafel salad bowl with tahini dressing",
+        "falafel salad",
+        "falafel bowl",
+        "falafel"
+      ]
+    },
+    "fruit-nut-butter": {
+      "name": "Fruit with Nut Butter",
+      "summary": "Fresh apple or banana with a spoon of peanut or almond butter — a balanced snack of fibre, fat and protein.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan",
+        "Good source of": "Fibre, healthy fats, protein, potassium",
+        "Commonly contains": "Peanuts or tree nuts"
+      },
+      "photos": [
+        {
+          "src": "/library/food/fruit-nut-butter.webp",
+          "thumb": "/library/food/fruit-nut-butter.thumb.webp",
+          "width": 900,
+          "height": 1200,
+          "caption": "Apple slices served with a dip",
+          "alt": "Fruit with Nut Butter: apple slices served with a dip",
+          "credit": "HaJunkiyada",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Apple_slices_with_honey_for_Rosh_Hashanah.jpg"
+        }
+      ],
+      "steps": [
+        "Wash the apple and slice it into wedges (or peel and slice the banana).",
+        "Measure 1–2 tbsp peanut or almond butter into a small bowl.",
+        "Dip the fruit as you eat."
+      ],
+      "tips": [
+        "Measuring the nut butter keeps the snack within its planned calories.",
+        "Squeeze lemon over apple slices if packing them, to stop browning.",
+        "A good mid-afternoon or pre-workout snack."
+      ],
+      "aliases": [
+        "apple slices with peanut butter",
+        "apple with almond butter",
+        "banana with almond butter",
+        "apple slices",
+        "apple and peanut butter"
+      ]
+    },
+    "greek-yogurt-parfait": {
+      "name": "Greek Yogurt Parfait",
+      "summary": "Layers of thick yogurt, fruit and crunchy toppings — a quick, protein-rich breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, probiotics, fibre",
+        "Commonly contains": "Dairy, gluten and nuts (granola)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/greek-yogurt-parfait.webp",
+          "thumb": "/library/food/greek-yogurt-parfait.thumb.webp",
+          "width": 500,
+          "height": 333,
+          "caption": "Yogurt parfaits with granola and blueberries",
+          "alt": "Greek Yogurt Parfait: yogurt parfaits with granola and blueberries",
+          "credit": "Personal Creations",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Yogurt_parfait_with_granola_and_blueberries_in_shot_glasses_with_silverware_spoons_(17098581522).jpg"
+        }
+      ],
+      "steps": [
+        "Spoon a layer of Greek yogurt into a glass or bowl.",
+        "Add a layer of chopped fruit (berries or mango).",
+        "Sprinkle with granola or ground flaxseed.",
+        "Repeat the layers and finish with fruit on top."
+      ],
+      "tips": [
+        "Add granola just before eating so it stays crunchy.",
+        "Choose plain yogurt and let the fruit provide sweetness.",
+        "Ground flaxseed is absorbed better than whole seeds."
+      ],
+      "aliases": [
+        "greek yogurt parfait with granola and fresh fruit",
+        "greek yogurt parfait with mango and flaxseeds",
+        "yogurt parfait",
+        "parfait"
+      ]
+    },
+    "grilled-eggplant-feta": {
+      "name": "Grilled Eggplant with Tomato and Feta",
+      "summary": "Smoky grilled eggplant slices with tomato and crumbled feta — a light Mediterranean dinner.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegetarian",
+        "Good source of": "Fibre, antioxidants, calcium",
+        "Commonly contains": "Dairy (feta)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/grilled-eggplant-feta.webp",
+          "thumb": "/library/food/grilled-eggplant-feta.thumb.webp",
+          "width": 500,
+          "height": 667,
+          "caption": "Grilled peppers and eggplant with feta",
+          "alt": "Grilled Eggplant with Tomato and Feta: grilled peppers and eggplant with feta",
+          "credit": "MirelaAndoni",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Speca_dhe_pat%C3%ABllxhana_me_hudh%C3%ABr.jpg"
+        }
+      ],
+      "steps": [
+        "Slice eggplant into rounds, brush lightly with olive oil and season.",
+        "Grill or pan-roast for 3–4 minutes per side until soft and charred.",
+        "Toss chopped tomatoes with lemon juice, herbs and a pinch of salt.",
+        "Layer the eggplant with the tomato salad and crumble feta on top."
+      ],
+      "tips": [
+        "Eggplant soaks up oil — brush it on rather than pouring.",
+        "Add chickpeas or serve with whole grain bread to make it more filling.",
+        "Tastes good warm or at room temperature."
+      ],
+      "aliases": [
+        "grilled eggplant with tomato and feta salad",
+        "grilled eggplant",
+        "eggplant salad"
+      ]
+    },
+    "paneer-skewers": {
+      "name": "Grilled Paneer and Vegetable Skewers",
+      "summary": "Spiced paneer cubes grilled on skewers with peppers and onions, served with brown rice.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, fibre",
+        "Commonly contains": "Dairy (paneer, yogurt marinade)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/paneer-skewers.webp",
+          "thumb": "/library/food/paneer-skewers.thumb.webp",
+          "width": 960,
+          "height": 720,
+          "caption": "Paneer tikka skewers with vegetables",
+          "alt": "Grilled Paneer and Vegetable Skewers: paneer tikka skewers with vegetables",
+          "credit": "PallaviKhale",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Paneer_Tikka_Shashlik_PK012.jpg"
+        }
+      ],
+      "steps": [
+        "Mix yogurt with spices (chilli, cumin, garam masala), salt and lemon juice.",
+        "Coat paneer cubes, peppers and onion in the marinade for 20 minutes.",
+        "Thread onto skewers and grill or bake at 220°C for 12–15 minutes, turning once.",
+        "Serve with brown rice and a squeeze of lemon."
+      ],
+      "tips": [
+        "Soak wooden skewers in water for 20 minutes so they don't burn.",
+        "Paneer is protein-rich but also high in fat — keep to the planned portion.",
+        "Add a cucumber salad or raita to balance the spices."
+      ],
+      "aliases": [
+        "grilled vegetable and paneer skewers with brown rice",
+        "paneer skewers",
+        "paneer tikka"
+      ]
+    },
+    "halloumi-salad": {
+      "name": "Grilled Vegetable and Halloumi Salad",
+      "summary": "Seared halloumi on a salad of grilled vegetables and greens.",
+      "facts": {
+        "Best for": "Dinner or lunch",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, fibre",
+        "Commonly contains": "Dairy (halloumi)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/halloumi-salad.webp",
+          "thumb": "/library/food/halloumi-salad.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Halloumi salad with fresh greens",
+          "alt": "Grilled Vegetable and Halloumi Salad: halloumi salad with fresh greens",
+          "credit": "Khaled",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:DSC04493edtrftu.jpg"
+        }
+      ],
+      "steps": [
+        "Grill or roast vegetables such as zucchini, peppers and onion.",
+        "Slice halloumi and sear in a dry pan for 1–2 minutes per side until golden.",
+        "Arrange greens and grilled vegetables on a plate.",
+        "Top with the warm halloumi and dress with lemon and olive oil."
+      ],
+      "tips": [
+        "Eat halloumi straight away — it turns rubbery as it cools.",
+        "Halloumi is salty, so go easy on added salt."
+      ],
+      "aliases": [
+        "grilled vegetable and halloumi salad",
+        "halloumi salad"
+      ]
+    },
+    "lentil-rice": {
+      "name": "Lentil and Vegetable Stir Fry with Brown Rice",
+      "summary": "Cooked lentils stir-fried with vegetables and spices, served with brown rice — a complete plant-protein meal.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, iron, complex carbs"
+      },
+      "photos": [
+        {
+          "src": "/library/food/lentil-rice.webp",
+          "thumb": "/library/food/lentil-rice.thumb.webp",
+          "width": 667,
+          "height": 500,
+          "caption": "A plate of lentils cooked with rice",
+          "alt": "Lentil and Vegetable Stir Fry with Brown Rice: a plate of lentils cooked with rice",
+          "credit": "Sabinem1",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Mjadra.jpg"
+        }
+      ],
+      "steps": [
+        "Cook brown rice and lentils separately until tender (or use leftovers).",
+        "Sauté onion, garlic and cumin in a little oil.",
+        "Add diced vegetables and stir-fry for 4–5 minutes.",
+        "Fold in the lentils, season, and serve over the brown rice."
+      ],
+      "tips": [
+        "Lentils plus rice provide all essential amino acids.",
+        "Top with yogurt (if not vegan) or a squeeze of lemon.",
+        "Keeps for 3 days in the fridge — a good lunchbox meal."
+      ],
+      "aliases": [
+        "lentil and vegetable stir fry with brown rice",
+        "lentil stir fry",
+        "lentils and rice",
+        "mujadara"
+      ]
+    },
+    "chickpea-wrap": {
+      "name": "Mediterranean Chickpea Wrap",
+      "summary": "A whole wheat wrap filled with mashed chickpeas or hummus and fresh vegetables.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, iron",
+        "Commonly contains": "Gluten, sesame (hummus)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chickpea-wrap.webp",
+          "thumb": "/library/food/chickpea-wrap.thumb.webp",
+          "width": 912,
+          "height": 1200,
+          "caption": "Vegetable and hummus wrap",
+          "alt": "Mediterranean Chickpea Wrap: vegetable and hummus wrap",
+          "credit": "Jennifer from Vancouver, Canada",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vegetable_and_Basil-Garlic_Hummus_Wrap_(4800115998).jpg"
+        }
+      ],
+      "steps": [
+        "Lightly mash chickpeas with lemon, garlic, herbs and a spoon of tahini (or use hummus).",
+        "Spread over a warmed whole wheat wrap.",
+        "Add cucumber, tomato, lettuce and red onion.",
+        "Roll tightly, folding in the sides, and cut in half."
+      ],
+      "tips": [
+        "Wrap it in foil or paper to take with you.",
+        "Pack wet fillings separately if making ahead, so the wrap doesn't get soggy."
+      ],
+      "aliases": [
+        "mediterranean chickpea wraps",
+        "chickpea wrap",
+        "hummus wrap"
+      ]
+    },
+    "mushroom-pea-quinoa": {
+      "name": "Mushroom and Pea Stir Fry with Quinoa",
+      "summary": "Mushrooms and peas stir-fried with garlic and served over fluffy quinoa.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, magnesium, B vitamins"
+      },
+      "photos": [
+        {
+          "src": "/library/food/mushroom-pea-quinoa.webp",
+          "thumb": "/library/food/mushroom-pea-quinoa.thumb.webp",
+          "width": 1200,
+          "height": 900,
+          "caption": "Quinoa with mixed vegetables",
+          "alt": "Mushroom and Pea Stir Fry with Quinoa: quinoa with mixed vegetables",
+          "credit": "Lablascovegmenu from London",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Quinoa_con_verduras_-_Quinoa_with_vegetables_(4977323782).jpg"
+        }
+      ],
+      "steps": [
+        "Rinse quinoa, then simmer in twice its volume of water for 15 minutes; rest covered for 5.",
+        "Sauté sliced mushrooms in a little oil until browned.",
+        "Add peas, garlic and herbs and cook for 2–3 minutes.",
+        "Season and serve over the quinoa."
+      ],
+      "tips": [
+        "Rinsing quinoa removes its natural bitter coating.",
+        "Quinoa is a complete protein — useful on meat-free days."
+      ],
+      "aliases": [
+        "mushroom and pea stir fry with quinoa",
+        "quinoa with vegetables"
+      ]
+    },
+    "oatmeal": {
+      "name": "Oatmeal with Fruit and Walnuts",
+      "summary": "Warm oats cooked with milk or water and topped with fruit and walnuts — slow-release energy for the morning.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian · vegan with plant milk and no honey",
+        "Good source of": "Fibre (beta-glucan), complex carbs, omega-3 (walnuts)",
+        "Commonly contains": "Tree nuts (walnuts), gluten unless oats are certified gluten-free"
+      },
+      "photos": [
+        {
+          "src": "/library/food/oatmeal.webp",
+          "thumb": "/library/food/oatmeal.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Oatmeal topped with banana",
+          "alt": "Oatmeal with Fruit and Walnuts: oatmeal topped with banana",
+          "credit": "Shisma",
+          "license": "CC BY 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Banana_oatmeal_2.jpg"
+        }
+      ],
+      "steps": [
+        "Simmer 1/2 cup rolled oats with 1 cup milk or water for 5 minutes, stirring often.",
+        "Add sliced banana or diced apple and cinnamon in the last minute.",
+        "Spoon into a bowl and top with chopped walnuts.",
+        "Finish with a small drizzle of honey if you like."
+      ],
+      "tips": [
+        "Eat it warm; add a splash of milk if it thickens while standing.",
+        "Prepare overnight oats instead if mornings are busy.",
+        "Keep honey to a teaspoon — the fruit already adds sweetness."
+      ],
+      "aliases": [
+        "oatmeal with banana walnuts and honey",
+        "oatmeal with apple cinnamon and walnuts",
+        "oatmeal",
+        "porridge"
+      ]
+    },
+    "orange-walnut-salad": {
+      "name": "Orange and Walnut Salad",
+      "summary": "Fresh orange segments with greens and toasted walnuts — a bright, vitamin C-rich snack.",
+      "facts": {
+        "Best for": "Snack or side",
+        "Diet": "Vegan",
+        "Good source of": "Vitamin C, fibre, omega-3 (walnuts)",
+        "Commonly contains": "Tree nuts (walnuts)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/orange-walnut-salad.webp",
+          "thumb": "/library/food/orange-walnut-salad.thumb.webp",
+          "width": 1200,
+          "height": 799,
+          "caption": "Orange salad with fresh greens",
+          "alt": "Orange and Walnut Salad: orange salad with fresh greens",
+          "credit": "marikoiv",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Orange_salad-01.jpg"
+        }
+      ],
+      "steps": [
+        "Peel the orange and slice it into rounds or segments.",
+        "Arrange over a handful of greens or rocket.",
+        "Top with a few toasted walnuts.",
+        "Drizzle with a little olive oil and a pinch of salt or black pepper."
+      ],
+      "tips": [
+        "Toast walnuts briefly in a dry pan for extra flavour.",
+        "Eat soon after making so the greens stay crisp."
+      ],
+      "aliases": [
+        "orange and walnut salad",
+        "orange salad"
+      ]
+    },
+    "paneer-wrap": {
+      "name": "Paneer and Mixed Vegetable Wrap",
+      "summary": "A whole wheat roti or wrap filled with spiced paneer and crunchy vegetables.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, fibre",
+        "Commonly contains": "Dairy (paneer), gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/paneer-wrap.webp",
+          "thumb": "/library/food/paneer-wrap.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Homemade paneer roll",
+          "alt": "Paneer and Mixed Vegetable Wrap: homemade paneer roll",
+          "credit": "Shafana jasmine",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Paneer_kathi_roll_homemade.jpg"
+        }
+      ],
+      "steps": [
+        "Toss paneer strips with spices and sauté with sliced peppers and onion.",
+        "Warm a whole wheat roti or wrap.",
+        "Spread a little mint chutney or yogurt.",
+        "Add the paneer filling and fresh onions, roll up tightly and serve."
+      ],
+      "tips": [
+        "Good for packed lunches — wrap in foil.",
+        "Add lettuce or cucumber for extra crunch and volume."
+      ],
+      "aliases": [
+        "paneer and mixed vegetable wrap",
+        "paneer wrap",
+        "paneer roll",
+        "kathi roll"
+      ]
+    },
+    "peanut-butter-toast": {
+      "name": "Peanut Butter Toast",
+      "summary": "Multigrain toast spread with peanut butter and topped with banana or chia seeds — quick energy plus protein.",
+      "facts": {
+        "Best for": "Breakfast or pre-workout",
+        "Diet": "Vegetarian · vegan",
+        "Good source of": "Protein, healthy fats, fibre, potassium (banana)",
+        "Commonly contains": "Peanuts, gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/peanut-butter-toast.webp",
+          "thumb": "/library/food/peanut-butter-toast.thumb.webp",
+          "width": 1200,
+          "height": 1200,
+          "caption": "Toast with nut butter and banana slices",
+          "alt": "Peanut Butter Toast: toast with nut butter and banana slices",
+          "credit": "Daderot",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Peanut_butter_and_banana_sandwich_on_homemade_bread_-_Massachusetts.jpg"
+        }
+      ],
+      "steps": [
+        "Toast the multigrain bread.",
+        "Spread 1–2 tbsp peanut butter while the toast is warm.",
+        "Top with banana slices and/or a sprinkle of chia seeds.",
+        "Add a light drizzle of honey only if you want it sweeter."
+      ],
+      "tips": [
+        "Measure the peanut butter — 1 tbsp is about 95 kcal.",
+        "Good 60–90 minutes before a morning workout.",
+        "Natural peanut butter (just peanuts and salt) has no added sugar."
+      ],
+      "aliases": [
+        "multigrain toast with peanut butter and chia seeds",
+        "peanut butter banana toast",
+        "peanut butter toast"
+      ]
+    },
+    "rajma": {
+      "name": "Rajma (Kidney Bean) Curry with Brown Rice",
+      "summary": "Kidney beans slow-cooked in a spiced tomato-onion gravy and served with rice.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan (without ghee)",
+        "Good source of": "Plant protein, fibre, iron, folate"
+      },
+      "photos": [
+        {
+          "src": "/library/food/rajma.webp",
+          "thumb": "/library/food/rajma.thumb.webp",
+          "width": 500,
+          "height": 569,
+          "caption": "Rajma chawal — kidney bean curry with rice",
+          "alt": "Rajma (Kidney Bean) Curry with Brown Rice: rajma chawal — kidney bean curry with rice",
+          "credit": "Shreya151994",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Rajma_Chawal_by_Rama_Bhave.jpg"
+        }
+      ],
+      "steps": [
+        "Soak dried kidney beans overnight, then boil or pressure-cook until completely soft (or use canned beans).",
+        "Sauté onion, ginger-garlic and spices, then add tomatoes and cook down.",
+        "Add the beans with some cooking liquid and simmer for 15–20 minutes.",
+        "Mash a few beans to thicken the gravy; serve with brown rice."
+      ],
+      "tips": [
+        "Dried kidney beans must be boiled thoroughly — undercooked beans can cause stomach upset.",
+        "Beans plus rice make a complete protein.",
+        "Tastes even better the next day."
+      ],
+      "aliases": [
+        "rajma kidney bean curry with brown rice",
+        "rajma",
+        "kidney bean curry"
+      ]
+    },
+    "roasted-chickpeas": {
+      "name": "Roasted Chickpeas",
+      "summary": "Crunchy oven-roasted chickpeas seasoned with spices.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, iron"
+      },
+      "photos": [
+        {
+          "src": "/library/food/roasted-chickpeas.webp",
+          "thumb": "/library/food/roasted-chickpeas.thumb.webp",
+          "width": 800,
+          "height": 600,
+          "caption": "Roasted chickpeas",
+          "alt": "Roasted Chickpeas: roasted chickpeas",
+          "credit": "Physicistjedi",
+          "license": "Public domain",
+          "source": "https://commons.wikimedia.org/wiki/File:Leblebi.jpg"
+        }
+      ],
+      "steps": [
+        "Rinse and thoroughly dry cooked or canned chickpeas.",
+        "Toss with 1 tsp oil and spices (paprika, cumin, salt).",
+        "Roast at 200°C for 25–35 minutes, shaking the tray halfway, until crunchy.",
+        "Cool completely before storing."
+      ],
+      "tips": [
+        "Drying the chickpeas well makes them crunchier.",
+        "Store in an open jar or container — sealing them while warm makes them soft.",
+        "About 1/3 cup makes a satisfying portion."
+      ],
+      "aliases": [
+        "roasted chickpeas",
+        "roasted chana",
+        "leblebi"
+      ]
+    },
+    "smoothie-bowl": {
+      "name": "Smoothie Bowl",
+      "summary": "A thick blended fruit (and greens) base eaten with a spoon and topped with seeds, nuts or fruit.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian · vegan without yogurt",
+        "Good source of": "Vitamins, fibre, protein (yogurt), antioxidants",
+        "Commonly contains": "Dairy (yogurt), nuts"
+      },
+      "photos": [
+        {
+          "src": "/library/food/smoothie-bowl.webp",
+          "thumb": "/library/food/smoothie-bowl.thumb.webp",
+          "width": 750,
+          "height": 739,
+          "caption": "Green smoothie bowl with muesli and chia seeds",
+          "alt": "Smoothie Bowl: green smoothie bowl with muesli and chia seeds",
+          "credit": "Miscellaneous contributor",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Green_smoothie_bowl.jpg"
+        }
+      ],
+      "steps": [
+        "Blend frozen banana or berries with a handful of spinach and a little yogurt or milk.",
+        "Use only enough liquid to blend — it should be thick enough to eat with a spoon.",
+        "Pour into a bowl.",
+        "Top with chia seeds, nuts, sliced fruit or a spoon of granola."
+      ],
+      "tips": [
+        "Eat with a spoon and slowly — it is more filling than drinking a smoothie.",
+        "Frozen fruit gives a thick texture without ice.",
+        "Make and eat it fresh; it separates if left standing."
+      ],
+      "aliases": [
+        "smoothie bowl with greek yogurt mixed berries and nuts",
+        "smoothie bowl with spinach banana and chia seeds",
+        "smoothie bowl"
+      ]
+    },
+    "chana-palak": {
+      "name": "Spinach and Chickpea Curry",
+      "summary": "Chickpeas simmered with spinach and spices — an iron-rich Indian classic.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan (without cream or ghee)",
+        "Good source of": "Plant protein, iron, folate, fibre"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chana-palak.webp",
+          "thumb": "/library/food/chana-palak.thumb.webp",
+          "width": 1200,
+          "height": 900,
+          "caption": "Spinach and chickpea curry",
+          "alt": "Spinach and Chickpea Curry: spinach and chickpea curry",
+          "credit": "Kari Sullivan from Austin, TX",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Spinach-Chickpea_Curry_(3117324894).jpg"
+        }
+      ],
+      "steps": [
+        "Blanch spinach and blend to a purée (or chop finely).",
+        "Sauté onion, ginger-garlic, tomato and spices.",
+        "Add chickpeas and the spinach with a little water and simmer for 10 minutes.",
+        "Finish with lemon juice and serve with brown rice."
+      ],
+      "tips": [
+        "Lemon or tomato helps your body absorb the iron from spinach and chickpeas.",
+        "Avoid tea or coffee with this meal, as it reduces iron absorption."
+      ],
+      "aliases": [
+        "spinach and chickpea curry with brown rice",
+        "spinach and chickpea curry",
+        "chana palak",
+        "chickpea spinach curry"
+      ]
+    },
+    "spinach-mushroom-pasta": {
+      "name": "Spinach and Mushroom Whole Wheat Pasta",
+      "summary": "Whole wheat pasta tossed with sautéed mushrooms, garlic and spinach.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegetarian · vegan without cheese",
+        "Good source of": "Fibre, B vitamins, iron, complex carbs",
+        "Commonly contains": "Gluten, dairy (if finished with cheese or cream)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/spinach-mushroom-pasta.webp",
+          "thumb": "/library/food/spinach-mushroom-pasta.thumb.webp",
+          "width": 500,
+          "height": 667,
+          "caption": "Pasta with sautéed mushrooms and spinach",
+          "alt": "Spinach and Mushroom Whole Wheat Pasta: pasta with sautéed mushrooms and spinach",
+          "credit": "HaJunkiyada",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Ravioli_with_mushrooms_and_spinach_in_cream_sauce.jpg"
+        }
+      ],
+      "steps": [
+        "Cook whole wheat pasta until just tender; save a cup of the cooking water.",
+        "Sauté sliced mushrooms and garlic in olive oil until golden.",
+        "Add spinach and stir until wilted.",
+        "Toss with the pasta, loosening with a little pasta water; season and serve."
+      ],
+      "tips": [
+        "Keep the pasta portion as planned and pile on the vegetables.",
+        "A little grated parmesan adds flavour; heavy cream adds many calories."
+      ],
+      "aliases": [
+        "spinach and mushroom whole wheat pasta",
+        "spinach and mushroom pasta",
+        "mushroom pasta"
+      ]
+    },
+    "stuffed-bell-peppers": {
+      "name": "Stuffed Bell Peppers",
+      "summary": "Bell peppers filled with brown rice or lentils and vegetables, then baked until tender.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegetarian · vegan without cheese",
+        "Good source of": "Fibre, vitamin C, plant protein",
+        "Commonly contains": "Dairy (if topped with cheese)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/stuffed-bell-peppers.webp",
+          "thumb": "/library/food/stuffed-bell-peppers.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Roasted red peppers stuffed with lentils",
+          "alt": "Stuffed Bell Peppers: roasted red peppers stuffed with lentils",
+          "credit": "Lablascovegmenu from London",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vegan_Stuffed_Roasted_Red_Peppers_(5908287385).jpg"
+        }
+      ],
+      "steps": [
+        "Halve the peppers and remove the seeds.",
+        "Mix cooked brown rice or lentils with sautéed onion, tomatoes, vegetables and spices.",
+        "Fill the peppers and place in a baking dish with a splash of water.",
+        "Cover and bake at 190°C for 30–35 minutes until the peppers are soft."
+      ],
+      "tips": [
+        "One or two halves make a portion, depending on your plan.",
+        "Make a batch — they keep for 3 days in the fridge and reheat well."
+      ],
+      "aliases": [
+        "stuffed bell peppers with brown rice and vegetables",
+        "stuffed bell peppers with lentils and vegetables",
+        "stuffed bell pepper",
+        "stuffed pepper"
+      ]
+    },
+    "buddha-bowl": {
+      "name": "Sweet Potato and Black Bean Buddha Bowl",
+      "summary": "A colourful bowl of roasted sweet potato, black beans, grains and vegetables.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan",
+        "Good source of": "Fibre, plant protein, vitamin A, potassium"
+      },
+      "photos": [
+        {
+          "src": "/library/food/buddha-bowl.webp",
+          "thumb": "/library/food/buddha-bowl.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Buddha bowl with vegetables, grains and toppings",
+          "alt": "Sweet Potato and Black Bean Buddha Bowl: buddha bowl with vegetables, grains and toppings",
+          "credit": "PizzaMan",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:BuddhaBowlLot.jpg"
+        }
+      ],
+      "steps": [
+        "Roast cubed sweet potato with a little oil and spices at 200°C for 25 minutes.",
+        "Warm rinsed black beans with cumin.",
+        "Fill a bowl with a scoop of grains, greens and raw vegetables.",
+        "Add the sweet potato and beans, then a spoon of dressing or salsa."
+      ],
+      "tips": [
+        "Prepare the components ahead and assemble bowls through the week.",
+        "Half an avocado or a few seeds add healthy fats."
+      ],
+      "aliases": [
+        "sweet potato and black bean buddha bowl",
+        "buddha bowl"
+      ]
+    },
+    "tofu-skewers": {
+      "name": "Tofu and Vegetable Skewers with Brown Rice",
+      "summary": "Marinated tofu and colourful vegetables grilled on skewers, served with brown rice.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, fibre, vitamin C",
+        "Commonly contains": "Soy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/tofu-skewers.webp",
+          "thumb": "/library/food/tofu-skewers.thumb.webp",
+          "width": 1200,
+          "height": 800,
+          "caption": "Vegetable skewers being assembled",
+          "alt": "Tofu and Vegetable Skewers with Brown Rice: vegetable skewers being assembled",
+          "credit": "Personal Creations",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Family_Kebab_Night_Vegetable_skewers_(14888798828).jpg"
+        }
+      ],
+      "steps": [
+        "Press and cube firm tofu, then marinate in soy sauce, garlic and a little oil for 20 minutes.",
+        "Thread tofu with cherry tomatoes, peppers, zucchini and onion.",
+        "Grill or bake at 220°C for 12–15 minutes, turning once.",
+        "Serve with brown rice."
+      ],
+      "tips": [
+        "Soak wooden skewers so they don't burn.",
+        "Brush with leftover marinade halfway through cooking."
+      ],
+      "aliases": [
+        "tofu and vegetable skewers with brown rice",
+        "tofu skewers",
+        "vegetable skewers"
+      ]
+    },
+    "tofu-stir-fry": {
+      "name": "Tofu and Vegetable Stir Fry",
+      "summary": "Crisp tofu and vegetables stir-fried in a light soy-ginger sauce, served with rice or millet.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegan",
+        "Good source of": "Plant protein, calcium (calcium-set tofu), fibre, vitamin C",
+        "Commonly contains": "Soy, gluten (soy sauce)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/tofu-stir-fry.webp",
+          "thumb": "/library/food/tofu-stir-fry.thumb.webp",
+          "width": 1115,
+          "height": 1200,
+          "caption": "Tofu stir-fry with vegetables",
+          "alt": "Tofu and Vegetable Stir Fry: tofu stir-fry with vegetables",
+          "credit": "Wikimedia Commons contributor",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Tofu_stir-fry.jpeg"
+        }
+      ],
+      "steps": [
+        "Press firm tofu for 10 minutes, then cube it.",
+        "Pan-fry the tofu in a little oil until golden; set aside.",
+        "Stir-fry broccoli and peppers over high heat for 3–4 minutes.",
+        "Return the tofu, add soy sauce, garlic and ginger, and toss.",
+        "Serve with cooked millet or rice."
+      ],
+      "tips": [
+        "Pressing the tofu makes it crispier and absorbs more flavour.",
+        "Use tamari for a gluten-free version.",
+        "Cook vegetables quickly so they stay crunchy."
+      ],
+      "aliases": [
+        "tofu stir fry with broccoli and bell peppers",
+        "vegetable and tofu stir fry with millet",
+        "tofu stir fry"
+      ]
+    },
+    "trail-mix": {
+      "name": "Trail Mix (Nuts and Dried Fruit)",
+      "summary": "A handful of mixed nuts, seeds and dried fruit — portable energy.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan",
+        "Good source of": "Healthy fats, protein, magnesium, vitamin E",
+        "Commonly contains": "Tree nuts, peanuts"
+      },
+      "photos": [
+        {
+          "src": "/library/food/trail-mix.webp",
+          "thumb": "/library/food/trail-mix.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Mixed nuts and dried fruit",
+          "alt": "Trail Mix (Nuts and Dried Fruit): mixed nuts and dried fruit",
+          "credit": "Papathanasiouk",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Trail_Mix.JPG"
+        }
+      ],
+      "steps": [
+        "Mix unsalted nuts (almonds, walnuts, cashews) with seeds and a few raisins or dried apricots.",
+        "Portion into small containers or bags of about 30 g each."
+      ],
+      "tips": [
+        "It is calorie-dense — pre-portion rather than eating from the bag.",
+        "Choose unsalted nuts and dried fruit without added sugar."
+      ],
+      "aliases": [
+        "trail mix with nuts and dried fruits",
+        "mixed nuts and raisins",
+        "trail mix",
+        "mixed nuts"
+      ]
+    },
+    "lentil-vegetable-soup": {
+      "name": "Vegetable and Lentil Soup",
+      "summary": "A hearty soup of lentils and vegetables, served with whole grain bread.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan (check the bread)",
+        "Good source of": "Plant protein, fibre, iron, folate",
+        "Commonly contains": "Gluten (bread)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/lentil-vegetable-soup.webp",
+          "thumb": "/library/food/lentil-vegetable-soup.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "A bowl of lentil and vegetable soup",
+          "alt": "Vegetable and Lentil Soup: a bowl of lentil and vegetable soup",
+          "credit": "Mx. Granger",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Amy%27s_lentil_vegetable_soup.jpg"
+        }
+      ],
+      "steps": [
+        "Sauté onion, carrot and celery in a little oil until soft.",
+        "Add rinsed lentils, chopped tomatoes, spices and stock or water.",
+        "Simmer for 25–30 minutes until the lentils are tender.",
+        "Season, add a squeeze of lemon, and serve with whole grain bread."
+      ],
+      "tips": [
+        "Soup is filling for relatively few calories — good for evening meals.",
+        "Freezes well in portions for up to 3 months.",
+        "Vitamin C from lemon or tomato helps absorb iron from lentils."
+      ],
+      "aliases": [
+        "vegetable and lentil soup with whole grain bread",
+        "vegetable and lentil soup with whole wheat roll",
+        "lentil soup",
+        "lentil and vegetable soup"
+      ]
+    },
+    "paneer-curry": {
+      "name": "Vegetable and Paneer Curry",
+      "summary": "Paneer and mixed vegetables in a spiced tomato-onion gravy, served with brown rice or millet.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, fibre",
+        "Commonly contains": "Dairy (paneer)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/paneer-curry.webp",
+          "thumb": "/library/food/paneer-curry.thumb.webp",
+          "width": 640,
+          "height": 640,
+          "caption": "Kadai paneer with gravy",
+          "alt": "Vegetable and Paneer Curry: kadai paneer with gravy",
+          "credit": "Monali.mishra",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Kadai_Paneer_With_Gravy.jpg"
+        }
+      ],
+      "steps": [
+        "Sauté onion, ginger-garlic and spices until fragrant.",
+        "Add tomatoes and cook to a thick gravy.",
+        "Add mixed vegetables with a splash of water and simmer until tender.",
+        "Stir in paneer cubes and simmer for 3–4 minutes; serve with brown rice or millet."
+      ],
+      "tips": [
+        "Add paneer at the end so it stays soft.",
+        "Use less oil and skip the cream to keep it lighter."
+      ],
+      "aliases": [
+        "vegetable and paneer curry with brown rice",
+        "mixed vegetable and paneer curry with millet",
+        "paneer curry",
+        "kadai paneer"
+      ]
+    },
+    "vegetable-biryani": {
+      "name": "Vegetable Biryani with Raita",
+      "summary": "Fragrant spiced rice layered with vegetables, served with cool yogurt raita.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegetarian",
+        "Good source of": "Complex carbs, fibre, protein (raita)",
+        "Commonly contains": "Dairy (raita, ghee)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/vegetable-biryani.webp",
+          "thumb": "/library/food/vegetable-biryani.thumb.webp",
+          "width": 500,
+          "height": 500,
+          "caption": "Vegetable biryani with pomegranate raita",
+          "alt": "Vegetable Biryani with Raita: vegetable biryani with pomegranate raita",
+          "credit": "Monali.mishra",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vegetable_Biryani_%26_Pomegranate_Raita.jpg"
+        }
+      ],
+      "steps": [
+        "Par-cook basmati rice with whole spices (bay leaf, cardamom, cloves).",
+        "Cook mixed vegetables with onion, ginger-garlic and biryani masala.",
+        "Layer the rice over the vegetables, cover tightly and cook on low heat for 15 minutes.",
+        "Mix yogurt with grated cucumber, cumin and salt for the raita; serve together."
+      ],
+      "tips": [
+        "Fill half the plate with vegetables and raita, the rest with rice.",
+        "Raita cools the spice and adds protein."
+      ],
+      "aliases": [
+        "vegetable biryani with raita",
+        "vegetable biryani",
+        "biryani"
+      ]
+    },
+    "tomato-basil-pasta": {
+      "name": "Vegetable Pasta with Tomato Basil Sauce",
+      "summary": "Pasta in a simple tomato and basil sauce with plenty of vegetables.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegan (without cheese)",
+        "Good source of": "Complex carbs, lycopene, fibre",
+        "Commonly contains": "Gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/tomato-basil-pasta.webp",
+          "thumb": "/library/food/tomato-basil-pasta.thumb.webp",
+          "width": 1000,
+          "height": 667,
+          "caption": "Pasta with fresh tomato and basil",
+          "alt": "Vegetable Pasta with Tomato Basil Sauce: pasta with fresh tomato and basil",
+          "credit": "Abi Porter",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Tomato_and_basil_pasta_(4925750112).jpg"
+        }
+      ],
+      "steps": [
+        "Cook pasta until just tender.",
+        "Sauté garlic in olive oil, add chopped tomatoes and simmer for 10 minutes.",
+        "Add diced vegetables (zucchini, peppers, spinach) and cook until tender.",
+        "Toss with the pasta and fresh basil."
+      ],
+      "tips": [
+        "Cooked tomatoes provide more absorbable lycopene than raw ones.",
+        "Keep pasta to the planned portion and add extra vegetables to fill the plate."
+      ],
+      "aliases": [
+        "vegetable pasta with tomato basil sauce",
+        "tomato basil pasta",
+        "pasta with tomato sauce"
+      ]
+    },
+    "veggie-sticks-hummus": {
+      "name": "Vegetable Sticks with Hummus",
+      "summary": "Crunchy carrot and cucumber sticks with hummus for dipping.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan",
+        "Good source of": "Fibre, plant protein, vitamin A",
+        "Commonly contains": "Sesame (tahini in hummus)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/veggie-sticks-hummus.webp",
+          "thumb": "/library/food/veggie-sticks-hummus.thumb.webp",
+          "width": 500,
+          "height": 644,
+          "caption": "Hummus with carrot",
+          "alt": "Vegetable Sticks with Hummus: hummus with carrot",
+          "credit": "Vegan Feast Catering",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Hummus_and_carrot_(3841125815).jpg"
+        }
+      ],
+      "steps": [
+        "Peel the carrots and cut carrots and cucumber into sticks.",
+        "Spoon about 3–4 tbsp hummus into a small bowl.",
+        "Dip and enjoy."
+      ],
+      "tips": [
+        "Keep cut vegetables in a container of water in the fridge to stay crisp.",
+        "Add pepper strips or cherry tomatoes for variety."
+      ],
+      "aliases": [
+        "carrot and cucumber sticks with hummus",
+        "carrot sticks with hummus",
+        "hummus"
+      ]
+    },
+    "veggie-omelette": {
+      "name": "Veggie Omelette with Whole Wheat Toast",
+      "summary": "Eggs cooked with mixed vegetables and served with toast — a protein-rich, balanced breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian (contains egg)",
+        "Good source of": "Protein, vitamins A and D, fibre",
+        "Commonly contains": "Eggs, gluten (toast)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/veggie-omelette.webp",
+          "thumb": "/library/food/veggie-omelette.thumb.webp",
+          "width": 500,
+          "height": 369,
+          "caption": "Vegetable omelette served with bread and chutney",
+          "alt": "Veggie Omelette with Whole Wheat Toast: vegetable omelette served with bread and chutney",
+          "credit": "TriptaG",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vegetable_Omelette_with_slice_of_bread_and_chutney.JPG"
+        }
+      ],
+      "steps": [
+        "Whisk 2 eggs with salt and pepper.",
+        "Sauté chopped vegetables (tomato, pepper, spinach) in a little oil for 2–3 minutes.",
+        "Pour in the eggs and cook gently until the edges set, then fold.",
+        "Serve with a slice of whole wheat toast."
+      ],
+      "tips": [
+        "Cook the eggs until fully set.",
+        "Fill with whichever vegetables are in season or need using up.",
+        "Best eaten hot; it does not reheat well."
+      ],
+      "aliases": [
+        "veggie omelette with whole wheat toast",
+        "vegetable omelette",
+        "veggie omelette",
+        "omelette"
+      ]
+    },
+    "whole-wheat-pancakes": {
+      "name": "Whole Wheat Pancakes with Berry Compote",
+      "summary": "Fluffy whole wheat pancakes served with a quick warm berry compote.",
+      "facts": {
+        "Best for": "Breakfast (weekends)",
+        "Diet": "Vegetarian",
+        "Good source of": "Complex carbs, fibre, vitamin C (berries)",
+        "Commonly contains": "Gluten, dairy, eggs"
+      },
+      "photos": [
+        {
+          "src": "/library/food/whole-wheat-pancakes.webp",
+          "thumb": "/library/food/whole-wheat-pancakes.thumb.webp",
+          "width": 500,
+          "height": 333,
+          "caption": "Pancakes topped with fresh berries",
+          "alt": "Whole Wheat Pancakes with Berry Compote: pancakes topped with fresh berries",
+          "credit": "Herson Rodriguez hero",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Pancakes_with_Berries_(Unsplash).jpg"
+        }
+      ],
+      "steps": [
+        "Whisk whole wheat flour, baking powder and a pinch of salt; mix in milk and egg until just combined.",
+        "Cook small ladles of batter on a lightly oiled pan until bubbles form, then flip.",
+        "For the compote, simmer berries with a splash of water for 5–8 minutes until saucy.",
+        "Serve the pancakes warm topped with the compote."
+      ],
+      "tips": [
+        "Add Greek yogurt on the side for extra protein.",
+        "The compote replaces syrup — no extra sweetener needed.",
+        "Leftover pancakes freeze well; reheat in a toaster."
+      ],
+      "aliases": [
+        "whole wheat pancakes with berry compote",
+        "whole wheat pancakes",
+        "pancakes"
+      ]
+    },
+    "yogurt-berries": {
+      "name": "Yogurt with Berries, Seeds and Nuts",
+      "summary": "Plain yogurt topped with fresh berries and a sprinkle of seeds or nuts.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegetarian",
+        "Good source of": "Protein, calcium, probiotics, antioxidants",
+        "Commonly contains": "Dairy, nuts"
+      },
+      "photos": [
+        {
+          "src": "/library/food/yogurt-berries.webp",
+          "thumb": "/library/food/yogurt-berries.thumb.webp",
+          "width": 500,
+          "height": 375,
+          "caption": "Yogurt cups with fresh berries",
+          "alt": "Yogurt with Berries, Seeds and Nuts: yogurt cups with fresh berries",
+          "credit": "Missvain",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Granola_and_yogurt_-_Bubbles_%2B_Brunch_2018_-_Sarah_Stierch_02.jpg"
+        }
+      ],
+      "steps": [
+        "Spoon plain or Greek yogurt into a bowl.",
+        "Top with fresh or thawed frozen berries.",
+        "Sprinkle with a tablespoon of seeds (chia, flax, pumpkin) or chopped nuts."
+      ],
+      "tips": [
+        "Plain yogurt avoids added sugar; the berries sweeten it.",
+        "Greek yogurt has roughly twice the protein of regular yogurt."
+      ],
+      "aliases": [
+        "yogurt with mixed seeds and berries",
+        "greek yogurt with mixed berries and nuts",
+        "yogurt with berries"
+      ]
+    },
+    "zucchini-noodles-pesto": {
+      "name": "Zucchini Noodles with Pesto",
+      "summary": "Spiralised zucchini tossed with pesto and cherry tomatoes — a light, low-carb dinner.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegetarian",
+        "Good source of": "Vitamin C, potassium, healthy fats",
+        "Commonly contains": "Tree nuts (pine nuts), dairy (parmesan in pesto)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/zucchini-noodles-pesto.webp",
+          "thumb": "/library/food/zucchini-noodles-pesto.thumb.webp",
+          "width": 1200,
+          "height": 810,
+          "caption": "Spiralised zucchini noodles with pesto",
+          "alt": "Zucchini Noodles with Pesto: spiralised zucchini noodles with pesto",
+          "credit": "Tony Webster from Minneapolis, Minnesota, United States",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Zoodles_-_Zucchini_Spirals_at_Noodles_and_Company_(41891311712).jpg"
+        }
+      ],
+      "steps": [
+        "Spiralise the zucchini (or cut into thin ribbons with a peeler).",
+        "Sauté for 1–2 minutes only, so they stay firm.",
+        "Toss with pesto and halved cherry tomatoes off the heat.",
+        "Top with a little grated cheese or toasted seeds."
+      ],
+      "tips": [
+        "Overcooked zucchini turns watery — keep it brief.",
+        "Add chickpeas or paneer if you need more protein.",
+        "Pesto is calorie-dense; 1–2 tbsp is enough."
+      ],
+      "aliases": [
+        "zucchini noodles with pesto and cherry tomatoes",
+        "zucchini noodles",
+        "zoodles"
+      ]
+    }
+  }
+}
