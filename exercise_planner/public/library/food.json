@@ -3,6 +3,78 @@
   "label": "Food",
   "note": "Guide mapping for /food/?q=<id>. Aliases are matched against plan text (lowercased, punctuation removed, whole words, optional plural).",
   "items": {
+    "popcorn": {
+      "name": "Air-Popped Popcorn",
+      "summary": "Whole grain popcorn made with little or no oil.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Fibre, whole grains"
+      },
+      "photos": [
+        {
+          "src": "/library/food/popcorn.webp",
+          "thumb": "/library/food/popcorn.thumb.webp",
+          "width": 1000,
+          "height": 663,
+          "caption": "A bowl of popcorn",
+          "alt": "Air-Popped Popcorn: a bowl of popcorn",
+          "credit": "Alex Munsell alexmunsell",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Popcorn_(Unsplash).jpg"
+        }
+      ],
+      "steps": [
+        "Heat kernels in a covered pan with 1 tsp oil (or use an air popper).",
+        "Shake the pan until the popping slows.",
+        "Season lightly with salt, pepper or spices."
+      ],
+      "tips": [
+        "Skip butter and sugary coatings.",
+        "About 3 cups popped makes a light snack."
+      ],
+      "aliases": [
+        "popcorn",
+        "air popped popcorn"
+      ]
+    },
+    "aloo-gobi": {
+      "name": "Aloo Gobi",
+      "summary": "Potatoes and cauliflower cooked with turmeric and spices — a dry vegetable side.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Fibre, vitamin C, potassium"
+      },
+      "photos": [
+        {
+          "src": "/library/food/aloo-gobi.webp",
+          "thumb": "/library/food/aloo-gobi.thumb.webp",
+          "width": 960,
+          "height": 640,
+          "caption": "Aloo gobi",
+          "alt": "Aloo Gobi: aloo gobi",
+          "credit": "Wikimedia Commons contributor",
+          "license": "CC BY-SA 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Aloo_gobi.jpg"
+        }
+      ],
+      "steps": [
+        "Cut cauliflower into florets and potatoes into cubes.",
+        "Sauté cumin, onion and ginger in a little oil.",
+        "Add the vegetables, turmeric, coriander powder and salt.",
+        "Cover and cook on low heat until tender, stirring occasionally."
+      ],
+      "tips": [
+        "Pair with dal or curd for protein.",
+        "Use more cauliflower than potato for fewer calories."
+      ],
+      "aliases": [
+        "aloo gobi",
+        "potato cauliflower",
+        "gobi aloo"
+      ]
+    },
     "avocado-toast": {
       "name": "Avocado Toast with Tomato & Spinach",
       "summary": "Whole grain toast topped with mashed avocado, greens and tomatoes — a filling breakfast with healthy fats and fibre.",
@@ -40,6 +112,199 @@
       "aliases": [
         "avocado toast with tomato and spinach",
         "avocado toast"
+      ]
+    },
+    "baked-salmon": {
+      "name": "Baked Salmon with Vegetables",
+      "summary": "Oven-baked salmon or white fish with roasted vegetables.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Pescatarian · gluten-free",
+        "Good source of": "Protein, omega-3 fats, vitamin D",
+        "Commonly contains": "Fish"
+      },
+      "photos": [
+        {
+          "src": "/library/food/baked-salmon.webp",
+          "thumb": "/library/food/baked-salmon.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Salmon on baked vegetables",
+          "alt": "Baked Salmon with Vegetables: salmon on baked vegetables",
+          "credit": "Gerda Arendt",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Steckenroth,_salmon_on_baked_vegetables.jpg"
+        }
+      ],
+      "steps": [
+        "Roast chopped vegetables with a little oil at 200°C for 15 minutes.",
+        "Season the fish with lemon, garlic and herbs.",
+        "Place on the vegetables and bake for 12–15 minutes until it flakes easily.",
+        "Serve with a squeeze of lemon."
+      ],
+      "tips": [
+        "Oily fish such as salmon is a good source of omega-3.",
+        "Fish is cooked when it is opaque and flakes with a fork."
+      ],
+      "aliases": [
+        "baked salmon",
+        "salmon",
+        "grilled fish",
+        "baked fish",
+        "fish with vegetables"
+      ]
+    },
+    "baked-sweet-potato": {
+      "name": "Baked Sweet Potato",
+      "summary": "A whole baked sweet potato with toppings — filling and rich in vitamin A.",
+      "facts": {
+        "Best for": "Lunch, dinner or side",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Vitamin A, fibre, potassium"
+      },
+      "photos": [
+        {
+          "src": "/library/food/baked-sweet-potato.webp",
+          "thumb": "/library/food/baked-sweet-potato.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Baked sweet potato on salad",
+          "alt": "Baked Sweet Potato: baked sweet potato on salad",
+          "credit": "FitTasteTic",
+          "license": "CC BY-SA 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Baked_Sweet_Potato_on_Salad.jpg"
+        }
+      ],
+      "steps": [
+        "Scrub the sweet potato and prick it with a fork.",
+        "Bake at 200°C for 40–50 minutes until soft.",
+        "Split open and top with beans, yogurt or salsa."
+      ],
+      "tips": [
+        "Eat the skin for extra fibre.",
+        "Add beans or yogurt for protein."
+      ],
+      "aliases": [
+        "baked sweet potato",
+        "roasted sweet potato",
+        "sweet potato"
+      ]
+    },
+    "chilla": {
+      "name": "Besan / Moong Dal Chilla",
+      "summary": "Savoury pancakes made from gram flour or ground moong dal with vegetables — a protein-rich breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, fibre, iron"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chilla.webp",
+          "thumb": "/library/food/chilla.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Besan chilla with curd and tomatoes",
+          "alt": "Besan / Moong Dal Chilla: besan chilla with curd and tomatoes",
+          "credit": "Mdsmds0",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Gram_flour_Chilla_(Besan_ka_Cheela).JPG"
+        }
+      ],
+      "steps": [
+        "Whisk gram flour (or soaked, ground moong dal) with water into a pourable batter.",
+        "Add chopped onion, tomato, chilli, coriander and spices.",
+        "Spread a ladle of batter on a lightly oiled pan.",
+        "Cook until golden on both sides."
+      ],
+      "tips": [
+        "Serve with mint chutney or curd.",
+        "Add grated paneer or tofu for even more protein."
+      ],
+      "aliases": [
+        "besan chilla",
+        "moong dal chilla",
+        "chilla",
+        "cheela",
+        "besan cheela",
+        "gram flour pancake"
+      ]
+    },
+    "boiled-eggs": {
+      "name": "Boiled Eggs",
+      "summary": "Simple boiled eggs — portable protein for breakfast or a snack.",
+      "facts": {
+        "Best for": "Breakfast or snack",
+        "Diet": "Contains egg",
+        "Good source of": "Protein, vitamin B12, vitamin D",
+        "Commonly contains": "Eggs"
+      },
+      "photos": [
+        {
+          "src": "/library/food/boiled-eggs.webp",
+          "thumb": "/library/food/boiled-eggs.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Halved boiled egg",
+          "alt": "Boiled Eggs: halved boiled egg",
+          "credit": "Ramesh NG",
+          "license": "CC BY-SA 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Boiled_Egg_-_Crossection.jpg"
+        }
+      ],
+      "steps": [
+        "Place eggs in a pan and cover with cold water.",
+        "Bring to the boil, then simmer: 6–7 minutes for soft, 9–10 for hard.",
+        "Cool in cold water, then peel."
+      ],
+      "tips": [
+        "Add salt, pepper or chaat masala.",
+        "Hard-boiled eggs keep in the fridge for up to a week in their shells."
+      ],
+      "aliases": [
+        "boiled eggs",
+        "boiled egg",
+        "hard boiled egg",
+        "soft boiled egg"
+      ]
+    },
+    "buttermilk": {
+      "name": "Buttermilk (Chaas)",
+      "summary": "Thin spiced yogurt drink that is cooling and aids digestion.",
+      "facts": {
+        "Best for": "Snack or with lunch",
+        "Diet": "Vegetarian · gluten-free",
+        "Good source of": "Probiotics, calcium, hydration",
+        "Commonly contains": "Dairy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/buttermilk.webp",
+          "thumb": "/library/food/buttermilk.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "A glass of masala buttermilk",
+          "alt": "Buttermilk (Chaas): a glass of masala buttermilk",
+          "credit": "Amarnujju",
+          "license": "CC BY 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Masala_Buttermilk.JPG"
+        }
+      ],
+      "steps": [
+        "Whisk 1/2 cup curd with 1 cup water.",
+        "Add roasted cumin powder, salt, ginger and coriander or mint.",
+        "Serve chilled."
+      ],
+      "tips": [
+        "Good on hot days and after meals.",
+        "Sweet lassi has added sugar; plain chaas doesn't."
+      ],
+      "aliases": [
+        "buttermilk",
+        "chaas",
+        "chhaas",
+        "masala chaas",
+        "lassi"
       ]
     },
     "chia-pudding": {
@@ -81,6 +346,43 @@
         "chia pudding"
       ]
     },
+    "chicken-curry": {
+      "name": "Chicken Curry",
+      "summary": "Chicken simmered in a spiced onion-tomato gravy.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Non-vegetarian · gluten-free",
+        "Good source of": "Protein, B vitamins"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chicken-curry.webp",
+          "thumb": "/library/food/chicken-curry.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Chicken curry in a bowl",
+          "alt": "Chicken Curry: chicken curry in a bowl",
+          "credit": "Abhilashsnair",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Chicken_curry_Trivandrum.jpg"
+        }
+      ],
+      "steps": [
+        "Sauté onion, ginger-garlic and spices until golden.",
+        "Add tomatoes and cook down.",
+        "Add skinless chicken pieces and simmer until cooked through.",
+        "Finish with coriander; serve with rice or roti."
+      ],
+      "tips": [
+        "Remove the skin and use less oil to keep it lighter.",
+        "Make sure the chicken is cooked through before serving."
+      ],
+      "aliases": [
+        "chicken curry",
+        "chicken masala",
+        "home style chicken curry"
+      ]
+    },
     "chickpea-quinoa-salad": {
       "name": "Chickpea and Quinoa Salad",
       "summary": "Quinoa and chickpeas tossed with crunchy vegetables and a lemon or tahini dressing.",
@@ -94,8 +396,8 @@
         {
           "src": "/library/food/chickpea-quinoa-salad.webp",
           "thumb": "/library/food/chickpea-quinoa-salad.thumb.webp",
-          "width": 1200,
-          "height": 1181,
+          "width": 1000,
+          "height": 984,
           "caption": "Chickpea salad with chopped vegetables",
           "alt": "Chickpea and Quinoa Salad: chickpea salad with chopped vegetables",
           "credit": "Cajsa Lilliehook from Portland",
@@ -120,6 +422,44 @@
         "quinoa salad"
       ]
     },
+    "chole": {
+      "name": "Chole (Chana Masala)",
+      "summary": "Chickpeas simmered in a spiced tomato-onion gravy.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, fibre, iron"
+      },
+      "photos": [
+        {
+          "src": "/library/food/chole.webp",
+          "thumb": "/library/food/chole.thumb.webp",
+          "width": 1000,
+          "height": 584,
+          "caption": "Chana masala in a bowl",
+          "alt": "Chole (Chana Masala): chana masala in a bowl",
+          "credit": "Billjones94",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Simple_chana_masala.jpg"
+        }
+      ],
+      "steps": [
+        "Soak dried chickpeas overnight and cook until soft (or use canned).",
+        "Sauté onion, ginger-garlic and spices, then add tomatoes.",
+        "Add chickpeas with some cooking water and simmer for 15 minutes.",
+        "Mash a few chickpeas to thicken the gravy."
+      ],
+      "tips": [
+        "Pair with brown rice or roti rather than fried bhature for everyday meals.",
+        "Add a side salad with onion and lemon."
+      ],
+      "aliases": [
+        "chana masala",
+        "chole",
+        "chickpea curry",
+        "chole masala"
+      ]
+    },
     "cottage-cheese-toast": {
       "name": "Cottage Cheese and Berry Toast",
       "summary": "Toast topped with creamy cottage cheese and fresh berries — high in protein and quick to make.",
@@ -133,8 +473,8 @@
         {
           "src": "/library/food/cottage-cheese-toast.webp",
           "thumb": "/library/food/cottage-cheese-toast.thumb.webp",
-          "width": 1200,
-          "height": 800,
+          "width": 1000,
+          "height": 666,
           "caption": "Toasts topped with soft cheese and fresh berries",
           "alt": "Cottage Cheese and Berry Toast: toasts topped with soft cheese and fresh berries",
           "credit": "Mihail Verbal",
@@ -171,11 +511,11 @@
         {
           "src": "/library/food/cottage-cheese-pineapple.webp",
           "thumb": "/library/food/cottage-cheese-pineapple.thumb.webp",
-          "width": 1200,
-          "height": 954,
+          "width": 1000,
+          "height": 795,
           "caption": "A bowl of cottage cheese",
           "alt": "Cottage Cheese with Pineapple: a bowl of cottage cheese",
-          "credit": "Fastily",
+          "credit": "FASTILY (TALK)",
           "license": "CC BY-SA 3.0",
           "source": "https://commons.wikimedia.org/wiki/File:Cottagecheese200px.jpg"
         }
@@ -193,6 +533,235 @@
         "cottage cheese with pineapple",
         "cottage cheese and pineapple",
         "cottage cheese"
+      ]
+    },
+    "curd-rice": {
+      "name": "Curd Rice",
+      "summary": "Cooked rice mixed with curd and a light tempering — cooling and easy to digest.",
+      "facts": {
+        "Best for": "Lunch",
+        "Diet": "Vegetarian · gluten-free",
+        "Good source of": "Probiotics, calcium, carbohydrates",
+        "Commonly contains": "Dairy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/curd-rice.webp",
+          "thumb": "/library/food/curd-rice.thumb.webp",
+          "width": 1000,
+          "height": 758,
+          "caption": "Curd rice with pomegranate",
+          "alt": "Curd Rice: curd rice with pomegranate",
+          "credit": "Sudharshan Shanmugasundaram",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Curd_Rice.jpg"
+        }
+      ],
+      "steps": [
+        "Mash soft cooked rice lightly while warm.",
+        "Mix in curd and a little milk to keep it creamy.",
+        "Temper mustard seeds, curry leaves and ginger in a little oil and stir in.",
+        "Top with grated carrot, cucumber or pomegranate."
+      ],
+      "tips": [
+        "Eat at room temperature — good on hot days.",
+        "Add vegetables for fibre."
+      ],
+      "aliases": [
+        "curd rice",
+        "thayir sadam",
+        "dahi chawal",
+        "yogurt rice"
+      ]
+    },
+    "dal-tadka": {
+      "name": "Dal Tadka",
+      "summary": "Yellow lentils finished with a sizzling spice tempering — the everyday Indian protein staple.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan (without ghee) · gluten-free",
+        "Good source of": "Plant protein, fibre, iron, folate"
+      },
+      "photos": [
+        {
+          "src": "/library/food/dal-tadka.webp",
+          "thumb": "/library/food/dal-tadka.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Dal tadka",
+          "alt": "Dal Tadka: dal tadka",
+          "credit": "AugustineKajur",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Dal_Tadka-Delhi.jpg"
+        }
+      ],
+      "steps": [
+        "Pressure-cook or simmer rinsed toor or moong dal with turmeric until soft.",
+        "Heat oil or ghee with cumin, garlic and dried chilli.",
+        "Add onion and tomato and cook down.",
+        "Pour the tempering over the dal, simmer briefly and add coriander."
+      ],
+      "tips": [
+        "Serve with rice or roti — together they make a complete protein.",
+        "Squeeze lemon on top to help iron absorption."
+      ],
+      "aliases": [
+        "dal tadka",
+        "dal fry",
+        "yellow dal",
+        "toor dal",
+        "moong dal",
+        "dal"
+      ]
+    },
+    "dalia": {
+      "name": "Dalia (Broken Wheat Porridge)",
+      "summary": "Broken wheat cooked savoury with vegetables or sweet with milk — a high-fibre breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegan (savoury version)",
+        "Good source of": "Fibre, complex carbs, iron",
+        "Commonly contains": "Gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/dalia.webp",
+          "thumb": "/library/food/dalia.thumb.webp",
+          "width": 960,
+          "height": 638,
+          "caption": "Vegetable dalia",
+          "alt": "Dalia (Broken Wheat Porridge): vegetable dalia",
+          "credit": "Vivekpat30",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Zucchini-corn-dalia-recipe.jpg"
+        }
+      ],
+      "steps": [
+        "Dry-roast broken wheat for 2–3 minutes.",
+        "Sauté cumin and chopped vegetables in a little oil.",
+        "Add the wheat and about three times as much water, plus salt.",
+        "Cook (or pressure-cook) until soft."
+      ],
+      "tips": [
+        "Sweet version: cook in milk and top with fruit and nuts.",
+        "Very filling for relatively few calories."
+      ],
+      "aliases": [
+        "dalia",
+        "daliya",
+        "broken wheat porridge",
+        "broken wheat upma"
+      ]
+    },
+    "dhokla": {
+      "name": "Dhokla",
+      "summary": "Steamed savoury gram-flour cake from Gujarat — light and spongy.",
+      "facts": {
+        "Best for": "Snack or breakfast",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, carbohydrates"
+      },
+      "photos": [
+        {
+          "src": "/library/food/dhokla.webp",
+          "thumb": "/library/food/dhokla.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Dhokla garnished with curry leaves",
+          "alt": "Dhokla: dhokla garnished with curry leaves",
+          "credit": "Yakshitha",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Dhokla_6.jpg"
+        }
+      ],
+      "steps": [
+        "Whisk gram flour, yogurt or water, ginger, salt and a little sugar into a batter.",
+        "Add fruit salt or baking soda just before steaming.",
+        "Steam in a greased tin for 15 minutes.",
+        "Pour over a tempering of mustard seeds and curry leaves; cut into squares."
+      ],
+      "tips": [
+        "Steamed rather than fried, so it's a light snack.",
+        "Serve with green chutney."
+      ],
+      "aliases": [
+        "dhokla",
+        "khaman dhokla",
+        "besan dhokla"
+      ]
+    },
+    "edamame": {
+      "name": "Edamame",
+      "summary": "Steamed young soybeans — a simple, protein-rich snack.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, fibre, folate",
+        "Commonly contains": "Soy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/edamame.webp",
+          "thumb": "/library/food/edamame.thumb.webp",
+          "width": 1000,
+          "height": 1000,
+          "caption": "Steamed edamame in a bowl",
+          "alt": "Edamame: steamed edamame in a bowl",
+          "credit": "Daderot",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Edamame_-_Massachusetts.jpg"
+        }
+      ],
+      "steps": [
+        "Boil or steam edamame pods for 4–5 minutes.",
+        "Drain and sprinkle with salt or chilli flakes.",
+        "Squeeze the beans out of the pods to eat."
+      ],
+      "tips": [
+        "About 1 cup in pods makes a portion.",
+        "Frozen edamame works well."
+      ],
+      "aliases": [
+        "edamame",
+        "steamed edamame",
+        "soybeans"
+      ]
+    },
+    "egg-curry": {
+      "name": "Egg Curry",
+      "summary": "Boiled eggs in a spiced onion-tomato gravy.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Contains egg · gluten-free",
+        "Good source of": "Protein, vitamin B12, choline",
+        "Commonly contains": "Eggs"
+      },
+      "photos": [
+        {
+          "src": "/library/food/egg-curry.webp",
+          "thumb": "/library/food/egg-curry.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Spicy egg curry",
+          "alt": "Egg Curry: spicy egg curry",
+          "credit": "https://onlybestrecipes.com/egg-curry-recipeegg-curry-recipe/",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Spicy_Anda_Curry.jpg"
+        }
+      ],
+      "steps": [
+        "Hard-boil and peel the eggs; make a few slits in each.",
+        "Sauté onion, ginger-garlic and spices, then add tomatoes.",
+        "Add water and simmer to a gravy.",
+        "Add the eggs and simmer for 5 minutes."
+      ],
+      "tips": [
+        "Two eggs make a typical portion.",
+        "Serve with rice or roti and a salad."
+      ],
+      "aliases": [
+        "egg curry",
+        "anda curry"
       ]
     },
     "falafel-bowl": {
@@ -234,6 +803,84 @@
         "falafel"
       ]
     },
+    "fruit-bowl": {
+      "name": "Fresh Fruit Bowl",
+      "summary": "A bowl of chopped seasonal fruit.",
+      "facts": {
+        "Best for": "Breakfast side or snack",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Vitamin C, fibre, potassium"
+      },
+      "photos": [
+        {
+          "src": "/library/food/fruit-bowl.webp",
+          "thumb": "/library/food/fruit-bowl.thumb.webp",
+          "width": 612,
+          "height": 816,
+          "caption": "A bowl of fruit salad",
+          "alt": "Fresh Fruit Bowl: a bowl of fruit salad",
+          "credit": "Halima Waziri",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:A_bowl_of_fruits_salad.jpg"
+        }
+      ],
+      "steps": [
+        "Wash and chop 2–3 kinds of seasonal fruit.",
+        "Combine in a bowl.",
+        "Add a squeeze of lemon or a pinch of chaat masala."
+      ],
+      "tips": [
+        "Whole fruit is more filling than juice.",
+        "Add yogurt or nuts for protein."
+      ],
+      "aliases": [
+        "fruit bowl",
+        "fruit salad",
+        "mixed fruit",
+        "seasonal fruit",
+        "fresh fruit bowl"
+      ]
+    },
+    "fruit-smoothie": {
+      "name": "Fruit Smoothie",
+      "summary": "Blended fruit with milk or yogurt — quick, drinkable nutrition.",
+      "facts": {
+        "Best for": "Breakfast or after a workout",
+        "Diet": "Vegetarian · vegan with plant milk",
+        "Good source of": "Vitamins, potassium, protein (milk or yogurt)",
+        "Commonly contains": "Dairy, nuts (if added)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/fruit-smoothie.webp",
+          "thumb": "/library/food/fruit-smoothie.thumb.webp",
+          "width": 800,
+          "height": 1000,
+          "caption": "A glass of strawberry smoothie",
+          "alt": "Fruit Smoothie: a glass of strawberry smoothie",
+          "credit": "woodleywonderworks",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Glass_of_strawberry_smoothie_(6828826294).jpg"
+        }
+      ],
+      "steps": [
+        "Add fruit (banana, berries or mango) to a blender.",
+        "Pour in milk, plant milk or yogurt.",
+        "Add a spoon of oats or nut butter if you like.",
+        "Blend until smooth and serve straight away."
+      ],
+      "tips": [
+        "Skip added sugar — ripe fruit is sweet enough.",
+        "Drink it with a meal or as a snack, not alongside sugary drinks."
+      ],
+      "aliases": [
+        "fruit smoothie",
+        "banana smoothie",
+        "berry smoothie",
+        "smoothie",
+        "milkshake"
+      ]
+    },
     "fruit-nut-butter": {
       "name": "Fruit with Nut Butter",
       "summary": "Fresh apple or banana with a spoon of peanut or almond butter — a balanced snack of fibre, fat and protein.",
@@ -247,8 +894,8 @@
         {
           "src": "/library/food/fruit-nut-butter.webp",
           "thumb": "/library/food/fruit-nut-butter.thumb.webp",
-          "width": 900,
-          "height": 1200,
+          "width": 750,
+          "height": 1000,
           "caption": "Apple slices served with a dip",
           "alt": "Fruit with Nut Butter: apple slices served with a dip",
           "credit": "HaJunkiyada",
@@ -272,6 +919,42 @@
         "banana with almond butter",
         "apple slices",
         "apple and peanut butter"
+      ]
+    },
+    "greek-salad": {
+      "name": "Greek Salad",
+      "summary": "Tomato, cucumber, onion, olives and feta with olive oil.",
+      "facts": {
+        "Best for": "Lunch, dinner or side",
+        "Diet": "Vegetarian · gluten-free",
+        "Good source of": "Vitamins, healthy fats, calcium",
+        "Commonly contains": "Dairy (feta)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/greek-salad.webp",
+          "thumb": "/library/food/greek-salad.thumb.webp",
+          "width": 500,
+          "height": 381,
+          "caption": "Greek salad with feta",
+          "alt": "Greek Salad: greek salad with feta",
+          "credit": "https://www.flickr.com/photos/zone41/",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Greek_Salad_Choriatiki.jpg"
+        }
+      ],
+      "steps": [
+        "Cut tomatoes, cucumber, pepper and red onion into chunks.",
+        "Add olives and a block or crumble of feta.",
+        "Drizzle with olive oil and sprinkle with oregano."
+      ],
+      "tips": [
+        "Add chickpeas to make it a full meal.",
+        "Feta is salty — skip extra salt."
+      ],
+      "aliases": [
+        "greek salad",
+        "horiatiki"
       ]
     },
     "greek-yogurt-parfait": {
@@ -312,6 +995,45 @@
         "greek yogurt parfait with mango and flaxseeds",
         "yogurt parfait",
         "parfait"
+      ]
+    },
+    "grilled-chicken-salad": {
+      "name": "Grilled Chicken Salad",
+      "summary": "Lean grilled chicken over a large salad — high in protein.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Non-vegetarian · gluten-free (check dressing)",
+        "Good source of": "Protein, B vitamins, fibre",
+        "Commonly contains": "Dairy or egg (in some dressings)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/grilled-chicken-salad.webp",
+          "thumb": "/library/food/grilled-chicken-salad.thumb.webp",
+          "width": 1000,
+          "height": 800,
+          "caption": "Caesar salad with grilled chicken",
+          "alt": "Grilled Chicken Salad: caesar salad with grilled chicken",
+          "credit": "Prayitno / Thank you for (12 millions +) view from Los Angeles, USA",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Caesar_Salad_%26_Grilled_Chicken_(30548011308).jpg"
+        }
+      ],
+      "steps": [
+        "Season chicken breast with salt, pepper and herbs.",
+        "Grill or pan-cook until cooked through (74°C inside), then rest 5 minutes.",
+        "Slice and serve over greens, cucumber, tomato and other vegetables.",
+        "Dress with olive oil and lemon."
+      ],
+      "tips": [
+        "Cook chicken thoroughly and refrigerate leftovers promptly.",
+        "Creamy dressings add many calories — use them sparingly."
+      ],
+      "aliases": [
+        "grilled chicken salad",
+        "chicken salad",
+        "grilled chicken",
+        "chicken breast"
       ]
     },
     "grilled-eggplant-feta": {
@@ -429,6 +1151,82 @@
         "halloumi salad"
       ]
     },
+    "idli-sambar": {
+      "name": "Idli with Sambar",
+      "summary": "Steamed rice-and-lentil cakes served with vegetable-lentil sambar — light and easy to digest.",
+      "facts": {
+        "Best for": "Breakfast or lunch",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Carbohydrates, plant protein, fibre (sambar)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/idli-sambar.webp",
+          "thumb": "/library/food/idli-sambar.thumb.webp",
+          "width": 1000,
+          "height": 726,
+          "caption": "Idli served with sambar",
+          "alt": "Idli with Sambar: idli served with sambar",
+          "credit": "Dr. Raju Kasambe",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Idli_Sambar_Food_by_Ms_Ujwala_Kasambe_DSCN9744_(2).jpg"
+        }
+      ],
+      "steps": [
+        "Steam idli batter in greased moulds for 10–12 minutes.",
+        "For sambar, cook toor dal until soft.",
+        "Simmer vegetables with tamarind, sambar powder and the dal.",
+        "Temper with mustard seeds and curry leaves; serve hot with the idli."
+      ],
+      "tips": [
+        "Fermented batter is easier to digest.",
+        "The sambar adds protein and vegetables — have a generous bowl."
+      ],
+      "aliases": [
+        "idli sambar",
+        "idli with sambar",
+        "idli",
+        "sambar"
+      ]
+    },
+    "khichdi": {
+      "name": "Khichdi",
+      "summary": "Rice and lentils cooked together into a soft, comforting one-pot meal.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan (without ghee) · gluten-free",
+        "Good source of": "Plant protein, complex carbs, fibre"
+      },
+      "photos": [
+        {
+          "src": "/library/food/khichdi.webp",
+          "thumb": "/library/food/khichdi.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Khichdi with peas",
+          "alt": "Khichdi: khichdi with peas",
+          "credit": "Rajeeb Dutta",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:%E0%A6%96%E0%A6%BF%E0%A6%9A%E0%A7%81%E0%A6%A1%E0%A6%BC%E0%A6%BF_(Khichuri)-MA18.jpg"
+        }
+      ],
+      "steps": [
+        "Rinse rice and moong dal together.",
+        "Sauté cumin, ginger and vegetables in a little oil or ghee.",
+        "Add the rice, dal, turmeric, salt and about four times as much water.",
+        "Cook until soft and porridge-like."
+      ],
+      "tips": [
+        "Easy to digest — good on rest days or when feeling unwell.",
+        "Serve with curd and a salad."
+      ],
+      "aliases": [
+        "khichdi",
+        "khichri",
+        "dal khichdi",
+        "vegetable khichdi"
+      ]
+    },
     "lentil-rice": {
       "name": "Lentil and Vegetable Stir Fry with Brown Rice",
       "summary": "Cooked lentils stir-fried with vegetables and spices, served with brown rice — a complete plant-protein meal.",
@@ -468,6 +1266,43 @@
         "mujadara"
       ]
     },
+    "dosa": {
+      "name": "Masala Dosa",
+      "summary": "A thin, crisp fermented rice-and-lentil crêpe, often filled with spiced potato.",
+      "facts": {
+        "Best for": "Breakfast or lunch",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Carbohydrates, some plant protein"
+      },
+      "photos": [
+        {
+          "src": "/library/food/dosa.webp",
+          "thumb": "/library/food/dosa.thumb.webp",
+          "width": 1000,
+          "height": 616,
+          "caption": "Masala dosa with chutneys",
+          "alt": "Masala Dosa: masala dosa with chutneys",
+          "credit": "Marajozkee",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Masala_dosa_01.jpg"
+        }
+      ],
+      "steps": [
+        "Spread a ladle of dosa batter thinly on a hot griddle.",
+        "Drizzle a few drops of oil around the edges and cook until crisp.",
+        "Add a spoon of potato filling (optional) and fold.",
+        "Serve with sambar and coconut chutney."
+      ],
+      "tips": [
+        "Use little oil to keep it light.",
+        "Pair with sambar for extra protein and vegetables."
+      ],
+      "aliases": [
+        "masala dosa",
+        "dosa",
+        "plain dosa"
+      ]
+    },
     "chickpea-wrap": {
       "name": "Mediterranean Chickpea Wrap",
       "summary": "A whole wheat wrap filled with mashed chickpeas or hummus and fresh vegetables.",
@@ -481,8 +1316,8 @@
         {
           "src": "/library/food/chickpea-wrap.webp",
           "thumb": "/library/food/chickpea-wrap.thumb.webp",
-          "width": 912,
-          "height": 1200,
+          "width": 760,
+          "height": 1000,
           "caption": "Vegetable and hummus wrap",
           "alt": "Mediterranean Chickpea Wrap: vegetable and hummus wrap",
           "credit": "Jennifer from Vancouver, Canada",
@@ -506,6 +1341,81 @@
         "hummus wrap"
       ]
     },
+    "minestrone": {
+      "name": "Minestrone Soup",
+      "summary": "A hearty Italian vegetable soup with beans and a little pasta.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan (without parmesan)",
+        "Good source of": "Fibre, vitamins, plant protein (beans)",
+        "Commonly contains": "Gluten (pasta)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/minestrone.webp",
+          "thumb": "/library/food/minestrone.thumb.webp",
+          "width": 1000,
+          "height": 668,
+          "caption": "A bowl of minestrone",
+          "alt": "Minestrone Soup: a bowl of minestrone",
+          "credit": "Katrin Morenz from Aachen, Deutschland",
+          "license": "CC BY-SA 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Minestrone_soup.jpg"
+        }
+      ],
+      "steps": [
+        "Sauté onion, carrot, celery and garlic.",
+        "Add tomatoes, stock, beans and diced vegetables.",
+        "Simmer for 20 minutes, adding small pasta for the last 10.",
+        "Finish with herbs."
+      ],
+      "tips": [
+        "Freezes well (add pasta when reheating).",
+        "Serve with whole grain bread for a complete meal."
+      ],
+      "aliases": [
+        "minestrone",
+        "minestrone soup",
+        "italian vegetable soup"
+      ]
+    },
+    "muesli": {
+      "name": "Muesli with Milk",
+      "summary": "Rolled oats, nuts and dried fruit with milk — a quick breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian · vegan with plant milk",
+        "Good source of": "Fibre, complex carbs, protein (milk)",
+        "Commonly contains": "Gluten, tree nuts, dairy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/muesli.webp",
+          "thumb": "/library/food/muesli.thumb.webp",
+          "width": 1000,
+          "height": 1000,
+          "caption": "Muesli with milk in a bowl",
+          "alt": "Muesli with Milk: muesli with milk in a bowl",
+          "credit": "MartinThoma",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Chocolate-muesli.jpg"
+        }
+      ],
+      "steps": [
+        "Pour 1/2 cup unsweetened muesli into a bowl.",
+        "Add milk or yogurt.",
+        "Top with fresh fruit."
+      ],
+      "tips": [
+        "Choose muesli without added sugar.",
+        "Soak for 10 minutes for a softer texture."
+      ],
+      "aliases": [
+        "muesli",
+        "granola with milk",
+        "cereal with milk"
+      ]
+    },
     "mushroom-pea-quinoa": {
       "name": "Mushroom and Pea Stir Fry with Quinoa",
       "summary": "Mushrooms and peas stir-fried with garlic and served over fluffy quinoa.",
@@ -518,8 +1428,8 @@
         {
           "src": "/library/food/mushroom-pea-quinoa.webp",
           "thumb": "/library/food/mushroom-pea-quinoa.thumb.webp",
-          "width": 1200,
-          "height": 900,
+          "width": 1000,
+          "height": 750,
           "caption": "Quinoa with mixed vegetables",
           "alt": "Mushroom and Pea Stir Fry with Quinoa: quinoa with mixed vegetables",
           "credit": "Lablascovegmenu from London",
@@ -595,8 +1505,8 @@
         {
           "src": "/library/food/orange-walnut-salad.webp",
           "thumb": "/library/food/orange-walnut-salad.thumb.webp",
-          "width": 1200,
-          "height": 799,
+          "width": 1000,
+          "height": 666,
           "caption": "Orange salad with fresh greens",
           "alt": "Orange and Walnut Salad: orange salad with fresh greens",
           "credit": "marikoiv",
@@ -617,6 +1527,81 @@
       "aliases": [
         "orange and walnut salad",
         "orange salad"
+      ]
+    },
+    "overnight-oats": {
+      "name": "Overnight Oats",
+      "summary": "Oats soaked overnight in milk or yogurt — a no-cook breakfast ready to grab.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegetarian · vegan with plant milk",
+        "Good source of": "Fibre, complex carbs, protein (milk or yogurt)",
+        "Commonly contains": "Gluten unless oats are certified, dairy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/overnight-oats.webp",
+          "thumb": "/library/food/overnight-oats.thumb.webp",
+          "width": 749,
+          "height": 1000,
+          "caption": "Overnight oats in a jar",
+          "alt": "Overnight Oats: overnight oats in a jar",
+          "credit": "Nervy8924",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Protein_overnight_oats.jpg"
+        }
+      ],
+      "steps": [
+        "Mix 1/2 cup rolled oats with 1/2 cup milk and 1/4 cup yogurt in a jar.",
+        "Add chia seeds or a pinch of cinnamon.",
+        "Cover and refrigerate overnight.",
+        "Top with fruit and nuts in the morning."
+      ],
+      "tips": [
+        "Eat cold or warm briefly.",
+        "Keeps for up to 3 days in the fridge."
+      ],
+      "aliases": [
+        "overnight oats",
+        "overnight oatmeal"
+      ]
+    },
+    "palak-paneer": {
+      "name": "Palak Paneer",
+      "summary": "Paneer cubes in a smooth spiced spinach gravy.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegetarian · gluten-free",
+        "Good source of": "Protein, calcium, iron, vitamin A",
+        "Commonly contains": "Dairy (paneer, cream if added)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/palak-paneer.webp",
+          "thumb": "/library/food/palak-paneer.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Palak paneer",
+          "alt": "Palak Paneer: palak paneer",
+          "credit": "DreamyFlutura11",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Palak_Paneer_(Cottage_cheese_in_spinach_gravy).jpg"
+        }
+      ],
+      "steps": [
+        "Blanch spinach and blend into a purée.",
+        "Sauté onion, ginger-garlic, tomato and spices.",
+        "Add the spinach purée and simmer for 5 minutes.",
+        "Stir in paneer cubes and simmer briefly."
+      ],
+      "tips": [
+        "Skip the cream to keep it lighter.",
+        "Serve with roti or brown rice."
+      ],
+      "aliases": [
+        "palak paneer",
+        "spinach paneer",
+        "saag paneer"
       ]
     },
     "paneer-wrap": {
@@ -658,6 +1643,43 @@
         "kathi roll"
       ]
     },
+    "paneer-bhurji": {
+      "name": "Paneer Bhurji",
+      "summary": "Crumbled paneer cooked with onion, tomato and spices.",
+      "facts": {
+        "Best for": "Breakfast, lunch or dinner",
+        "Diet": "Vegetarian · gluten-free",
+        "Good source of": "Protein, calcium",
+        "Commonly contains": "Dairy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/paneer-bhurji.webp",
+          "thumb": "/library/food/paneer-bhurji.thumb.webp",
+          "width": 750,
+          "height": 1000,
+          "caption": "Homemade paneer bhurji",
+          "alt": "Paneer Bhurji: homemade paneer bhurji",
+          "credit": "Maskaravivek",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Homemade_Paneer_Bhurji.jpg"
+        }
+      ],
+      "steps": [
+        "Crumble paneer.",
+        "Sauté onion, green chilli, tomato and spices in a little oil.",
+        "Add the paneer and turmeric; cook for 2–3 minutes.",
+        "Finish with coriander."
+      ],
+      "tips": [
+        "Serve with roti or toast, or in a wrap.",
+        "Add peppers or peas for more vegetables."
+      ],
+      "aliases": [
+        "paneer bhurji",
+        "scrambled paneer"
+      ]
+    },
     "peanut-butter-toast": {
       "name": "Peanut Butter Toast",
       "summary": "Multigrain toast spread with peanut butter and topped with banana or chia seeds — quick energy plus protein.",
@@ -671,8 +1693,8 @@
         {
           "src": "/library/food/peanut-butter-toast.webp",
           "thumb": "/library/food/peanut-butter-toast.thumb.webp",
-          "width": 1200,
-          "height": 1200,
+          "width": 1000,
+          "height": 1000,
           "caption": "Toast with nut butter and banana slices",
           "alt": "Peanut Butter Toast: toast with nut butter and banana slices",
           "credit": "Daderot",
@@ -695,6 +1717,46 @@
         "multigrain toast with peanut butter and chia seeds",
         "peanut butter banana toast",
         "peanut butter toast"
+      ]
+    },
+    "poha": {
+      "name": "Poha",
+      "summary": "Flattened rice cooked with onion, peas, turmeric and peanuts — a light, quick Indian breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Carbohydrates, iron, fibre (with vegetables)",
+        "Commonly contains": "Peanuts"
+      },
+      "photos": [
+        {
+          "src": "/library/food/poha.webp",
+          "thumb": "/library/food/poha.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Poha garnished with coriander and lime",
+          "alt": "Poha: poha garnished with coriander and lime",
+          "credit": "rovingI",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Poha,_a_snack_made_of_flattened_rice.jpg"
+        }
+      ],
+      "steps": [
+        "Rinse thick poha in a sieve until soft, then drain.",
+        "Temper mustard seeds, curry leaves and peanuts in a little oil.",
+        "Add onion, peas or other vegetables and cook for 2–3 minutes.",
+        "Stir in turmeric, salt and the poha; cook for 2 minutes.",
+        "Finish with lemon juice and coriander."
+      ],
+      "tips": [
+        "Add extra vegetables or a side of curd or sprouts for more protein.",
+        "Eat fresh — poha dries out as it cools."
+      ],
+      "aliases": [
+        "poha",
+        "kanda poha",
+        "vegetable poha",
+        "flattened rice"
       ]
     },
     "rajma": {
@@ -773,6 +1835,124 @@
         "leblebi"
       ]
     },
+    "roasted-makhana": {
+      "name": "Roasted Makhana",
+      "summary": "Light, crunchy roasted fox nuts — a low-calorie Indian snack.",
+      "facts": {
+        "Best for": "Snack",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, magnesium, fibre"
+      },
+      "photos": [
+        {
+          "src": "/library/food/roasted-makhana.webp",
+          "thumb": "/library/food/roasted-makhana.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Makhana being lightly roasted",
+          "alt": "Roasted Makhana: makhana being lightly roasted",
+          "credit": "FacetsOfNonStickPans",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Foxnut_Makhana_-_Nawada_District_-_Bihar_-_1.jpg"
+        }
+      ],
+      "steps": [
+        "Heat a pan with 1 tsp oil or ghee.",
+        "Add makhana and roast on low heat for 8–10 minutes, stirring, until crisp.",
+        "Season with salt, pepper or chaat masala."
+      ],
+      "tips": [
+        "Store airtight once cool.",
+        "About 1 cup makes a portion."
+      ],
+      "aliases": [
+        "roasted makhana",
+        "makhana",
+        "fox nuts",
+        "lotus seeds",
+        "phool makhana"
+      ]
+    },
+    "roti-sabzi": {
+      "name": "Roti with Sabzi",
+      "summary": "Whole wheat flatbread with a home-style vegetable dish — the everyday Indian plate.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan (without ghee)",
+        "Good source of": "Fibre, complex carbs, vitamins",
+        "Commonly contains": "Gluten"
+      },
+      "photos": [
+        {
+          "src": "/library/food/roti-sabzi.webp",
+          "thumb": "/library/food/roti-sabzi.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Thali with chapati, dal, sabzi and salad",
+          "alt": "Roti with Sabzi: thali with chapati, dal, sabzi and salad",
+          "credit": "Sarahbatra",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Punjabi_Thali.JPG"
+        }
+      ],
+      "steps": [
+        "Knead whole wheat flour with water into a soft dough; rest 15 minutes.",
+        "Roll thin rounds and cook on a hot griddle until puffed.",
+        "Cook seasonal vegetables with cumin, turmeric and spices.",
+        "Serve 2 rotis with the sabzi, dal or curd, and salad."
+      ],
+      "tips": [
+        "Add dal, curd or paneer to complete the protein.",
+        "Skip ghee on the rotis to save calories."
+      ],
+      "aliases": [
+        "roti with sabzi",
+        "chapati with sabzi",
+        "roti sabzi",
+        "chapati and sabzi",
+        "mixed vegetable sabzi",
+        "sabzi"
+      ]
+    },
+    "scrambled-eggs": {
+      "name": "Scrambled Eggs on Toast",
+      "summary": "Softly scrambled eggs on whole grain toast — a quick, protein-rich breakfast.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Contains egg (not vegetarian for some)",
+        "Good source of": "Protein, vitamin B12, choline",
+        "Commonly contains": "Eggs, gluten (toast), dairy (if butter or milk used)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/scrambled-eggs.webp",
+          "thumb": "/library/food/scrambled-eggs.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Scrambled eggs on toast",
+          "alt": "Scrambled Eggs on Toast: scrambled eggs on toast",
+          "credit": "Andy Li",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Scrambled_eggs_on_toast_-_Joe%27s_Cafe_2024-04-14.jpg"
+        }
+      ],
+      "steps": [
+        "Whisk 2 eggs with a pinch of salt.",
+        "Cook in a lightly oiled pan over low heat, stirring gently.",
+        "Take off the heat while still slightly glossy.",
+        "Serve on whole grain toast with tomatoes or spinach."
+      ],
+      "tips": [
+        "Low heat keeps them soft without much fat.",
+        "Cook until no liquid egg remains."
+      ],
+      "aliases": [
+        "scrambled eggs",
+        "scrambled egg",
+        "egg bhurji",
+        "anda bhurji"
+      ]
+    },
     "smoothie-bowl": {
       "name": "Smoothie Bowl",
       "summary": "A thick blended fruit (and greens) base eaten with a spoon and topped with seeds, nuts or fruit.",
@@ -824,8 +2004,8 @@
         {
           "src": "/library/food/chana-palak.webp",
           "thumb": "/library/food/chana-palak.thumb.webp",
-          "width": 1200,
-          "height": 900,
+          "width": 1000,
+          "height": 750,
           "caption": "Spinach and chickpea curry",
           "alt": "Spinach and Chickpea Curry: spinach and chickpea curry",
           "credit": "Kari Sullivan from Austin, TX",
@@ -888,6 +2068,44 @@
         "mushroom pasta"
       ]
     },
+    "sprouts-salad": {
+      "name": "Sprouts Salad",
+      "summary": "Sprouted moong with onion, tomato, cucumber and lemon — a protein-rich snack.",
+      "facts": {
+        "Best for": "Snack or side",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, fibre, vitamin C"
+      },
+      "photos": [
+        {
+          "src": "/library/food/sprouts-salad.webp",
+          "thumb": "/library/food/sprouts-salad.thumb.webp",
+          "width": 1000,
+          "height": 563,
+          "caption": "Sprouts salad with corn",
+          "alt": "Sprouts Salad: sprouts salad with corn",
+          "credit": "Kumawat10",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Sprouts_Salad_with_Corn.JPG"
+        }
+      ],
+      "steps": [
+        "Steam or lightly boil moong sprouts for 3–4 minutes.",
+        "Mix with chopped onion, tomato, cucumber and coriander.",
+        "Add lemon juice, salt and chaat masala."
+      ],
+      "tips": [
+        "Lightly cooking sprouts makes them safer and easier to digest.",
+        "Make it fresh; don't keep it at room temperature for long."
+      ],
+      "aliases": [
+        "sprouts salad",
+        "sprouts chaat",
+        "moong sprouts",
+        "sprouted moong",
+        "sprout salad"
+      ]
+    },
     "stuffed-bell-peppers": {
       "name": "Stuffed Bell Peppers",
       "summary": "Bell peppers filled with brown rice or lentils and vegetables, then baked until tender.",
@@ -925,6 +2143,46 @@
         "stuffed bell peppers with lentils and vegetables",
         "stuffed bell pepper",
         "stuffed pepper"
+      ]
+    },
+    "paratha": {
+      "name": "Stuffed Paratha",
+      "summary": "Whole wheat flatbread stuffed with spiced potato, cauliflower or paneer.",
+      "facts": {
+        "Best for": "Breakfast or lunch",
+        "Diet": "Vegetarian · vegan without ghee or butter",
+        "Good source of": "Complex carbs, fibre",
+        "Commonly contains": "Gluten, dairy (if ghee, butter or paneer)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/paratha.webp",
+          "thumb": "/library/food/paratha.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Aloo paratha with dal, curd and pickle",
+          "alt": "Stuffed Paratha: aloo paratha with dal, curd and pickle",
+          "credit": "AjayDas",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Aloo_paratha_served_with_daal,_curd_and_achar.jpg"
+        }
+      ],
+      "steps": [
+        "Make a soft whole wheat dough and a spiced filling.",
+        "Roll a dough ball, add filling, seal and roll flat.",
+        "Cook on a hot griddle, flipping, with a little oil until golden spots appear.",
+        "Serve with curd and salad."
+      ],
+      "tips": [
+        "Use a teaspoon of oil or ghee rather than frying.",
+        "Pair with curd or dal to add protein."
+      ],
+      "aliases": [
+        "aloo paratha",
+        "paratha",
+        "stuffed paratha",
+        "paneer paratha",
+        "gobi paratha"
       ]
     },
     "buddha-bowl": {
@@ -976,8 +2234,8 @@
         {
           "src": "/library/food/tofu-skewers.webp",
           "thumb": "/library/food/tofu-skewers.thumb.webp",
-          "width": 1200,
-          "height": 800,
+          "width": 1000,
+          "height": 666,
           "caption": "Vegetable skewers being assembled",
           "alt": "Tofu and Vegetable Skewers with Brown Rice: vegetable skewers being assembled",
           "credit": "Personal Creations",
@@ -1014,8 +2272,8 @@
         {
           "src": "/library/food/tofu-stir-fry.webp",
           "thumb": "/library/food/tofu-stir-fry.thumb.webp",
-          "width": 1115,
-          "height": 1200,
+          "width": 930,
+          "height": 1000,
           "caption": "Tofu stir-fry with vegetables",
           "alt": "Tofu and Vegetable Stir Fry: tofu stir-fry with vegetables",
           "credit": "Wikimedia Commons contributor",
@@ -1039,6 +2297,44 @@
         "tofu stir fry with broccoli and bell peppers",
         "vegetable and tofu stir fry with millet",
         "tofu stir fry"
+      ]
+    },
+    "tofu-scramble": {
+      "name": "Tofu Scramble",
+      "summary": "Crumbled tofu cooked with turmeric and vegetables — a vegan alternative to scrambled eggs.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegan · gluten-free",
+        "Good source of": "Plant protein, calcium, iron",
+        "Commonly contains": "Soy"
+      },
+      "photos": [
+        {
+          "src": "/library/food/tofu-scramble.webp",
+          "thumb": "/library/food/tofu-scramble.thumb.webp",
+          "width": 1000,
+          "height": 1000,
+          "caption": "Tofu scramble with greens",
+          "alt": "Tofu Scramble: tofu scramble with greens",
+          "credit": "Bart Everson",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Tofu_Scramble_in_New_Orleans.jpg"
+        }
+      ],
+      "steps": [
+        "Crumble firm tofu with your hands.",
+        "Sauté onion, peppers and spinach in a little oil.",
+        "Add the tofu, turmeric, salt and pepper; cook for 4–5 minutes.",
+        "Serve with whole grain toast or in a wrap."
+      ],
+      "tips": [
+        "A pinch of black salt (kala namak) gives an eggy flavour.",
+        "Pressing the tofu first gives a firmer texture."
+      ],
+      "aliases": [
+        "tofu scramble",
+        "scrambled tofu",
+        "tofu bhurji"
       ]
     },
     "trail-mix": {
@@ -1076,6 +2372,46 @@
         "mixed nuts and raisins",
         "trail mix",
         "mixed nuts"
+      ]
+    },
+    "upma": {
+      "name": "Upma",
+      "summary": "Savoury semolina porridge with vegetables and mild spices.",
+      "facts": {
+        "Best for": "Breakfast",
+        "Diet": "Vegan (without ghee)",
+        "Good source of": "Carbohydrates, B vitamins",
+        "Commonly contains": "Gluten (semolina), possibly cashews"
+      },
+      "photos": [
+        {
+          "src": "/library/food/upma.webp",
+          "thumb": "/library/food/upma.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Upma served on a plate",
+          "alt": "Upma: upma served on a plate",
+          "credit": "Intodustin",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Upma_South_India.JPG"
+        }
+      ],
+      "steps": [
+        "Dry-roast semolina until fragrant and set aside.",
+        "Temper mustard seeds, curry leaves and a little ginger in oil.",
+        "Add chopped vegetables and cook briefly.",
+        "Pour in hot water (about 2:1 to semolina), then stir in the semolina gradually to avoid lumps.",
+        "Cover and cook on low for 2–3 minutes."
+      ],
+      "tips": [
+        "Load it with vegetables to make it more filling.",
+        "Serve with coconut chutney or curd."
+      ],
+      "aliases": [
+        "upma",
+        "rava upma",
+        "vegetable upma",
+        "semolina upma"
       ]
     },
     "lentil-vegetable-soup": {
@@ -1195,6 +2531,44 @@
         "biryani"
       ]
     },
+    "vegetable-fried-rice": {
+      "name": "Vegetable Fried Rice",
+      "summary": "Day-old rice stir-fried with vegetables and soy sauce.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan",
+        "Good source of": "Carbohydrates, fibre",
+        "Commonly contains": "Soy, gluten (soy sauce)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/vegetable-fried-rice.webp",
+          "thumb": "/library/food/vegetable-fried-rice.thumb.webp",
+          "width": 750,
+          "height": 1000,
+          "caption": "Vegetable fried rice",
+          "alt": "Vegetable Fried Rice: vegetable fried rice",
+          "credit": "Ganesh Mohan T",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Kerala_vegetable_fried_rice_2.jpg"
+        }
+      ],
+      "steps": [
+        "Stir-fry garlic and chopped vegetables over high heat.",
+        "Add cold cooked rice and toss until hot.",
+        "Season with soy sauce and pepper.",
+        "Finish with spring onions."
+      ],
+      "tips": [
+        "Cold, day-old rice fries best.",
+        "Add tofu, egg or edamame for protein."
+      ],
+      "aliases": [
+        "vegetable fried rice",
+        "veg fried rice",
+        "fried rice"
+      ]
+    },
     "tomato-basil-pasta": {
       "name": "Vegetable Pasta with Tomato Basil Sauce",
       "summary": "Pasta in a simple tomato and basil sauce with plenty of vegetables.",
@@ -1233,6 +2607,44 @@
         "pasta with tomato sauce"
       ]
     },
+    "vegetable-pulao": {
+      "name": "Vegetable Pulao",
+      "summary": "Fragrant rice cooked with whole spices and mixed vegetables.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegan (without ghee) · gluten-free",
+        "Good source of": "Complex carbs, fibre"
+      },
+      "photos": [
+        {
+          "src": "/library/food/vegetable-pulao.webp",
+          "thumb": "/library/food/vegetable-pulao.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Vegetable pulao",
+          "alt": "Vegetable Pulao: vegetable pulao",
+          "credit": "Jagisnowjughead",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:VEGETABLE_PULAO_~_An_Indian_cuisine_made_from_fried_rice_mixed_with_fried_vegetables.jpg"
+        }
+      ],
+      "steps": [
+        "Rinse and soak basmati rice for 20 minutes.",
+        "Sauté whole spices, onion and mixed vegetables in a little oil.",
+        "Add the rice, salt and water (about 1:1.75).",
+        "Cover and cook on low until the water is absorbed."
+      ],
+      "tips": [
+        "Serve with raita and dal for a balanced plate.",
+        "Use brown rice for more fibre (cook longer with more water)."
+      ],
+      "aliases": [
+        "vegetable pulao",
+        "veg pulao",
+        "pulao",
+        "pilaf"
+      ]
+    },
     "veggie-sticks-hummus": {
       "name": "Vegetable Sticks with Hummus",
       "summary": "Crunchy carrot and cucumber sticks with hummus for dipping.",
@@ -1268,6 +2680,83 @@
         "carrot and cucumber sticks with hummus",
         "carrot sticks with hummus",
         "hummus"
+      ]
+    },
+    "thai-green-curry": {
+      "name": "Vegetable Thai Green Curry",
+      "summary": "Vegetables (and tofu) simmered in a coconut green curry sauce, served with rice.",
+      "facts": {
+        "Best for": "Dinner",
+        "Diet": "Vegan with tofu (check the curry paste)",
+        "Good source of": "Vitamins, plant protein (tofu)",
+        "Commonly contains": "Coconut, soy; some pastes contain shrimp"
+      },
+      "photos": [
+        {
+          "src": "/library/food/thai-green-curry.webp",
+          "thumb": "/library/food/thai-green-curry.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Vegetable Thai green curry",
+          "alt": "Vegetable Thai Green Curry: vegetable Thai green curry",
+          "credit": "Biswarup Ganguly",
+          "license": "CC BY 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Vegetable_In_Thai_Green_Curry_-_Hyatt_Hyderabad_Gachibowli_-_Hyderabad_2023-04-28_7811.jpg"
+        }
+      ],
+      "steps": [
+        "Fry green curry paste briefly in a little oil.",
+        "Add light coconut milk and vegetables; simmer until tender.",
+        "Add tofu cubes and simmer for 3 minutes.",
+        "Season with lime juice and basil; serve with rice."
+      ],
+      "tips": [
+        "Light coconut milk cuts the calories.",
+        "Many green curry pastes contain shrimp paste — check the label if vegetarian."
+      ],
+      "aliases": [
+        "thai green curry",
+        "green curry",
+        "vegetable green curry",
+        "tofu green curry"
+      ]
+    },
+    "veggie-burger": {
+      "name": "Veggie Burger",
+      "summary": "A bean or lentil patty in a whole grain bun with salad.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegetarian · often vegan",
+        "Good source of": "Plant protein, fibre",
+        "Commonly contains": "Gluten, possibly soy, dairy or egg"
+      },
+      "photos": [
+        {
+          "src": "/library/food/veggie-burger.webp",
+          "thumb": "/library/food/veggie-burger.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Veggie burger",
+          "alt": "Veggie Burger: veggie burger",
+          "credit": "Zimt Zauberstab",
+          "license": "CC BY-SA 2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Veggie_Burger_(24835249468).jpg"
+        }
+      ],
+      "steps": [
+        "Mash beans or lentils with oats, onion and spices; shape into patties.",
+        "Pan-cook or bake until browned on both sides.",
+        "Serve in a whole grain bun with lettuce, tomato and onion."
+      ],
+      "tips": [
+        "Bake rather than fry.",
+        "Pair with a side salad instead of fries."
+      ],
+      "aliases": [
+        "veggie burger",
+        "vegetable burger",
+        "bean burger",
+        "lentil burger"
       ]
     },
     "veggie-omelette": {
@@ -1399,8 +2888,8 @@
         {
           "src": "/library/food/zucchini-noodles-pesto.webp",
           "thumb": "/library/food/zucchini-noodles-pesto.thumb.webp",
-          "width": 1200,
-          "height": 810,
+          "width": 1000,
+          "height": 675,
           "caption": "Spiralised zucchini noodles with pesto",
           "alt": "Zucchini Noodles with Pesto: spiralised zucchini noodles with pesto",
           "credit": "Tony Webster from Minneapolis, Minnesota, United States",

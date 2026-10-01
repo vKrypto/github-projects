@@ -57,8 +57,8 @@ class OpenAIProvider:
             raise PlanningError('The OpenAI request failed. Check the connection or model setting, then retry.') from None
     def generate(self, role, context, revision=''):
         brief = {
-            'workout': 'Generate only workouts/mobility/recovery. Balance body areas and rest. Every active task must include structured exercises, one entry per exercise, with a short name and sets/reps for strength or hold_seconds/minutes for timed movements. Reps can be a range such as "10-12 per side". Use null for quantities that do not apply. Include estimated minutes for each exercise when practical, including its rest time; their sum must not exceed the task duration. Task minutes are the total session duration, including rest, and must not double-count individual exercises. For a zero-minute rest day, exercises may be empty. Keep steps consistent with these quantities. Calories are estimated burn. daily_calorie_target=0. Honor available equipment.',
-            'meal': 'Generate breakfast, lunch, dinner, and optional snack EVERY day. Include portions, ingredients, preparation steps and estimated calories. Honor ALL allergies and dietary preferences. Set a reasonable daily_calorie_target with transparent assumptions using height, weight, age, goal and level. Meal totals should approximate it. daily_burn_target=0.',
+            'workout': 'Generate only workouts/mobility/recovery. Balance body areas and rest. Every active task must include structured exercises, one entry per exercise, with a short name and sets/reps for strength or hold_seconds/minutes for timed movements. Reps can be a range such as "10-12 per side". Use null for quantities that do not apply. Include estimated minutes for each exercise when practical, including its rest time; their sum must not exceed the task duration. Task minutes are the total session duration, including rest, and must not double-count individual exercises. For a zero-minute rest day, exercises may be empty. Keep steps consistent with these quantities. Give every exercise an approximate calorie burn (calories, whole kcal) for its prescribed sets, reps or duration, based on the user\'s weight and the intensity. Task calories are the estimated burn for the whole session including warm-up and rest; the exercises\' calories must add up to no more than that. daily_calorie_target=0. Honor available equipment.',
+            'meal': 'Generate breakfast, lunch, dinner, and optional snack EVERY day. Include portions, ingredients, preparation steps and estimated calories. Write every ingredient with its quantity and approximate energy and protein, for example "1/2 cup dry quinoa (~310 kcal, 12 g protein)". Give every meal its nutrition for the stated portions: protein_g, carbs_g, fat_g and fiber_g, consistent with its calories (about 4 kcal per gram of protein or carbohydrate and 9 per gram of fat). Honor ALL allergies and dietary preferences. Set a reasonable daily_calorie_target and daily_nutrition_targets (grams of protein, carbohydrate, fat and fiber) with transparent assumptions using height, weight, age, goal, level and diet; protein is typically about 1.0-1.6 g per kg of body weight depending on the goal. Each day\'s meal totals should approximate these targets. daily_burn_target=0.',
             'care': 'Generate only requested Skin care and/or Hair care. Suggest gentle product categories and patch testing, no brands needed. Calories and targets=0. Keep routines practical; avoid treating conditions.'
         }[role]
         clean = {k:v for k,v in context.items() if k != 'media'}
@@ -71,7 +71,8 @@ class OpenAIProvider:
         context = {k:v for k,v in context.items() if k != 'media'}
         return self.parse(POLICY+'''\nYou are the independent review agent. Review the combined plans for balance,
 rest, exercise sets/repetitions/timed holds, consistency with workout duration and steps,
-nutrition estimates, calorie totals, allergies, dietary restrictions, limitations,
+nutrition estimates, calorie totals, meal protein/carbohydrate/fat/fiber against the daily
+targets, plausible per-exercise calorie burn, allergies, dietary restrictions, limitations,
 available equipment and requested care focus. Any allergy conflict, unsafe instruction,
 missing daily meals or contradictory calorie target is major. If any major issue exists,
 approved must be false. Give concrete role-specific revision feedback. Do not approve
@@ -96,6 +97,11 @@ def validate_role(role, plan, profile):
             raise PlanningError('The meal plan must include three meals every day.')
         if role=='meal' and abs(sum(t.calories for t in day.tasks)-plan.daily_calorie_target)>max(150,plan.daily_calorie_target*.15):
             raise PlanningError('Daily meal calories do not match the calorie target.')
+        targets = getattr(plan, 'daily_nutrition_targets', None)
+        if role=='meal' and targets and all(hasattr(t,'nutrition') for t in day.tasks):
+            protein = sum(t.nutrition.protein_g for t in day.tasks)
+            if abs(protein-targets.protein_g)>max(15,targets.protein_g*.25):
+                raise PlanningError('Daily meal protein does not match the protein target.')
         for t in day.tasks:
             try: datetime.strptime(t.time,'%H:%M')
             except ValueError: raise PlanningError('Invalid task time.') from None
@@ -113,6 +119,13 @@ def validate_role(role, plan, profile):
                         raise PlanningError('Each exercise needs repetitions or a timed duration.')
                 if sum(e.minutes or 0 for e in t.exercises)>t.minutes:
                     raise PlanningError('Exercise durations exceed the total workout duration.')
+                if sum(e.calories for e in t.exercises)>t.calories*1.25+25:
+                    raise PlanningError('Exercise calorie estimates exceed the session burn.')
+            if role=='meal' and hasattr(t,'nutrition'):
+                n = t.nutrition
+                # Calories from macros (4/4/9 kcal per gram) should roughly match the meal estimate.
+                if abs(4*n.protein_g+4*n.carbs_g+9*n.fat_g-t.calories)>max(100,t.calories*.3):
+                    raise PlanningError('Meal protein, carbohydrate and fat do not match its calories.')
 
 def generate(profile, media, start: date, progress=None, report=lambda *args:None, provider=None, *, days_count=28, journey_offset=0, preferences=None, current_plan=None, action='generate'):
     provider = provider or PROVIDERS[os.getenv('LLM_PROVIDER','openai')]()
@@ -148,6 +161,8 @@ def generate(profile, media, start: date, progress=None, report=lambda *args:Non
             revisions[r]+=1
             report('revising',f'{r.title()} agent is revising its plan ({revisions[r]}/3). {feedback}')
             plans[r]=provider.generate(r,{**context,'previous_plan':plans[r].model_dump()},feedback)
+    targets = getattr(plans['meal'], 'daily_nutrition_targets', None)
+    nutrition_targets = targets.model_dump() if targets else None
     days=[]
     for i in range(days_count):
         tasks=[]
@@ -156,11 +171,12 @@ def generate(profile, media, start: date, progress=None, report=lambda *args:Non
             template = next(d for d in plan.days if d.day==(journey_offset+i)%7+1)
             for index,t in enumerate(template.tasks):
                 tasks.append({**t.model_dump(),'id':f'{role}-{index+1}', 'role':role,'week_note':plan.weekly_progression[i//7]})
-        days.append({'date':(start+timedelta(days=i)).isoformat(),'week':i//7+1,'tasks':sorted(tasks,key=lambda t:t['time']), 'daily_calorie_target':plans['meal'].daily_calorie_target, 'daily_burn_target':plans['workout'].daily_burn_target if 'workout' in plans else 0})
+        days.append({'date':(start+timedelta(days=i)).isoformat(),'week':i//7+1,'tasks':sorted(tasks,key=lambda t:t['time']), 'daily_calorie_target':plans['meal'].daily_calorie_target, 'daily_burn_target':plans['workout'].daily_burn_target if 'workout' in plans else 0, 'daily_nutrition_targets':nutrition_targets})
     return {'provider':os.getenv('LLM_PROVIDER','openai'),'model':os.getenv('OPENAI_MODEL','gpt-4.1-mini'),
         'start_date':start.isoformat(),'end_date':(start+timedelta(days=days_count-1)).isoformat(),
         'daily_calorie_target':plans['meal'].daily_calorie_target,
         'daily_burn_target':plans['workout'].daily_burn_target if 'workout' in plans else 0,
+        'daily_nutrition_targets':nutrition_targets,
         'care_start_day':1 if profile['care_early'] else 15,'days':days,
         'summaries':{r:p.summary for r,p in plans.items()},
         'assumptions':[s for p in plans.values() for s in p.assumptions],

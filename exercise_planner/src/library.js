@@ -162,3 +162,50 @@ export function followLink(event) {
   event.preventDefault();
   navigate(event.currentTarget.getAttribute("href"));
 }
+
+const FOCUS_WORDS = [
+  ["Full body", "full body|total body"],
+  ["Upper body", "upper body"],
+  ["Legs", "lower body|legs?|glutes?|quads?|hamstrings?"],
+  ["Arms", "arms?|biceps?|triceps?"],
+  ["Chest", "chest"],
+  ["Back", "back"],
+  ["Shoulders", "shoulders?"],
+  ["Core", "core|abs|abdominals?"],
+  [
+    "Cardio",
+    "cardio|treadmill|run|running|jog|jogging|walk|walking|cycling|hiit|elliptical|rowing|swim|swimming",
+  ],
+  [
+    "Stretching",
+    "stretch|stretches|stretching|yoga|mobility|recovery|relax|relaxation|flexibility|cool down|rest",
+  ],
+].map(([label, words]) => [label, new RegExp(`(?:^| )(?:${words})(?= |$)`)]);
+const STRETCH_TITLE = /(?:^| )(?:stretch|stretches|stretching|yoga)(?= |$)/;
+const UPPER = new Set(["Arms", "Chest", "Back", "Shoulders"]);
+
+// The body area a session works, for the minimal plan view. Titles usually
+// name it ("Lower Body Strength…"); otherwise the exercises' areas decide.
+export function workoutFocus(library, task) {
+  const title = normalize(task.title);
+  // "Full Body Stretching" is a stretching session, whatever part it names.
+  if (STRETCH_TITLE.test(title)) return "Stretching";
+  let named = null;
+  for (const [label, pattern] of FOCUS_WORDS) {
+    const index = title.search(pattern);
+    if (index >= 0 && (!named || index < named.index)) named = { label, index };
+  }
+  if (named) return named.label;
+  const areas = taskGuides(library, task)
+    .map((guide) => guide.area)
+    .filter(Boolean);
+  if (!areas.length) return "Workout";
+  const counts = new Map();
+  for (const area of areas) counts.set(area, (counts.get(area) || 0) + 1);
+  const [top, topCount] = [...counts].sort((a, b) => b[1] - a[1])[0];
+  if (topCount * 2 >= areas.length) return top;
+  const upper = [...counts.keys()].filter((area) => UPPER.has(area));
+  if (upper.length && counts.has("Legs")) return "Full body";
+  if (upper.length >= 2) return "Upper body";
+  return top;
+}

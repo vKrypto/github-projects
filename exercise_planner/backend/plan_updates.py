@@ -52,6 +52,7 @@ def merge_adjustment(current, generated, action, statuses, job_id, preference, c
     for day in merged['days']:
         day.setdefault('daily_calorie_target', current['daily_calorie_target'])
         day.setdefault('daily_burn_target', current.get('daily_burn_target', 0))
+        day.setdefault('daily_nutrition_targets', current.get('daily_nutrition_targets'))
     for key in ('provider', 'model', 'summaries', 'assumptions', 'reviews', 'revisions', 'review_summary'):
         merged[key] = deepcopy(generated[key])
     change = {'action': action, 'days': len(generated['days']), 'start_date': generated['start_date'],

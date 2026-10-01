@@ -13,6 +13,7 @@ import {
 } from "./quantities";
 import { exerciseRowGuides, findGuides, useLibrary } from "./library";
 import { GuideChips, GuideLink, GuideThumb, PhotoFocus } from "./Guide";
+import MinimalPlan from "./MinimalPlan";
 
 const GROUPS = [
   { role: "workout", title: "Workouts", Icon: Dumbbell },
@@ -28,12 +29,15 @@ export default function PlanCards({
   busy,
   mark,
   onDetails,
+  view = "cards",
 }) {
   const statusOf = (task) => statuses[`${date}/${task.id}`] || "pending";
   const exerciseLibrary = useLibrary("exercise").library;
   const foodLibrary = useLibrary("food").library;
   const [focus, setFocus] = useState(null);
   const openExercise = (guide) => setFocus({ type: "exercise", guide });
+  if (view === "minimal" && tasks.some((t) => t.role !== "care"))
+    return <MinimalPlan tasks={tasks} date={date} statuses={statuses} />;
   const groups = GROUPS.map((group) => ({
     ...group,
     tasks: tasks.filter((t) => t.role === group.role),

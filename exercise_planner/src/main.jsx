@@ -30,10 +30,14 @@ import {
   Trash2,
   PanelLeftClose,
   PanelLeftOpen,
+  BookOpen,
+  LayoutGrid,
+  Rows3,
 } from "lucide-react";
 import { api, localDate, dateObject, labelDate, shiftDate } from "./api";
 import PlanCards from "./PlanCards";
 import GuidePage, { TaskGuides } from "./Guide";
+import StaticPages from "./StaticPages";
 import { guideRoute } from "./library";
 import "./style.css";
 const DEFAULT_PROFILE = {
@@ -79,6 +83,22 @@ function App() {
     () => window.matchMedia("(max-width: 900px)").matches,
   );
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [planView, setPlanView] = useState(() => {
+    try {
+      return localStorage.getItem("forma.planView") === "minimal"
+        ? "minimal"
+        : "cards";
+    } catch {
+      return "cards";
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("forma.planView", planView);
+    } catch {
+      // The view still switches when browser storage is unavailable.
+    }
+  }, [planView]);
   const sidebarCollapsed = mobileViewport
     ? !mobileSidebarOpen
     : desktopSidebarCollapsed;
@@ -528,31 +548,32 @@ function App() {
         </div>
         <div className="nav-label">YOUR SPACE</div>
         <nav id="side-navigation" aria-label="Main navigation">
-          {(account?.role === "admin" ? [[Users, "Users"], ...NAV] : NAV).map(
-            ([Icon, p]) => (
-              <button
-                className={page === p ? "active" : ""}
-                key={p}
-                aria-label={p}
-                aria-current={page === p ? "page" : undefined}
-                title={sidebarCollapsed ? p : undefined}
-                onClick={() => {
-                  if (account) {
-                    setPage(p);
-                    window.scrollTo({ top: 0, behavior: "instant" });
-                    if (p === "Overview") setDate(localDate());
-                  } else setModal("login");
-                  setMobileSidebarOpen(false);
-                }}
-              >
-                <Icon size={19} />
-                <span className="nav-text">{p}</span>
-                {p === "Care routines" && !profile?.care_early && (
-                  <span className="soon">WEEK 3</span>
-                )}
-              </button>
-            ),
-          )}
+          {(account?.role === "admin"
+            ? [[Users, "Users"], [BookOpen, "Static pages"], ...NAV]
+            : NAV
+          ).map(([Icon, p]) => (
+            <button
+              className={page === p ? "active" : ""}
+              key={p}
+              aria-label={p}
+              aria-current={page === p ? "page" : undefined}
+              title={sidebarCollapsed ? p : undefined}
+              onClick={() => {
+                if (account) {
+                  setPage(p);
+                  window.scrollTo({ top: 0, behavior: "instant" });
+                  if (p === "Overview") setDate(localDate());
+                } else setModal("login");
+                setMobileSidebarOpen(false);
+              }}
+            >
+              <Icon size={19} />
+              <span className="nav-text">{p}</span>
+              {p === "Care routines" && !profile?.care_early && (
+                <span className="soon">WEEK 3</span>
+              )}
+            </button>
+          ))}
         </nav>
         <div className="sidebar-bottom">
           <div className="journey">
@@ -760,6 +781,8 @@ function App() {
                 </button>
               </form>
             </div>
+          ) : account.role === "admin" && page === "Static pages" ? (
+            <StaticPages />
           ) : account.role === "admin" && page === "Users" ? (
             <>
               <div className="page-heading">
@@ -1434,11 +1457,37 @@ function App() {
                               day: "numeric",
                             })}
                           </span>
+                          {visibleTasks.some((t) => t.role !== "care") && (
+                            <div
+                              className="view-toggle"
+                              role="group"
+                              aria-label="Plan view"
+                            >
+                              {[
+                                ["cards", LayoutGrid, "Cards"],
+                                ["minimal", Rows3, "Minimal"],
+                              ].map(([value, Icon, label]) => (
+                                <button
+                                  key={value}
+                                  type="button"
+                                  aria-pressed={planView === value}
+                                  className={
+                                    planView === value ? "selected" : ""
+                                  }
+                                  onClick={() => setPlanView(value)}
+                                >
+                                  <Icon size={13} />
+                                  {label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                         <div className="task-list">
                           {visibleTasks.length > 0 && (
                             <PlanCards
                               tasks={visibleTasks}
+                              view={planView}
                               date={date}
                               today={date === localDate()}
                               statuses={statuses}

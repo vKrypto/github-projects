@@ -5,6 +5,7 @@
   "items": {
     "arnold-press": {
       "name": "Arnold Press",
+      "area": "Shoulders",
       "summary": "A shoulder press with a rotation that works all parts of the shoulders.",
       "facts": {
         "Targets": "Shoulders, triceps",
@@ -52,6 +53,7 @@
     },
     "bench-dip": {
       "name": "Bench Dip",
+      "area": "Arms",
       "summary": "A bodyweight triceps exercise using a bench or sturdy chair.",
       "facts": {
         "Targets": "Triceps, shoulders, chest",
@@ -102,6 +104,7 @@
     },
     "dumbbell-row": {
       "name": "Bent-Over Dumbbell Row",
+      "area": "Back",
       "summary": "A hinged pulling exercise that strengthens the upper back.",
       "facts": {
         "Targets": "Upper back, lats, biceps",
@@ -150,6 +153,7 @@
     },
     "bicycle-crunch": {
       "name": "Bicycle Crunch",
+      "area": "Core",
       "summary": "A twisting crunch that works the obliques and abdominals.",
       "facts": {
         "Targets": "Obliques, abdominals",
@@ -197,6 +201,7 @@
     },
     "bird-dog": {
       "name": "Bird Dog",
+      "area": "Core",
       "summary": "An all-fours exercise that trains the core and back muscles to keep the spine stable.",
       "facts": {
         "Targets": "Core, lower back, glutes, shoulders",
@@ -244,6 +249,7 @@
     },
     "bodyweight-squat": {
       "name": "Bodyweight Squat",
+      "area": "Legs",
       "summary": "The basic sit-and-stand pattern that builds strength in the legs and hips.",
       "facts": {
         "Targets": "Quads, glutes, hamstrings",
@@ -293,6 +299,7 @@
     },
     "box-jump": {
       "name": "Box Jump",
+      "area": "Legs",
       "summary": "Jumping onto a sturdy box to build explosive leg power.",
       "facts": {
         "Targets": "Quads, glutes, calves",
@@ -339,6 +346,7 @@
     },
     "bridge-march": {
       "name": "Bridge March",
+      "area": "Legs",
       "summary": "A glute bridge where you lift one foot at a time, adding a balance and core challenge.",
       "facts": {
         "Targets": "Glutes, hamstrings, core",
@@ -388,6 +396,7 @@
     },
     "burpee": {
       "name": "Burpee",
+      "area": "Cardio",
       "summary": "A squat-to-plank-to-jump movement that raises the heart rate fast.",
       "facts": {
         "Targets": "Full body, heart and lungs",
@@ -398,8 +407,8 @@
         {
           "src": "/library/exercise/burpee-1.webp",
           "thumb": "/library/exercise/burpee-1.thumb.webp",
-          "width": 1200,
-          "height": 719,
+          "width": 1000,
+          "height": 599,
           "caption": "Squat with hands down",
           "alt": "Burpee: squat with hands down",
           "credit": "Taco fleur",
@@ -409,8 +418,8 @@
         {
           "src": "/library/exercise/burpee-2.webp",
           "thumb": "/library/exercise/burpee-2.thumb.webp",
-          "width": 1200,
-          "height": 719,
+          "width": 1000,
+          "height": 599,
           "caption": "Feet thrust back to plank",
           "alt": "Burpee: feet thrust back to plank",
           "credit": "Taco fleur",
@@ -420,8 +429,8 @@
         {
           "src": "/library/exercise/burpee-3.webp",
           "thumb": "/library/exercise/burpee-3.thumb.webp",
-          "width": 1200,
-          "height": 719,
+          "width": 1000,
+          "height": 599,
           "caption": "Feet back under the hips",
           "alt": "Burpee: feet back under the hips",
           "credit": "Taco fleur",
@@ -445,6 +454,7 @@
     },
     "butterfly-stretch": {
       "name": "Butterfly Stretch",
+      "area": "Stretching",
       "summary": "A seated stretch for the inner thighs and hips.",
       "facts": {
         "Targets": "Inner thighs, hips",
@@ -455,8 +465,8 @@
         {
           "src": "/library/exercise/butterfly-stretch-1.webp",
           "thumb": "/library/exercise/butterfly-stretch-1.thumb.webp",
-          "width": 1200,
-          "height": 1091,
+          "width": 1000,
+          "height": 909,
           "caption": "Seated with soles together",
           "alt": "Butterfly Stretch: seated with soles together",
           "credit": "Jfbongarçon",
@@ -494,6 +504,7 @@
     },
     "cable-bicep-curl": {
       "name": "Cable Bicep Curl",
+      "area": "Arms",
       "summary": "A bicep curl on the low pulley that keeps the muscle under tension through the whole movement.",
       "facts": {
         "Targets": "Biceps, forearms",
@@ -542,6 +553,7 @@
     },
     "glute-kickback": {
       "name": "Cable Glute Kickback",
+      "area": "Legs",
       "summary": "A standing kickback that isolates the glutes.",
       "facts": {
         "Targets": "Glutes, hamstrings",
@@ -589,6 +601,7 @@
     },
     "leg-curl": {
       "name": "Cable Leg Curl",
+      "area": "Legs",
       "summary": "A single-leg curl that isolates the hamstrings.",
       "facts": {
         "Targets": "Hamstrings",
@@ -636,6 +649,7 @@
     },
     "tricep-pushdown": {
       "name": "Cable Tricep Pushdown",
+      "area": "Arms",
       "summary": "A cable exercise that isolates the triceps.",
       "facts": {
         "Targets": "Triceps",
@@ -685,6 +699,7 @@
     },
     "cable-woodchop": {
       "name": "Cable Woodchop",
+      "area": "Core",
       "summary": "A diagonal cable pull that trains rotation through the core.",
       "facts": {
         "Targets": "Obliques, core, shoulders",
@@ -695,8 +710,8 @@
         {
           "src": "/library/exercise/cable-woodchop-1.webp",
           "thumb": "/library/exercise/cable-woodchop-1.thumb.webp",
-          "width": 800,
-          "height": 1200,
+          "width": 667,
+          "height": 1000,
           "caption": "Pulling from the high pulley",
           "alt": "Cable Woodchop: pulling from the high pulley",
           "credit": "free-exercise-db",
@@ -706,8 +721,8 @@
         {
           "src": "/library/exercise/cable-woodchop-2.webp",
           "thumb": "/library/exercise/cable-woodchop-2.thumb.webp",
-          "width": 800,
-          "height": 1200,
+          "width": 667,
+          "height": 1000,
           "caption": "Finishing across the body",
           "alt": "Cable Woodchop: finishing across the body",
           "credit": "free-exercise-db",
@@ -734,6 +749,7 @@
     },
     "cat-cow": {
       "name": "Cat-Cow Stretch",
+      "area": "Stretching",
       "summary": "A gentle flow between rounding and arching the spine to loosen the back.",
       "facts": {
         "Targets": "Spine, upper and lower back",
@@ -782,6 +798,7 @@
     },
     "chest-opener-stretch": {
       "name": "Chest Opener Stretch",
+      "area": "Stretching",
       "summary": "A standing stretch that opens the chest and the front of the shoulders.",
       "facts": {
         "Targets": "Chest, front shoulders",
@@ -830,6 +847,7 @@
     },
     "childs-pose": {
       "name": "Child's Pose",
+      "area": "Stretching",
       "summary": "A resting stretch for the back, hips and shoulders.",
       "facts": {
         "Targets": "Lower back, hips, shoulders",
@@ -878,6 +896,7 @@
     },
     "cobra-pose": {
       "name": "Cobra Pose",
+      "area": "Stretching",
       "summary": "A gentle back bend that stretches the chest and front of the body.",
       "facts": {
         "Targets": "Lower back, chest, abdominals",
@@ -927,6 +946,7 @@
     },
     "corpse-pose": {
       "name": "Corpse Pose",
+      "area": "Stretching",
       "summary": "A lying rest pose used to finish yoga or recovery sessions.",
       "facts": {
         "Targets": "Relaxation",
@@ -948,8 +968,8 @@
         {
           "src": "/library/exercise/corpse-pose-2.webp",
           "thumb": "/library/exercise/corpse-pose-2.thumb.webp",
-          "width": 1200,
-          "height": 797,
+          "width": 1000,
+          "height": 664,
           "caption": "Group relaxation at the end of a class",
           "alt": "Corpse Pose: group relaxation at the end of a class",
           "credit": "Biswarup Ganguly",
@@ -976,6 +996,7 @@
     },
     "shoulder-stretch": {
       "name": "Cross-Body Shoulder Stretch",
+      "area": "Stretching",
       "summary": "A simple stretch for the back of the shoulder and upper back.",
       "facts": {
         "Targets": "Rear shoulder, upper back",
@@ -1023,6 +1044,7 @@
     },
     "crunch": {
       "name": "Crunch",
+      "area": "Core",
       "summary": "A small curl-up that works the abdominal muscles.",
       "facts": {
         "Targets": "Abdominals",
@@ -1071,6 +1093,7 @@
     },
     "dead-bug": {
       "name": "Dead Bug",
+      "area": "Core",
       "summary": "A back-lying core exercise that teaches you to move your limbs while keeping the lower back still.",
       "facts": {
         "Targets": "Abdominals, hip flexors",
@@ -1081,8 +1104,8 @@
         {
           "src": "/library/exercise/dead-bug-1.webp",
           "thumb": "/library/exercise/dead-bug-1.thumb.webp",
-          "width": 1200,
-          "height": 675,
+          "width": 1000,
+          "height": 563,
           "caption": "Arms and legs raised",
           "alt": "Dead Bug: arms and legs raised",
           "credit": "free-exercise-db",
@@ -1092,8 +1115,8 @@
         {
           "src": "/library/exercise/dead-bug-2.webp",
           "thumb": "/library/exercise/dead-bug-2.thumb.webp",
-          "width": 1200,
-          "height": 675,
+          "width": 1000,
+          "height": 563,
           "caption": "Opposite arm and leg lowered",
           "alt": "Dead Bug: opposite arm and leg lowered",
           "credit": "free-exercise-db",
@@ -1118,6 +1141,7 @@
     },
     "deep-breathing": {
       "name": "Deep Breathing",
+      "area": "Stretching",
       "summary": "Slow belly breathing to calm the nervous system and aid recovery.",
       "facts": {
         "Targets": "Diaphragm, relaxation",
@@ -1172,6 +1196,7 @@
     },
     "downward-dog": {
       "name": "Downward Dog",
+      "area": "Stretching",
       "summary": "A yoga pose that stretches the hamstrings and calves while strengthening the shoulders.",
       "facts": {
         "Targets": "Hamstrings, calves, shoulders, back",
@@ -1220,6 +1245,7 @@
     },
     "dumbbell-bicep-curl": {
       "name": "Dumbbell Bicep Curl",
+      "area": "Arms",
       "summary": "A simple elbow-bending lift that builds the front of the upper arm.",
       "facts": {
         "Targets": "Biceps, forearms",
@@ -1269,6 +1295,7 @@
     },
     "dumbbell-fly": {
       "name": "Dumbbell Chest Fly",
+      "area": "Chest",
       "summary": "A wide arc movement on a bench that stretches and strengthens the chest.",
       "facts": {
         "Targets": "Chest, front shoulders",
@@ -1318,6 +1345,7 @@
     },
     "dumbbell-chest-press": {
       "name": "Dumbbell Chest Press",
+      "area": "Chest",
       "summary": "A pressing exercise on a bench that builds the chest, shoulders and triceps.",
       "facts": {
         "Targets": "Chest, shoulders, triceps",
@@ -1365,6 +1393,7 @@
     },
     "dumbbell-deadlift": {
       "name": "Dumbbell Deadlift",
+      "area": "Legs",
       "summary": "A hip-hinge lift that builds the hamstrings, glutes and back.",
       "facts": {
         "Targets": "Hamstrings, glutes, lower back",
@@ -1414,6 +1443,7 @@
     },
     "dumbbell-lunge": {
       "name": "Dumbbell Lunge",
+      "area": "Legs",
       "summary": "A split-stance step that builds single-leg strength and balance.",
       "facts": {
         "Targets": "Quads, glutes, hamstrings",
@@ -1461,6 +1491,7 @@
     },
     "dumbbell-shoulder-press": {
       "name": "Dumbbell Shoulder Press",
+      "area": "Shoulders",
       "summary": "A pressing movement that strengthens the shoulders and upper arms.",
       "facts": {
         "Targets": "Shoulders, triceps, upper chest",
@@ -1508,6 +1539,7 @@
     },
     "dumbbell-shrug": {
       "name": "Dumbbell Shrug",
+      "area": "Shoulders",
       "summary": "A simple lift of the shoulders that strengthens the upper trapezius.",
       "facts": {
         "Targets": "Upper trapezius",
@@ -1554,6 +1586,7 @@
     },
     "dumbbell-side-bend": {
       "name": "Dumbbell Side Bend",
+      "area": "Core",
       "summary": "A standing side-bend that strengthens the obliques.",
       "facts": {
         "Targets": "Obliques, core",
@@ -1601,6 +1634,7 @@
     },
     "sumo-squat": {
       "name": "Dumbbell Sumo Squat",
+      "area": "Legs",
       "summary": "A wide-stance squat that puts more work into the inner thighs and glutes.",
       "facts": {
         "Targets": "Inner thighs, glutes, quads",
@@ -1648,6 +1682,7 @@
     },
     "elliptical": {
       "name": "Elliptical Trainer",
+      "area": "Cardio",
       "summary": "Smooth, low-impact cardio that works both the arms and legs.",
       "facts": {
         "Targets": "Heart and lungs, legs, arms",
@@ -1696,6 +1731,7 @@
     },
     "face-pull": {
       "name": "Face Pull",
+      "area": "Shoulders",
       "summary": "A cable pull toward the face that strengthens the upper back and rear shoulders.",
       "facts": {
         "Targets": "Rear shoulders, upper back, rotator cuff",
@@ -1743,6 +1779,7 @@
     },
     "farmers-walk": {
       "name": "Farmer's Walk",
+      "area": "Full body",
       "summary": "Walking while carrying heavy weights to build grip, core and posture.",
       "facts": {
         "Targets": "Grip, shoulders, core, legs",
@@ -1792,6 +1829,7 @@
     },
     "figure-four-stretch": {
       "name": "Figure-Four Stretch",
+      "area": "Stretching",
       "summary": "A lying stretch for the glutes and outer hips.",
       "facts": {
         "Targets": "Glutes, outer hips",
@@ -1842,6 +1880,7 @@
     },
     "flutter-kicks": {
       "name": "Flutter Kicks",
+      "area": "Core",
       "summary": "Small, alternating leg kicks that work the lower abdominals.",
       "facts": {
         "Targets": "Lower abdominals, hip flexors",
@@ -1888,6 +1927,7 @@
     },
     "foam-rolling": {
       "name": "Foam Rolling",
+      "area": "Stretching",
       "summary": "Self-massage with a foam roller to ease muscle tightness after training.",
       "facts": {
         "Targets": "Quads, back, calves, glutes",
@@ -1937,6 +1977,7 @@
     },
     "front-raise": {
       "name": "Front Raise",
+      "area": "Shoulders",
       "summary": "A forward raise that targets the front of the shoulders.",
       "facts": {
         "Targets": "Front shoulders",
@@ -1983,6 +2024,7 @@
     },
     "full-body-stretch": {
       "name": "Full-Body Stretch",
+      "area": "Stretching",
       "summary": "A gentle sequence of standing stretches to finish a session or ease stiffness.",
       "facts": {
         "Targets": "Whole body",
@@ -2033,6 +2075,7 @@
     },
     "glute-bridge": {
       "name": "Glute Bridge",
+      "area": "Legs",
       "summary": "A floor exercise that strengthens the glutes and supports a healthy lower back.",
       "facts": {
         "Targets": "Glutes, hamstrings, lower back",
@@ -2083,6 +2126,7 @@
     },
     "goblet-squat": {
       "name": "Goblet Squat",
+      "area": "Legs",
       "summary": "A squat holding one weight at the chest, which encourages an upright posture.",
       "facts": {
         "Targets": "Quads, glutes, core",
@@ -2130,6 +2174,7 @@
     },
     "hammer-curl": {
       "name": "Hammer Curl",
+      "area": "Arms",
       "summary": "A curl with palms facing each other, working the biceps and forearms.",
       "facts": {
         "Targets": "Biceps, forearms",
@@ -2177,6 +2222,7 @@
     },
     "hamstring-stretch": {
       "name": "Hamstring Stretch",
+      "area": "Stretching",
       "summary": "A stretch for the back of the thighs, done standing or seated.",
       "facts": {
         "Targets": "Hamstrings, calves",
@@ -2225,6 +2271,7 @@
     },
     "hanging-leg-raise": {
       "name": "Hanging Leg Raise",
+      "area": "Core",
       "summary": "Raising the legs while hanging or supported on a captain's chair, a challenging core exercise.",
       "facts": {
         "Targets": "Lower abdominals, hip flexors, grip",
@@ -2273,6 +2320,7 @@
     },
     "hip-thrust": {
       "name": "Hip Thrust",
+      "area": "Legs",
       "summary": "A bench-supported bridge that strongly works the glutes.",
       "facts": {
         "Targets": "Glutes, hamstrings",
@@ -2321,6 +2369,7 @@
     },
     "inchworm": {
       "name": "Inchworm",
+      "area": "Stretching",
       "summary": "A walk-out from standing to plank that warms up the whole body.",
       "facts": {
         "Targets": "Hamstrings, shoulders, core",
@@ -2331,8 +2380,8 @@
         {
           "src": "/library/exercise/inchworm-1.webp",
           "thumb": "/library/exercise/inchworm-1.thumb.webp",
-          "width": 1200,
-          "height": 800,
+          "width": 1000,
+          "height": 667,
           "caption": "Folding forward with hands down",
           "alt": "Inchworm: folding forward with hands down",
           "credit": "free-exercise-db",
@@ -2342,8 +2391,8 @@
         {
           "src": "/library/exercise/inchworm-2.webp",
           "thumb": "/library/exercise/inchworm-2.thumb.webp",
-          "width": 1200,
-          "height": 800,
+          "width": 1000,
+          "height": 667,
           "caption": "Walking out toward a plank",
           "alt": "Inchworm: walking out toward a plank",
           "credit": "free-exercise-db",
@@ -2368,6 +2417,7 @@
     },
     "incline-dumbbell-press": {
       "name": "Incline Dumbbell Press",
+      "area": "Chest",
       "summary": "A chest press on an inclined bench that emphasises the upper chest.",
       "facts": {
         "Targets": "Upper chest, shoulders, triceps",
@@ -2416,6 +2466,7 @@
     },
     "incline-push-up": {
       "name": "Incline Push-Up",
+      "area": "Chest",
       "summary": "A push-up with the hands raised on a bench or wall, making it easier while you build strength.",
       "facts": {
         "Targets": "Chest, shoulders, triceps",
@@ -2464,6 +2515,7 @@
     },
     "mobility-circles": {
       "name": "Joint Mobility Circles",
+      "area": "Stretching",
       "summary": "Gentle circles for the arms, shoulders, hips and ankles to warm up joints and ease stiffness.",
       "facts": {
         "Targets": "Shoulders, hips, ankles",
@@ -2529,6 +2581,7 @@
     },
     "jump-rope": {
       "name": "Jump Rope",
+      "area": "Cardio",
       "summary": "Skipping with a rope for cardio, coordination and calf strength.",
       "facts": {
         "Targets": "Heart and lungs, calves, shoulders",
@@ -2579,6 +2632,7 @@
     },
     "jump-squat": {
       "name": "Jump Squat",
+      "area": "Legs",
       "summary": "A squat finished with a jump, adding power and cardio.",
       "facts": {
         "Targets": "Quads, glutes, calves",
@@ -2626,6 +2680,7 @@
     },
     "jumping-jacks": {
       "name": "Jumping Jacks",
+      "area": "Cardio",
       "summary": "A classic full-body cardio warm-up.",
       "facts": {
         "Targets": "Heart and lungs, calves, shoulders",
@@ -2636,8 +2691,8 @@
         {
           "src": "/library/exercise/jumping-jacks-1.webp",
           "thumb": "/library/exercise/jumping-jacks-1.thumb.webp",
-          "width": 1200,
-          "height": 800,
+          "width": 1000,
+          "height": 666,
           "caption": "Arms and legs out",
           "alt": "Jumping Jacks: arms and legs out",
           "credit": "Lance Cpl. Ryan M. Joyner",
@@ -2647,8 +2702,8 @@
         {
           "src": "/library/exercise/jumping-jacks-2.webp",
           "thumb": "/library/exercise/jumping-jacks-2.thumb.webp",
-          "width": 1200,
-          "height": 857,
+          "width": 1000,
+          "height": 714,
           "caption": "Group doing jumping jacks",
           "alt": "Jumping Jacks: group doing jumping jacks",
           "credit": "U.S. Navy photo by Photographer’s Mate 3rd Class Elizabeth A. Bartneck",
@@ -2673,6 +2728,7 @@
     },
     "kettlebell-swing": {
       "name": "Kettlebell Swing",
+      "area": "Legs",
       "summary": "A powerful hip-hinge swing that builds the glutes, hamstrings and cardio.",
       "facts": {
         "Targets": "Glutes, hamstrings, core",
@@ -2719,6 +2775,7 @@
     },
     "hip-flexor-stretch": {
       "name": "Kneeling Hip Flexor Stretch",
+      "area": "Stretching",
       "summary": "A half-kneeling stretch for the front of the hip, which tightens with long periods of sitting.",
       "facts": {
         "Targets": "Hip flexors, quadriceps",
@@ -2766,6 +2823,7 @@
     },
     "knees-to-chest": {
       "name": "Knees-to-Chest Stretch",
+      "area": "Stretching",
       "summary": "A lying stretch that gently releases the lower back.",
       "facts": {
         "Targets": "Lower back, glutes",
@@ -2814,6 +2872,7 @@
     },
     "lat-pulldown": {
       "name": "Lat Pulldown",
+      "area": "Back",
       "summary": "A machine pull that builds the back muscles used for pull-ups.",
       "facts": {
         "Targets": "Lats, upper back, biceps",
@@ -2863,6 +2922,7 @@
     },
     "lateral-raise": {
       "name": "Lateral Raise",
+      "area": "Shoulders",
       "summary": "A raise out to the sides that shapes and strengthens the shoulders.",
       "facts": {
         "Targets": "Side shoulders",
@@ -2912,6 +2972,7 @@
     },
     "leg-extension": {
       "name": "Leg Extension",
+      "area": "Legs",
       "summary": "A machine exercise that isolates the front of the thighs.",
       "facts": {
         "Targets": "Quadriceps",
@@ -2957,6 +3018,7 @@
     },
     "leg-press": {
       "name": "Leg Press",
+      "area": "Legs",
       "summary": "A machine press that builds the legs with back support.",
       "facts": {
         "Targets": "Quads, glutes, hamstrings",
@@ -3003,6 +3065,7 @@
     },
     "leg-raise": {
       "name": "Lying Leg Raise",
+      "area": "Core",
       "summary": "A lying exercise that works the lower abdominals.",
       "facts": {
         "Targets": "Lower abdominals, hip flexors",
@@ -3050,6 +3113,7 @@
     },
     "windshield-wiper": {
       "name": "Lying Windshield Wipers",
+      "area": "Core",
       "summary": "A lying twist where the legs sway side to side, working the obliques and easing the spine.",
       "facts": {
         "Targets": "Obliques, lower back, hips",
@@ -3071,8 +3135,8 @@
         {
           "src": "/library/exercise/windshield-wiper-2.webp",
           "thumb": "/library/exercise/windshield-wiper-2.thumb.webp",
-          "width": 1024,
-          "height": 526,
+          "width": 1000,
+          "height": 514,
           "caption": "Legs lowered to one side",
           "alt": "Lying Windshield Wipers: legs lowered to one side",
           "credit": "Satheesan.vn",
@@ -3098,6 +3162,7 @@
     },
     "mountain-climber": {
       "name": "Mountain Climbers",
+      "area": "Core",
       "summary": "A plank-based movement that combines core work with light cardio.",
       "facts": {
         "Targets": "Core, shoulders, hip flexors",
@@ -3144,6 +3209,7 @@
     },
     "one-arm-dumbbell-row": {
       "name": "One-Arm Dumbbell Row",
+      "area": "Back",
       "summary": "A supported row that builds the back one side at a time.",
       "facts": {
         "Targets": "Lats, upper back, biceps",
@@ -3193,6 +3259,7 @@
     },
     "outdoor-cycling": {
       "name": "Outdoor Cycling",
+      "area": "Cardio",
       "summary": "Riding a bike outdoors for steady cardio and fresh air.",
       "facts": {
         "Targets": "Heart and lungs, legs",
@@ -3203,8 +3270,8 @@
         {
           "src": "/library/exercise/outdoor-cycling-1.webp",
           "thumb": "/library/exercise/outdoor-cycling-1.thumb.webp",
-          "width": 1200,
-          "height": 800,
+          "width": 1000,
+          "height": 666,
           "caption": "Riding on a quiet road",
           "alt": "Outdoor Cycling: riding on a quiet road",
           "credit": "Alextredz",
@@ -3214,8 +3281,8 @@
         {
           "src": "/library/exercise/outdoor-cycling-2.webp",
           "thumb": "/library/exercise/outdoor-cycling-2.thumb.webp",
-          "width": 1200,
-          "height": 798,
+          "width": 1000,
+          "height": 665,
           "caption": "Cycling at an easy pace",
           "alt": "Outdoor Cycling: cycling at an easy pace",
           "credit": "Masedi Nonofo",
@@ -3243,6 +3310,7 @@
     },
     "outdoor-walk": {
       "name": "Outdoor Walk",
+      "area": "Cardio",
       "summary": "An easy walk outdoors for active recovery and fresh air.",
       "facts": {
         "Targets": "Heart and lungs, legs",
@@ -3291,6 +3359,7 @@
     },
     "overhead-tricep-extension": {
       "name": "Overhead Tricep Extension",
+      "area": "Arms",
       "summary": "An overhead press-and-lower movement that targets the triceps.",
       "facts": {
         "Targets": "Triceps",
@@ -3340,6 +3409,7 @@
     },
     "tricep-stretch": {
       "name": "Overhead Tricep Stretch",
+      "area": "Stretching",
       "summary": "A stretch for the back of the upper arm and the shoulder.",
       "facts": {
         "Targets": "Triceps, shoulders",
@@ -3387,6 +3457,7 @@
     },
     "pallof-press": {
       "name": "Pallof Press",
+      "area": "Core",
       "summary": "A cable press that trains the core to resist twisting.",
       "facts": {
         "Targets": "Core, obliques",
@@ -3397,8 +3468,8 @@
         {
           "src": "/library/exercise/pallof-press-1.webp",
           "thumb": "/library/exercise/pallof-press-1.thumb.webp",
-          "width": 1200,
-          "height": 675,
+          "width": 1000,
+          "height": 563,
           "caption": "Handle at the chest",
           "alt": "Pallof Press: handle at the chest",
           "credit": "free-exercise-db",
@@ -3408,8 +3479,8 @@
         {
           "src": "/library/exercise/pallof-press-2.webp",
           "thumb": "/library/exercise/pallof-press-2.thumb.webp",
-          "width": 1200,
-          "height": 675,
+          "width": 1000,
+          "height": 563,
           "caption": "Arms pressed out",
           "alt": "Pallof Press: arms pressed out",
           "credit": "free-exercise-db",
@@ -3433,6 +3504,7 @@
     },
     "pec-deck": {
       "name": "Pec Deck",
+      "area": "Chest",
       "summary": "A machine chest fly that's easy to learn and control.",
       "facts": {
         "Targets": "Chest",
@@ -3482,6 +3554,7 @@
     },
     "pelvic-tilt": {
       "name": "Pelvic Tilt",
+      "area": "Core",
       "summary": "A small floor movement that wakes up the deep core and eases the lower back.",
       "facts": {
         "Targets": "Deep core, lower back, glutes",
@@ -3528,6 +3601,7 @@
     },
     "plank": {
       "name": "Plank",
+      "area": "Core",
       "summary": "A static hold that teaches the core to keep the spine steady.",
       "facts": {
         "Targets": "Abdominals, lower back, shoulders",
@@ -3577,6 +3651,7 @@
     },
     "plank-shoulder-tap": {
       "name": "Plank with Shoulder Taps",
+      "area": "Core",
       "summary": "A high plank where you lift one hand at a time, training the core to resist twisting.",
       "facts": {
         "Targets": "Abdominals, obliques, shoulders",
@@ -3626,6 +3701,7 @@
     },
     "pull-up": {
       "name": "Pull-Up",
+      "area": "Back",
       "summary": "A hanging pull that builds the back and arms; use a band or assisted machine to start.",
       "facts": {
         "Targets": "Lats, upper back, biceps",
@@ -3658,8 +3734,8 @@
         {
           "src": "/library/exercise/pull-up-3.webp",
           "thumb": "/library/exercise/pull-up-3.thumb.webp",
-          "width": 800,
-          "height": 1200,
+          "width": 667,
+          "height": 1000,
           "caption": "Band-assisted version",
           "alt": "Pull-Up: band-assisted version",
           "credit": "free-exercise-db",
@@ -3687,6 +3763,7 @@
     },
     "push-up": {
       "name": "Push-Up",
+      "area": "Chest",
       "summary": "The classic bodyweight press for the chest, shoulders and triceps.",
       "facts": {
         "Targets": "Chest, shoulders, triceps, core",
@@ -3737,6 +3814,7 @@
     },
     "quad-stretch": {
       "name": "Quadriceps Stretch",
+      "area": "Stretching",
       "summary": "A stretch for the front of the thigh.",
       "facts": {
         "Targets": "Quadriceps, hip flexors",
@@ -3784,6 +3862,7 @@
     },
     "reverse-crunch": {
       "name": "Reverse Crunch",
+      "area": "Core",
       "summary": "A crunch that curls the hips up, focusing on the lower abdominals.",
       "facts": {
         "Targets": "Lower abdominals",
@@ -3829,6 +3908,7 @@
     },
     "reverse-fly": {
       "name": "Reverse Fly",
+      "area": "Shoulders",
       "summary": "A bent-over raise that strengthens the back of the shoulders and upper back for better posture.",
       "facts": {
         "Targets": "Rear shoulders, upper back",
@@ -3879,6 +3959,7 @@
     },
     "reverse-lunge": {
       "name": "Reverse Lunge",
+      "area": "Legs",
       "summary": "A lunge stepping backward, which is often easier on the knees.",
       "facts": {
         "Targets": "Quads, glutes, hamstrings",
@@ -3928,6 +4009,7 @@
     },
     "rowing-machine": {
       "name": "Rowing Machine",
+      "area": "Cardio",
       "summary": "Full-body, low-impact cardio on a rowing machine.",
       "facts": {
         "Targets": "Legs, back, arms, heart and lungs",
@@ -3978,6 +4060,7 @@
     },
     "russian-twist": {
       "name": "Russian Twist",
+      "area": "Core",
       "summary": "A seated rotation that works the obliques and deep core.",
       "facts": {
         "Targets": "Obliques, abdominals",
@@ -4024,6 +4107,7 @@
     },
     "cable-row": {
       "name": "Seated Cable Row",
+      "area": "Back",
       "summary": "A pulling exercise that strengthens the upper back and supports good posture.",
       "facts": {
         "Targets": "Upper back, lats, biceps",
@@ -4072,6 +4156,7 @@
     },
     "seated-forward-fold": {
       "name": "Seated Forward Fold",
+      "area": "Stretching",
       "summary": "A seated stretch for the hamstrings and back of the body.",
       "facts": {
         "Targets": "Hamstrings, calves, lower back",
@@ -4121,6 +4206,7 @@
     },
     "seated-spinal-twist": {
       "name": "Seated Spinal Twist",
+      "area": "Stretching",
       "summary": "A seated rotation that eases stiffness in the back and hips.",
       "facts": {
         "Targets": "Spine, obliques, outer hips",
@@ -4170,6 +4256,7 @@
     },
     "neck-stretch": {
       "name": "Side Neck Stretch",
+      "area": "Stretching",
       "summary": "A gentle stretch for the sides of the neck and upper shoulders.",
       "facts": {
         "Targets": "Neck, upper trapezius",
@@ -4216,6 +4303,7 @@
     },
     "side-plank": {
       "name": "Side Plank",
+      "area": "Core",
       "summary": "A side-lying hold that strengthens the obliques and hip stabilisers.",
       "facts": {
         "Targets": "Obliques, hips, shoulders",
@@ -4263,6 +4351,7 @@
     },
     "single-leg-balance": {
       "name": "Single-Leg Balance",
+      "area": "Stretching",
       "summary": "Standing on one leg to improve balance, ankle stability and core control.",
       "facts": {
         "Targets": "Ankles, hips, core",
@@ -4316,6 +4405,7 @@
     },
     "sit-up": {
       "name": "Sit-Up",
+      "area": "Core",
       "summary": "A full curl from lying to sitting that works the abdominals and hip flexors.",
       "facts": {
         "Targets": "Abdominals, hip flexors",
@@ -4363,6 +4453,7 @@
     },
     "split-squat": {
       "name": "Split Squat",
+      "area": "Legs",
       "summary": "A stationary lunge that builds strength in each leg.",
       "facts": {
         "Targets": "Quads, glutes",
@@ -4411,6 +4502,7 @@
     },
     "stair-climber": {
       "name": "Stair Climber",
+      "area": "Cardio",
       "summary": "Climbing on a step machine for cardio and leg endurance.",
       "facts": {
         "Targets": "Heart and lungs, glutes, quads",
@@ -4460,6 +4552,7 @@
     },
     "calf-stretch": {
       "name": "Standing Calf Stretch",
+      "area": "Stretching",
       "summary": "A wall stretch for the calf muscles and Achilles tendon.",
       "facts": {
         "Targets": "Calves, Achilles tendon",
@@ -4506,6 +4599,7 @@
     },
     "calf-raise": {
       "name": "Standing Dumbbell Calf Raise",
+      "area": "Legs",
       "summary": "A simple rise onto the toes that strengthens the calves and ankles.",
       "facts": {
         "Targets": "Calves",
@@ -4553,6 +4647,7 @@
     },
     "stationary-bike": {
       "name": "Stationary Bike",
+      "area": "Cardio",
       "summary": "Low-impact cardio on an indoor bike.",
       "facts": {
         "Targets": "Heart and lungs, legs",
@@ -4604,6 +4699,7 @@
     },
     "step-up": {
       "name": "Step-Up",
+      "area": "Legs",
       "summary": "Stepping onto a bench or box to build single-leg strength.",
       "facts": {
         "Targets": "Quads, glutes",
@@ -4652,6 +4748,7 @@
     },
     "sun-salutation": {
       "name": "Sun Salutation",
+      "area": "Stretching",
       "summary": "A flowing yoga sequence that warms up and stretches the whole body.",
       "facts": {
         "Targets": "Whole body",
@@ -4662,8 +4759,8 @@
         {
           "src": "/library/exercise/sun-salutation-1.webp",
           "thumb": "/library/exercise/sun-salutation-1.thumb.webp",
-          "width": 1200,
-          "height": 900,
+          "width": 1000,
+          "height": 750,
           "caption": "Eight-limb position",
           "alt": "Sun Salutation: eight-limb position",
           "credit": "Thamizhpparithi Maari",
@@ -4673,8 +4770,8 @@
         {
           "src": "/library/exercise/sun-salutation-2.webp",
           "thumb": "/library/exercise/sun-salutation-2.thumb.webp",
-          "width": 1200,
-          "height": 900,
+          "width": 1000,
+          "height": 750,
           "caption": "Forward bow position",
           "alt": "Sun Salutation: forward bow position",
           "credit": "Thamizhpparithi Maari",
@@ -4684,8 +4781,8 @@
         {
           "src": "/library/exercise/sun-salutation-3.webp",
           "thumb": "/library/exercise/sun-salutation-3.thumb.webp",
-          "width": 1200,
-          "height": 900,
+          "width": 1000,
+          "height": 750,
           "caption": "Lunge position",
           "alt": "Sun Salutation: lunge position",
           "credit": "Thamizhpparithi Maari",
@@ -4712,6 +4809,7 @@
     },
     "superman": {
       "name": "Superman",
+      "area": "Back",
       "summary": "A face-down lift that strengthens the lower back and glutes.",
       "facts": {
         "Targets": "Lower back, glutes, upper back",
@@ -4760,6 +4858,7 @@
     },
     "treadmill-run": {
       "name": "Treadmill Run / Jog",
+      "area": "Cardio",
       "summary": "Jogging or running intervals to build cardiovascular fitness.",
       "facts": {
         "Targets": "Heart and lungs, legs",
@@ -4812,6 +4911,7 @@
     },
     "treadmill-walk": {
       "name": "Treadmill Walk",
+      "area": "Cardio",
       "summary": "Steady walking for warm-ups, cool-downs and easy cardio.",
       "facts": {
         "Targets": "Heart and lungs, legs",
@@ -4861,6 +4961,7 @@
     },
     "tricep-kickback": {
       "name": "Tricep Kickback",
+      "area": "Arms",
       "summary": "A one-arm extension that isolates the back of the upper arm.",
       "facts": {
         "Targets": "Triceps",
@@ -4911,6 +5012,7 @@
     },
     "upper-back-stretch": {
       "name": "Upper Back Stretch",
+      "area": "Stretching",
       "summary": "A standing stretch that releases tension between the shoulder blades.",
       "facts": {
         "Targets": "Upper back, shoulders",
@@ -4957,6 +5059,7 @@
     },
     "walking-lunge": {
       "name": "Walking Lunge",
+      "area": "Legs",
       "summary": "Lunges that travel forward, building leg strength and balance.",
       "facts": {
         "Targets": "Quads, glutes, hamstrings",
@@ -5003,6 +5106,7 @@
     },
     "warrior-pose": {
       "name": "Warrior II Pose",
+      "area": "Stretching",
       "summary": "A standing yoga pose that builds leg strength and stability.",
       "facts": {
         "Targets": "Legs, hips, shoulders",
@@ -5013,8 +5117,8 @@
         {
           "src": "/library/exercise/warrior-pose-1.webp",
           "thumb": "/library/exercise/warrior-pose-1.thumb.webp",
-          "width": 800,
-          "height": 1200,
+          "width": 667,
+          "height": 1000,
           "caption": "Warrior II",
           "alt": "Warrior II Pose: warrior II",
           "credit": "lululemon athletica",
@@ -5024,8 +5128,8 @@
         {
           "src": "/library/exercise/warrior-pose-2.webp",
           "thumb": "/library/exercise/warrior-pose-2.thumb.webp",
-          "width": 1200,
-          "height": 923,
+          "width": 1000,
+          "height": 769,
           "caption": "Warrior II from the side",
           "alt": "Warrior II Pose: warrior II from the side",
           "credit": "lululemon athletica",

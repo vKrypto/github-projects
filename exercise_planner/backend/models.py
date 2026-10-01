@@ -103,6 +103,19 @@ class WorkoutExercise(StrictModel):
     hold_seconds: int | None = Field(ge=1, le=600)
     minutes: int | None = Field(ge=1, le=120)
     rest_seconds: int | None = Field(ge=0, le=600)
+    calories: int = Field(ge=0, le=1000)
+
+class MealNutrition(StrictModel):
+    protein_g: int = Field(ge=0, le=300)
+    carbs_g: int = Field(ge=0, le=600)
+    fat_g: int = Field(ge=0, le=300)
+    fiber_g: int = Field(ge=0, le=150)
+
+class DailyNutritionTargets(StrictModel):
+    protein_g: int = Field(ge=20, le=400)
+    carbs_g: int = Field(ge=20, le=900)
+    fat_g: int = Field(ge=10, le=300)
+    fiber_g: int = Field(ge=10, le=100)
 
 class WorkoutTask(PlannedTask):
     category: Literal['Workout']
@@ -110,6 +123,7 @@ class WorkoutTask(PlannedTask):
 
 class MealTask(PlannedTask):
     category: Literal['Breakfast','Lunch','Dinner','Snack']
+    nutrition: MealNutrition
 
 class CareTask(PlannedTask):
     category: Literal['Skin care','Hair care']
@@ -132,6 +146,7 @@ class WorkoutPlan(RolePlan):
 class MealPlan(RolePlan):
     daily_calorie_target: int = Field(ge=1400, le=5000)
     daily_burn_target: int = Field(ge=0, le=0)
+    daily_nutrition_targets: DailyNutritionTargets
     days: list[MealDay] = Field(min_length=7, max_length=7)
 
 class CarePlan(RolePlan):
