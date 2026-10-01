@@ -190,3 +190,18 @@ def test_admin_can_have_personal_profile_without_losing_admin_access(client,monk
     assert job['status']=='completed',job
     assert len(client.get('/api/plan').json()['plan']['days'])==28
     assert client.get('/api/me').json()['account']['role']=='admin'
+
+
+def test_provider_role_schemas_reject_cross_role_tasks_and_invalid_times():
+    from backend.models import MealPlan, WorkoutPlan, CarePlan
+    from pydantic import ValidationError
+    fake=FakeProvider()
+    context={'profile':PROFILE}
+    for role,schema in [('workout',WorkoutPlan),('meal',MealPlan),('care',CarePlan)]:
+        data=fake.generate(role,context).model_dump()
+        assert schema.model_validate(data)
+        data['days'][0]['tasks'][0]['category']='Workout' if role!='workout' else 'Dinner'
+        with pytest.raises(ValidationError): schema.model_validate(data)
+    data=fake.generate('meal',context).model_dump()
+    data['days'][0]['tasks'][0]['time']='8:00 AM'
+    with pytest.raises(ValidationError): MealPlan.model_validate(data)

@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Protocol
-from .models import RolePlan, PlanReview
+from .models import RolePlan, PlanReview, WorkoutPlan, MealPlan, CarePlan
 
 class PlanningError(Exception): pass
 
@@ -62,7 +62,7 @@ class OpenAIProvider:
         clean['available_images'] = [m['kind'] for m in context.get('media', [])]
         # Image paths remain server-side and are not serialized into the prompt.
         content_context = {**clean, 'media': context.get('media', [])} if role=='workout' else clean
-        return self.parse(POLICY+f'\nYou are the {role} agent. '+brief, RolePlan, content_context, role=='workout')
+        return self.parse(POLICY+f'\nYou are the {role} agent. '+brief, {'workout':WorkoutPlan,'meal':MealPlan,'care':CarePlan}[role], content_context, role=='workout')
     def review(self, context, plans):
         context = {k:v for k,v in context.items() if k != 'media'}
         return self.parse(POLICY+'''\nYou are the independent review agent. Review the combined plans for balance,
