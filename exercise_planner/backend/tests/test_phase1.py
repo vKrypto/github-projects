@@ -197,11 +197,17 @@ def test_provider_role_schemas_reject_cross_role_tasks_and_invalid_times():
     from pydantic import ValidationError
     fake=FakeProvider()
     context={'profile':PROFILE}
+    def with_nutrition(data):
+        data['daily_nutrition_targets']={'protein_g':90,'carbs_g':225,'fat_g':60,'fiber_g':30}
+        for day in data['days']:
+            for task in day['tasks']: task['nutrition']={'protein_g':30,'carbs_g':75,'fat_g':20,'fiber_g':10}
+        return data
     for role,schema in [('workout',WorkoutPlan),('meal',MealPlan),('care',CarePlan)]:
         data=fake.generate(role,context).model_dump()
+        if role=='meal': with_nutrition(data)
         assert schema.model_validate(data)
         data['days'][0]['tasks'][0]['category']='Workout' if role!='workout' else 'Dinner'
         with pytest.raises(ValidationError): schema.model_validate(data)
-    data=fake.generate('meal',context).model_dump()
+    data=with_nutrition(fake.generate('meal',context).model_dump())
     data['days'][0]['tasks'][0]['time']='8:00 AM'
     with pytest.raises(ValidationError): MealPlan.model_validate(data)

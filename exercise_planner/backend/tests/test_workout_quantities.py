@@ -9,7 +9,7 @@ from backend.tests.test_phase1 import FakeProvider, PROFILE
 def quantified_workout():
     data=FakeProvider().generate('workout', {'profile':PROFILE}).model_dump()
     for day in data['days']:
-        day['tasks'][0]['exercises']=[{'name':'Biceps','sets':3,'reps':'10','minutes':15,'hold_seconds':None,'rest_seconds':60}]
+        day['tasks'][0]['exercises']=[{'name':'Biceps','sets':3,'reps':'10','minutes':15,'hold_seconds':None,'rest_seconds':60,'calories':80}]
     return WorkoutPlan.model_validate(data)
 
 
