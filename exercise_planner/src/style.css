@@ -36,11 +36,12 @@ a {
   color: inherit;
 }
 .app {
+  --sidebar-width: 238px;
   display: flex;
   min-height: 100vh;
 }
 aside {
-  width: 238px;
+  width: var(--sidebar-width);
   position: fixed;
   inset: 0 auto 0 0;
   background: #151b1b;
@@ -49,6 +50,34 @@ aside {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  z-index: 40;
+}
+.sidebar-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.sidebar-toggle {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid #354139;
+  border-radius: 6px;
+  color: #b6c8af;
+  background: #202a23;
+}
+.sidebar-toggle:focus-visible,
+aside button:focus-visible,
+.sidebar-backdrop:focus-visible {
+  outline: 2px solid #bcdfb8;
+  outline-offset: 3px;
+}
+.sidebar-backdrop {
+  display: none;
 }
 .brand {
   font-family: Manrope;
@@ -67,10 +96,14 @@ aside {
   border-radius: 10px;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
 }
 .brand-dot {
   color: #bcdfb8;
   margin-left: -10px;
+}
+.brand-name .brand-dot {
+  margin-left: 0;
 }
 .workspace {
   display: flex;
@@ -121,6 +154,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  flex-shrink: 0;
 }
 nav button {
   display: flex;
@@ -224,8 +258,49 @@ nav button.active:before {
   color: #7c8881;
 }
 main {
-  margin-left: 238px;
-  width: calc(100% - 238px);
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+}
+.sidebar-collapsed {
+  --sidebar-width: 76px;
+}
+.sidebar-collapsed aside {
+  padding: 25px 12px;
+}
+.sidebar-collapsed .sidebar-heading {
+  flex-direction: column;
+  gap: 15px;
+}
+.sidebar-collapsed .brand-name,
+.sidebar-collapsed .workspace,
+.sidebar-collapsed .nav-label,
+.sidebar-collapsed .nav-text,
+.sidebar-collapsed .soon,
+.sidebar-collapsed .journey,
+.sidebar-collapsed .profile > div:not(.avatar),
+.sidebar-collapsed .profile > svg {
+  display: none;
+}
+.sidebar-collapsed nav {
+  margin-top: 22px;
+}
+.sidebar-collapsed nav button {
+  justify-content: center;
+  padding: 14px;
+}
+.sidebar-collapsed nav button svg {
+  flex-shrink: 0;
+}
+.sidebar-collapsed .sidebar-bottom {
+  padding-top: 22px;
+}
+.sidebar-collapsed .settings {
+  justify-content: center;
+  margin: 18px 0;
+  padding: 8px;
+}
+.sidebar-collapsed .profile {
+  justify-content: center;
 }
 header {
   height: 77px;
@@ -1133,14 +1208,12 @@ footer > span {
   }
 }
 @media (max-width: 1150px) {
+  .app:not(.sidebar-collapsed) {
+    --sidebar-width: 205px;
+  }
   aside {
-    width: 205px;
     padding-left: 14px;
     padding-right: 14px;
-  }
-  main {
-    margin-left: 205px;
-    width: calc(100% - 205px);
   }
   .content {
     padding: 28px 25px 0;
@@ -1180,40 +1253,19 @@ footer > span {
   }
 }
 @media (max-width: 900px) {
-  aside {
-    width: 76px;
-    padding: 25px 12px;
+  .app:not(.sidebar-collapsed) {
+    --sidebar-width: 76px;
   }
-  .brand {
-    font-size: 0;
+  .mobile-sidebar-open aside {
+    width: min(238px, calc(100vw - 40px));
+    padding: 25px 20px;
   }
-  .brand-dot,
-  .workspace,
-  .nav-label,
-  .soon,
-  .journey,
-  .settings,
-  .profile > div:not(.avatar),
-  .profile > svg {
-    display: none;
-  }
-  nav {
-    margin-top: 40px;
-  }
-  nav button {
-    font-size: 0;
-    justify-content: center;
-    padding: 15px;
-  }
-  nav button svg {
-    min-width: 20px;
-  }
-  .profile {
-    justify-content: center;
-  }
-  main {
-    margin-left: 76px;
-    width: calc(100% - 76px);
+  .mobile-sidebar-open .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: #050a07aa;
+    z-index: 35;
   }
   .lower-grid {
     grid-template-columns: 1fr;

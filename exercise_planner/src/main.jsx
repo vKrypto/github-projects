@@ -28,6 +28,8 @@ import {
   AlertCircle,
   KeyRound,
   Trash2,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { api, localDate, dateObject, labelDate, shiftDate } from "./api";
 import PlanCards from "./PlanCards";
@@ -64,6 +66,47 @@ const NAV = [
 ];
 const statusKey = (date, id) => `${date}/${id}`;
 function App() {
+  const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("forma.sidebarCollapsed") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [mobileViewport, setMobileViewport] = useState(
+    () => window.matchMedia("(max-width: 900px)").matches,
+  );
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const sidebarCollapsed = mobileViewport
+    ? !mobileSidebarOpen
+    : desktopSidebarCollapsed;
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "forma.sidebarCollapsed",
+        String(desktopSidebarCollapsed),
+      );
+    } catch {
+      // Navigation still works when browser storage is unavailable.
+    }
+  }, [desktopSidebarCollapsed]);
+  useEffect(() => {
+    const viewport = window.matchMedia("(max-width: 900px)");
+    const resize = (event) => {
+      setMobileViewport(event.matches);
+      setMobileSidebarOpen(false);
+    };
+    viewport.addEventListener("change", resize);
+    return () => viewport.removeEventListener("change", resize);
+  }, []);
+  useEffect(() => {
+    if (!mobileSidebarOpen) return;
+    const close = (event) => {
+      if (event.key === "Escape") setMobileSidebarOpen(false);
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [mobileSidebarOpen]);
   const [history, setHistory] = useState([]);
   const [preferences, setPreferences] = useState([]),
     [adjustmentDays, setAdjustmentDays] = useState(7);
@@ -417,21 +460,56 @@ function App() {
       </div>
     );
   return (
-    <div className="app">
+    <div
+      className={`app ${sidebarCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}${mobileSidebarOpen ? " mobile-sidebar-open" : ""}`}
+    >
+      {mobileSidebarOpen && (
+        <button
+          className="sidebar-backdrop"
+          aria-label="Close navigation"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      )}
       <aside>
-        <a
-          className="brand"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            setPage(account?.role === "admin" ? "Users" : "Overview");
-          }}
-        >
-          <span className="brand-mark">
-            <Activity size={24} />
-          </span>
-          forma<span className="brand-dot">.</span>
-        </a>
+        <div className="sidebar-heading">
+          <a
+            className="brand"
+            aria-label="Forma home"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setPage(account?.role === "admin" ? "Users" : "Overview");
+              setMobileSidebarOpen(false);
+            }}
+          >
+            <span className="brand-mark">
+              <Activity size={24} />
+            </span>
+            <span className="brand-name">
+              forma<span className="brand-dot">.</span>
+            </span>
+          </a>
+          <button
+            className="sidebar-toggle"
+            aria-label={
+              sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+            }
+            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-expanded={!sidebarCollapsed}
+            aria-controls="side-navigation"
+            onClick={() =>
+              mobileViewport
+                ? setMobileSidebarOpen((open) => !open)
+                : setDesktopSidebarCollapsed((collapsed) => !collapsed)
+            }
+          >
+            {sidebarCollapsed ? (
+              <PanelLeftOpen size={19} />
+            ) : (
+              <PanelLeftClose size={19} />
+            )}
+          </button>
+        </div>
         <div className="workspace">
           <div className="avatar small">{name[0].toUpperCase()}</div>
           <div>
@@ -447,22 +525,26 @@ function App() {
           <ChevronRight size={15} />
         </div>
         <div className="nav-label">YOUR SPACE</div>
-        <nav>
+        <nav id="side-navigation" aria-label="Main navigation">
           {(account?.role === "admin" ? [[Users, "Users"], ...NAV] : NAV).map(
             ([Icon, p]) => (
               <button
                 className={page === p ? "active" : ""}
                 key={p}
+                aria-label={p}
+                aria-current={page === p ? "page" : undefined}
+                title={sidebarCollapsed ? p : undefined}
                 onClick={() => {
                   if (account) {
                     setPage(p);
                     window.scrollTo({ top: 0, behavior: "instant" });
                     if (p === "Overview") setDate(localDate());
                   } else setModal("login");
+                  setMobileSidebarOpen(false);
                 }}
               >
                 <Icon size={19} />
-                {p}
+                <span className="nav-text">{p}</span>
                 {p === "Care routines" && !profile?.care_early && (
                   <span className="soon">WEEK 3</span>
                 )}
@@ -495,14 +577,24 @@ function App() {
           </div>
           <button
             className="settings"
-            onClick={() => setModal(account ? "settings" : "login")}
+            aria-label="Settings"
+            title={sidebarCollapsed ? "Settings" : undefined}
+            onClick={() => {
+              setModal(account ? "settings" : "login");
+              setMobileSidebarOpen(false);
+            }}
           >
             <Settings size={18} />
-            Settings
+            <span className="nav-text">Settings</span>
           </button>
           <button
             className="profile"
-            onClick={() => setModal(account ? "settings" : "login")}
+            aria-label="Open account menu"
+            title={sidebarCollapsed ? account?.name || "Sign in" : undefined}
+            onClick={() => {
+              setModal(account ? "settings" : "login");
+              setMobileSidebarOpen(false);
+            }}
           >
             <div className="avatar">{name[0].toUpperCase()}</div>
             <div>
