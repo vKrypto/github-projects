@@ -184,11 +184,11 @@ def logout(response:Response,forma_session:str | None=Cookie(default=None)):
     return {'saved':True}
 
 @app.get('/api/me')
-def me(account=Depends(current)):
+def me(account=Depends(current),forma_admin:str | None=Cookie(default=None)):
     with connect() as con:
         job=con.execute('SELECT * FROM jobs WHERE tenant=? ORDER BY created DESC LIMIT 1',(account['id'],)).fetchone()
         notices=[dict(r) for r in con.execute('SELECT * FROM notifications WHERE tenant=? ORDER BY created DESC LIMIT 10',(account['id'],))]
-    return {'account':public(account),'profile':load_profile(account['id']),'plan':load_plan(account['id']),'job':dict(job) if job else None,'notifications':notices}
+    return {'account':public(account),'profile':load_profile(account['id']),'plan':load_plan(account['id']),'job':dict(job) if job else None,'notifications':notices,'impersonating':bool(forma_admin) and account['role']!='admin'}
 
 @app.put('/api/profile')
 def save_profile(data:Profile,account=Depends(current)):
