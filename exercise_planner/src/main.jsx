@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity,
@@ -33,6 +33,8 @@ import {
 } from "lucide-react";
 import { api, localDate, dateObject, labelDate, shiftDate } from "./api";
 import PlanCards from "./PlanCards";
+import GuidePage, { TaskGuides } from "./Guide";
+import { guideRoute } from "./library";
 import "./style.css";
 const DEFAULT_PROFILE = {
   name: "Sample User",
@@ -2146,6 +2148,7 @@ function App() {
                     <li key={i}>{s}</li>
                   ))}
                 </ol>
+                <TaskGuides task={selectedTask} />
                 <div className="mandatory-note">
                   Week {week}: {selectedTask.week_note}
                 </div>
@@ -2604,4 +2607,35 @@ function WeightChart({ checkins }) {
     </>
   );
 }
-createRoot(document.getElementById("root")).render(<App />);
+// Guide pages (/exercise/?q=…, /food/?q=…) render over the plan, which stays
+// mounted so returning from a guide keeps the selected day, modal and scroll.
+function Root() {
+  const [route, setRoute] = useState(() => guideRoute());
+  const current = useRef(route);
+  const planScroll = useRef(0);
+  useEffect(() => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    const update = () => {
+      const next = guideRoute();
+      if (next && !current.current) planScroll.current = window.scrollY;
+      current.current = next;
+      setRoute(next);
+    };
+    window.addEventListener("popstate", update);
+    return () => window.removeEventListener("popstate", update);
+  }, []);
+  const routeKey = route ? `${route.type}/${route.query}` : "";
+  useLayoutEffect(() => {
+    window.scrollTo(0, routeKey ? 0 : planScroll.current);
+  }, [routeKey]);
+  return (
+    <>
+      <div style={{ display: route ? "none" : "contents" }}>
+        <App />
+      </div>
+      {route && <GuidePage type={route.type} query={route.query} />}
+    </>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<Root />);

@@ -1,0 +1,246 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import {
+  exerciseRowGuides,
+  findGuides,
+  guideHref,
+  prepareLibrary,
+  resolveGuide,
+  slug,
+  taskGuides,
+} from "./library.js";
+import { workoutExercises } from "./quantities.js";
+
+const PUBLIC = new URL("../public/", import.meta.url);
+const read = (type) =>
+  JSON.parse(readFileSync(new URL(`library/${type}.json`, PUBLIC)));
+const exercises = prepareLibrary(read("exercise"));
+const foods = prepareLibrary(read("food"));
+const ids = (guides) => guides.map((g) => g.id);
+
+// Every meal title in the saved plans when the food mapping was curated.
+const CURRENT_MEALS = [
+  ["Breakfast - Avocado Toast with Tomato & Spinach", "avocado-toast"],
+  ["Breakfast - Chia Pudding with Almond Milk and Fresh Fruit", "chia-pudding"],
+  [
+    "Breakfast - Greek Yogurt Parfait with Granola and Fresh Fruit",
+    "greek-yogurt-parfait",
+  ],
+  [
+    "Breakfast - Multigrain Toast with Peanut Butter and Chia Seeds",
+    "peanut-butter-toast",
+  ],
+  ["Breakfast - Oatmeal with Banana, Walnuts, and Honey", "oatmeal"],
+  [
+    "Breakfast - Smoothie Bowl with Greek Yogurt, Mixed Berries and Nuts",
+    "smoothie-bowl",
+  ],
+  [
+    "Breakfast - Whole Wheat Pancakes with Berry Compote",
+    "whole-wheat-pancakes",
+  ],
+  ["Breakfast – Chia Pudding with Mango and Coconut", "chia-pudding"],
+  ["Breakfast – Cottage Cheese and Berry Toast", "cottage-cheese-toast"],
+  [
+    "Breakfast – Greek Yogurt Parfait with Mango and Flaxseeds",
+    "greek-yogurt-parfait",
+  ],
+  ["Breakfast – Oatmeal with Apple, Cinnamon and Walnuts", "oatmeal"],
+  ["Breakfast – Peanut Butter Banana Toast", "peanut-butter-toast"],
+  [
+    "Breakfast – Smoothie Bowl with Spinach, Banana and Chia Seeds",
+    "smoothie-bowl",
+  ],
+  ["Breakfast – Veggie Omelette with Whole Wheat Toast", "veggie-omelette"],
+  [
+    "Dinner - Grilled Eggplant with Tomato and Feta Salad",
+    "grilled-eggplant-feta",
+  ],
+  [
+    "Dinner - Grilled Vegetable and Paneer Skewers with Brown Rice",
+    "paneer-skewers",
+  ],
+  ["Dinner - Spinach and Mushroom Whole Wheat Pasta", "spinach-mushroom-pasta"],
+  [
+    "Dinner - Stuffed Bell Peppers with Brown Rice and Vegetables",
+    "stuffed-bell-peppers",
+  ],
+  ["Dinner - Tofu Stir Fry with Broccoli and Bell Peppers", "tofu-stir-fry"],
+  [
+    "Dinner - Vegetable and Lentil Soup with Whole Grain Bread",
+    "lentil-vegetable-soup",
+  ],
+  [
+    "Dinner - Zucchini Noodles with Pesto and Cherry Tomatoes",
+    "zucchini-noodles-pesto",
+  ],
+  ["Dinner – Grilled Vegetable and Halloumi Salad", "halloumi-salad"],
+  ["Dinner – Lentil and Vegetable Stir Fry with Brown Rice", "lentil-rice"],
+  ["Dinner – Mushroom and Pea Stir Fry with Quinoa", "mushroom-pea-quinoa"],
+  [
+    "Dinner – Stuffed Bell Peppers with Lentils and Vegetables",
+    "stuffed-bell-peppers",
+  ],
+  ["Dinner – Tofu and Vegetable Skewers with Brown Rice", "tofu-skewers"],
+  ["Dinner – Vegetable Pasta with Tomato Basil Sauce", "tomato-basil-pasta"],
+  ["Dinner – Vegetable and Tofu Stir Fry with Millet", "tofu-stir-fry"],
+  ["Lunch - Chickpea and Quinoa Salad", "chickpea-quinoa-salad"],
+  ["Lunch - Falafel Salad Bowl with Tahini Dressing", "falafel-bowl"],
+  ["Lunch - Lentil and Vegetable Stir-Fry with Brown Rice", "lentil-rice"],
+  ["Lunch - Mediterranean Chickpea Wraps", "chickpea-wrap"],
+  ["Lunch - Sweet Potato and Black Bean Buddha Bowl", "buddha-bowl"],
+  ["Lunch - Vegetable Biryani with Raita", "vegetable-biryani"],
+  ["Lunch - Vegetable and Paneer Curry with Brown Rice", "paneer-curry"],
+  [
+    "Lunch – Chickpea Salad with Quinoa and Mixed Greens",
+    "chickpea-quinoa-salad",
+  ],
+  ["Lunch – Mixed Vegetable and Paneer Curry with Millet", "paneer-curry"],
+  ["Lunch – Paneer and Mixed Vegetable Wrap", "paneer-wrap"],
+  ["Lunch – Rajma (Kidney Bean) Curry with Brown Rice", "rajma"],
+  ["Lunch – Spinach and Chickpea Curry with Brown Rice", "chana-palak"],
+  ["Lunch – Vegetable Biryani with Raita", "vegetable-biryani"],
+  [
+    "Lunch – Vegetable and Lentil Soup with Whole Wheat Roll",
+    "lentil-vegetable-soup",
+  ],
+  ["Snack - Apple Slices with Peanut Butter", "fruit-nut-butter"],
+  ["Snack - Banana with Almond Butter", "fruit-nut-butter"],
+  ["Snack - Carrot and Cucumber Sticks with Hummus", "veggie-sticks-hummus"],
+  ["Snack - Cottage Cheese with Pineapple", "cottage-cheese-pineapple"],
+  ["Snack - Roasted Chickpeas", "roasted-chickpeas"],
+  ["Snack - Trail Mix with Nuts and Dried Fruits", "trail-mix"],
+  ["Snack - Yogurt with Mixed Seeds and Berries", "yogurt-berries"],
+  ["Snack – Apple with Almond Butter", "fruit-nut-butter"],
+  ["Snack – Carrot sticks with Hummus", "veggie-sticks-hummus"],
+  ["Snack – Cottage Cheese and Pineapple", "cottage-cheese-pineapple"],
+  ["Snack – Greek Yogurt with Mixed Berries and Nuts", "yogurt-berries"],
+  ["Snack – Mixed Nuts and Raisins", "trail-mix"],
+  ["Snack – Orange and Walnut Salad", "orange-walnut-salad"],
+  ["Snack – Roasted Chickpeas", "roasted-chickpeas"],
+];
+
+test("every current meal title maps to its food guide", () => {
+  for (const [title, id] of CURRENT_MEALS)
+    assert.deepEqual(ids(findGuides(foods, title)), [id], title);
+});
+
+test("each guide has its photos on disk, instructions and photo credits", () => {
+  for (const [type, library, minimum] of [
+    ["exercise", exercises, 2],
+    ["food", foods, 1],
+  ]) {
+    for (const [id, item] of Object.entries(library.items)) {
+      assert.equal(id, slug(id), `${type}/${id} id is URL-safe`);
+      assert.ok(item.photos.length >= minimum, `${type}/${id} photos`);
+      assert.ok(item.steps.length >= 2 && item.tips.length >= 1, id);
+      for (const photo of item.photos) {
+        for (const file of [photo.src, photo.thumb])
+          assert.ok(existsSync(new URL(file.slice(1), PUBLIC)), file);
+        assert.ok(photo.alt && photo.credit && photo.license, photo.src);
+        assert.match(photo.source, /^https:\/\//);
+      }
+    }
+  }
+});
+
+test("no alias points at two different guides", () => {
+  for (const library of [exercises, foods]) {
+    const owners = new Map();
+    for (const { id, pattern } of library.matchers) {
+      assert.equal(owners.get(pattern.source) ?? id, id, pattern.source);
+      owners.set(pattern.source, id);
+    }
+  }
+});
+
+test("the most specific exercise named in a step wins", () => {
+  assert.deepEqual(
+    ids(
+      findGuides(
+        exercises,
+        "Perform 3 sets of 30-second side planks per side.",
+      ),
+    ),
+    ["side-plank"],
+  );
+  assert.deepEqual(
+    ids(findGuides(exercises, "Hold chest and shoulder stretch 30 seconds.")),
+    ["chest-opener-stretch"],
+  );
+  assert.deepEqual(
+    ids(findGuides(exercises, "Plank with Shoulder Taps: 3 sets of 20 taps")),
+    ["plank-shoulder-tap"],
+  );
+  assert.deepEqual(
+    ids(findGuides(exercises, "Optional light walk outside for 10-15 minutes")),
+    ["outdoor-walk"],
+  );
+  assert.deepEqual(findGuides(exercises, "Rest 60 seconds between sets."), []);
+});
+
+test("guide links accept ids, typed names and the apostrophe form", () => {
+  assert.equal(
+    guideHref("exercise", "childs-pose"),
+    "/exercise/?q=childs-pose",
+  );
+  assert.equal(resolveGuide(exercises, "child's-pose").id, "childs-pose");
+  assert.equal(
+    resolveGuide(exercises, "Dumbbell Bicep Curls").id,
+    "dumbbell-bicep-curl",
+  );
+  assert.equal(resolveGuide(foods, "rajma").id, "rajma");
+  assert.equal(resolveGuide(exercises, "underwater basket weaving"), null);
+});
+
+test("rows named after a session find the exercises in their steps", () => {
+  const task = {
+    title: "Strength Training: Upper Body Dumbbell Circuit",
+    steps: [
+      "Perform 3 sets of 10-12 reps dumbbell bicep curls.",
+      "Perform 3 sets of 10-12 reps tricep kickbacks with dumbbells.",
+      "Rest 60 seconds between sets.",
+    ],
+  };
+  const [row] = workoutExercises(task);
+  assert.equal(row.name, task.title);
+  assert.deepEqual(ids(exerciseRowGuides(exercises, task, row)), [
+    "dumbbell-bicep-curl",
+    "tricep-kickback",
+  ]);
+
+  const mobility = {
+    title: "Light Cardio and Mobility",
+    steps: ["Include 5 minutes foam rolling if available."],
+  };
+  const [include] = workoutExercises(mobility);
+  assert.equal(include.name, "Include");
+  assert.deepEqual(ids(exerciseRowGuides(exercises, mobility, include)), [
+    "foam-rolling",
+  ]);
+});
+
+test("task guides cover every exercise in the full routine", () => {
+  const task = {
+    role: "workout",
+    title: "Core Stability and Balance Training",
+    steps: [
+      "Plank with Shoulder Taps: 3 sets of 20 taps",
+      "Bridge March: 3 sets of 12 reps",
+    ],
+  };
+  assert.deepEqual(ids(taskGuides(exercises, task)), [
+    "plank-shoulder-tap",
+    "bridge-march",
+  ]);
+  assert.deepEqual(
+    ids(
+      taskGuides(foods, {
+        role: "meal",
+        title: "Lunch – Vegetable Biryani with Raita",
+      }),
+    ),
+    ["vegetable-biryani"],
+  );
+});

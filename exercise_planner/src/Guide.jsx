@@ -17,6 +17,7 @@ import {
   navigate,
   normalize,
   resolveGuide,
+  taskGuides,
   useLibrary,
 } from "./library";
 
@@ -217,6 +218,24 @@ export function PhotoFocus({ type, guide, start = 0, onClose }) {
   );
 }
 
+// Guides for every exercise or dish named in a task's full instructions.
+export function TaskGuides({ task }) {
+  const type = task.role === "meal" ? "food" : "exercise";
+  const { library } = useLibrary(type);
+  const [focus, setFocus] = useState(null);
+  const guides = task.role === "care" ? [] : taskGuides(library, task);
+  if (!guides.length) return null;
+  return (
+    <div className="task-guides">
+      <h3>{type === "food" ? "Food guide" : "Exercise guides"}</h3>
+      <GuideChips type={type} guides={guides} onOpen={setFocus} />
+      {focus && (
+        <PhotoFocus type={type} guide={focus} onClose={() => setFocus(null)} />
+      )}
+    </div>
+  );
+}
+
 function GuideArticle({ type, guide }) {
   const [focus, setFocus] = useState(null);
   const copy = COPY[type];
@@ -393,7 +412,8 @@ export default function GuidePage({ type, query }) {
             All {type === "exercise" ? "exercises" : "foods"}
           </GuideLink>
           <GuideLink type={other} className="guide-nav-link">
-            <OtherIcon size={14} /> {other === "exercise" ? "Exercises" : "Foods"}
+            <OtherIcon size={14} />{" "}
+            {other === "exercise" ? "Exercises" : "Foods"}
           </GuideLink>
         </nav>
       </header>
@@ -409,11 +429,7 @@ export default function GuidePage({ type, query }) {
         ) : guide ? (
           <GuideArticle type={type} guide={guide} key={guide.id} />
         ) : (
-          <GuideIndex
-            type={type}
-            library={library}
-            missing={query || null}
-          />
+          <GuideIndex type={type} library={library} missing={query || null} />
         )}
       </main>
     </div>

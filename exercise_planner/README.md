@@ -48,6 +48,18 @@ Admin credentials are `admin@example.com` / `admin123`, as requested. `ADMIN_EMA
 
 Daily progress photos are stored as a private journal; AI photo-progress analysis and MCP are **Phase 2**, outside this implementation.
 
+## Exercise and food guides
+
+Workout and meal cards show small photos from a frontend-only guide library. Selecting a photo opens it in focus mode, with the arrow keys moving between photos. Exercise and meal names link to guide pages with photos, step-by-step instructions and tips:
+
+- `/exercise/?q=<id>`, for example `/exercise/?q=childs-pose`. Free text such as `?q=child's-pose` or `?q=Dumbbell Bicep Curls` resolves to the same guide.
+- `/food/?q=<id>`, for example `/food/?q=vegetable-biryani`.
+- `/exercise/` and `/food/` list every guide. Unknown items show the list with a notice.
+
+The mappings live in `public/library/exercise.json` (50 exercises, 2–3 photos each) and `public/library/food.json` (37 dishes covering every meal in the saved plans). Images are WebP files in `public/library/exercise/` and `public/library/food/`, each with a `.thumb.webp` for cards. Each item's `aliases` are matched against plan text: case and punctuation are ignored, whole words only, and plurals are allowed. When aliases overlap, the longest one wins. To support a new exercise or dish, add an item with its photos and aliases. The guide pages need no backend. A static host must serve `index.html` for `/exercise/` and `/food/`, as the Vite dev and preview servers already do.
+
+Exercise photos come from the public-domain [free-exercise-db](https://github.com/yuhonas/free-exercise-db) and Wikimedia Commons. Food photos come from Wikimedia Commons. Each photo records its author, licence and source page, and these are shown in focus mode and on the guide page.
+
 ## Configuration
 
 `OPEN_API_KEY` is supported exactly as requested; `OPENAI_API_KEY` also works. `OPENAI_MODEL` defaults to `gpt-4.1-mini`, and `LLM_PROVIDER` defaults to `openai`. There is no fabricated or sample-plan fallback on provider errors.
@@ -71,6 +83,8 @@ npm run test:e2e
 Run the API and frontend before browser tests. The backend tests use isolated temporary databases and a controlled provider, so they do not incur API charges or send email. They cover persistent authentication, tenant isolation, uploads, task validation, admin CRUD/impersonation, background jobs, care timing, bounded review revisions, and preservation of previous plans after failures.
 
 Plan-adjustment tests also cover request limits, stored preferences reaching future generation, preservation of completed/skipped tasks, extension dates, archived versions, retries, concurrent-job rejection, and tenant isolation. Browser tests exercise both dialogs, saved notes, failure recovery, mobile layout, and navigation through extended weeks using intercepted planning responses; they leave the administrator's real plan unchanged.
+
+Guide tests check that every saved meal title maps to a food guide, that every exercise has at least two photos on disk with credits, alias precedence, `?q=` resolution, focus mode, links to and back from guide pages, direct guide URLs, and phone layout.
 
 Quantity tests cover legacy sets/reps/holds, hour/minute formatting, structured-data precedence, and absent quantities. Backend checks exercise-field schema compatibility and validates durations. Card browser tests verify daily totals, portions, persisted completion/skipping, details, filters, and responsive layout with the saved admin plan.
 

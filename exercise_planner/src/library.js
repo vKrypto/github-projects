@@ -101,7 +101,8 @@ const requests = {};
 export function loadLibrary(type) {
   requests[type] ??= fetch(`/library/${type}.json`)
     .then((response) => {
-      if (!response.ok) throw new Error(`Guide library unavailable (${response.status}).`);
+      if (!response.ok)
+        throw new Error(`Guide library unavailable (${response.status}).`);
       return response.json();
     })
     .then(prepareLibrary)
@@ -141,7 +142,9 @@ export function guideRoute(location = window.location) {
 
 export function navigate(href) {
   window.history.pushState({ forma: true }, "", href);
-  window.dispatchEvent(new PopStateEvent("popstate", { state: { forma: true } }));
+  window.dispatchEvent(
+    new PopStateEvent("popstate", { state: { forma: true } }),
+  );
 }
 
 // Plain clicks stay in the app so the plan keeps its state; modified clicks

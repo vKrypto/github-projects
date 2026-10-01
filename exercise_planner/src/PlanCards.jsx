@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Check,
   ArrowUpRight,
@@ -11,6 +11,8 @@ import {
   workoutExercises,
   exerciseQuantity,
 } from "./quantities";
+import { exerciseRowGuides, findGuides, useLibrary } from "./library";
+import { GuideChips, GuideLink, GuideThumb, PhotoFocus } from "./Guide";
 
 const GROUPS = [
   { role: "workout", title: "Workouts", Icon: Dumbbell },
@@ -28,6 +30,10 @@ export default function PlanCards({
   onDetails,
 }) {
   const statusOf = (task) => statuses[`${date}/${task.id}`] || "pending";
+  const exerciseLibrary = useLibrary("exercise").library;
+  const foodLibrary = useLibrary("food").library;
+  const [focus, setFocus] = useState(null);
+  const openExercise = (guide) => setFocus({ type: "exercise", guide });
   const groups = GROUPS.map((group) => ({
     ...group,
     tasks: tasks.filter((t) => t.role === group.role),
@@ -88,6 +94,8 @@ export default function PlanCards({
               const status = statusOf(task);
               const exercises =
                 role === "workout" ? workoutExercises(task) : [];
+              const food =
+                role === "meal" ? findGuides(foodLibrary, task.title)[0] : null;
               return (
                 <article
                   className={`task activity-card ${role}-card ${status}`}
@@ -105,15 +113,35 @@ export default function PlanCards({
                           : "To do"}
                     </span>
                   </div>
-                  <button
-                    className="task-info task-details-button"
-                    onClick={() => onDetails(task)}
-                  >
-                    <h3>
-                      {task.title}
-                      <ArrowUpRight size={14} />
-                    </h3>
-                  </button>
+                  <div className="activity-title-row">
+                    {food && (
+                      <GuideThumb
+                        guide={food}
+                        size="large"
+                        onOpen={() => setFocus({ type: "food", guide: food })}
+                      />
+                    )}
+                    <div>
+                      <button
+                        className="task-info task-details-button"
+                        onClick={() => onDetails(task)}
+                      >
+                        <h3>
+                          {task.title}
+                          <ArrowUpRight size={14} />
+                        </h3>
+                      </button>
+                      {food && (
+                        <GuideLink
+                          type="food"
+                          id={food.id}
+                          className="guide-inline-link"
+                        >
+                          How to prepare &amp; eat it
+                        </GuideLink>
+                      )}
+                    </div>
+                  </div>
                   <div className="activity-amount">
                     <strong>
                       {role === "meal"
@@ -132,26 +160,66 @@ export default function PlanCards({
                   {role === "workout" && exercises.length > 0 ? (
                     <div className="exercise-quantities">
                       <span className="quantity-label">EXERCISES</span>
-                      {exercises.map((exercise, index) => (
-                        <div className="exercise-quantity" key={index}>
-                          <span>{exercise.name}</span>
-                          <div>
-                            <strong>{exerciseQuantity(exercise)}</strong>
-                            {exercise.minutes &&
-                              (exercise.reps || exercise.hold_seconds) && (
-                                <small>
-                                  {formatDuration(exercise.minutes)}
-                                </small>
+                      {exercises.map((exercise, index) => {
+                        const guides = exerciseRowGuides(
+                          exerciseLibrary,
+                          task,
+                          exercise,
+                        );
+                        return (
+                          <div
+                            className={`exercise-quantity${
+                              guides.length === 1
+                                ? " with-thumb"
+                                : guides.length > 1
+                                  ? " with-chips"
+                                  : ""
+                            }`}
+                            key={index}
+                          >
+                            <div className="exercise-name">
+                              {guides.length === 1 && (
+                                <GuideThumb
+                                  guide={guides[0]}
+                                  onOpen={() => openExercise(guides[0])}
+                                />
                               )}
-                            {exercise.rest_seconds != null &&
-                              exercise.rest_seconds > 0 && (
-                                <small>
-                                  {exercise.rest_seconds} sec rest between sets
-                                </small>
-                              )}
+                              <span>
+                                {guides.length === 1 ? (
+                                  <GuideLink type="exercise" id={guides[0].id}>
+                                    {exercise.name}
+                                  </GuideLink>
+                                ) : (
+                                  exercise.name
+                                )}
+                              </span>
+                            </div>
+                            <div>
+                              <strong>{exerciseQuantity(exercise)}</strong>
+                              {exercise.minutes &&
+                                (exercise.reps || exercise.hold_seconds) && (
+                                  <small>
+                                    {formatDuration(exercise.minutes)}
+                                  </small>
+                                )}
+                              {exercise.rest_seconds != null &&
+                                exercise.rest_seconds > 0 && (
+                                  <small>
+                                    {exercise.rest_seconds} sec rest between
+                                    sets
+                                  </small>
+                                )}
+                            </div>
+                            {guides.length > 1 && (
+                              <GuideChips
+                                type="exercise"
+                                guides={guides}
+                                onOpen={openExercise}
+                              />
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : role === "meal" && task.ingredients?.length > 0 ? (
                     <div className="meal-portions">
@@ -181,9 +249,24 @@ export default function PlanCards({
                             : "STEPS"}
                       </span>
                       <ul>
-                        {task.steps?.slice(0, 3).map((step, index) => (
-                          <li key={index}>{step}</li>
-                        ))}
+                        {task.steps?.slice(0, 3).map((step, index) => {
+                          const guides =
+                            role === "workout"
+                              ? findGuides(exerciseLibrary, step)
+                              : [];
+                          return (
+                            <li key={index}>
+                              {step}
+                              {guides.length > 0 && (
+                                <GuideChips
+                                  type="exercise"
+                                  guides={guides}
+                                  onOpen={openExercise}
+                                />
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                       {task.steps?.length > 3 && (
                         <button
@@ -227,6 +310,13 @@ export default function PlanCards({
           </div>
         </section>
       ))}
+      {focus && (
+        <PhotoFocus
+          type={focus.type}
+          guide={focus.guide}
+          onClose={() => setFocus(null)}
+        />
+      )}
     </div>
   );
 }
