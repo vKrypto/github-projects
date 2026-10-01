@@ -727,27 +727,6 @@ function App() {
                     Add user
                   </button>
                 </form>
-                {plan?.last_change && (
-                  <div className="plan-change-summary">
-                    <Check size={17} />
-                    <span>
-                      Plan{" "}
-                      {plan.last_change.action === "refine"
-                        ? "refined"
-                        : "extended"}{" "}
-                      · {plan.last_change.days} days ·{" "}
-                      {labelDate(plan.last_change.start_date, {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                      –
-                      {labelDate(plan.last_change.end_date, {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </span>
-                  </div>
-                )}
                 {credentials && (
                   <div className="credential-box">
                     Generated password: <code>{credentials}</code>
@@ -917,6 +896,28 @@ function App() {
                   </div>
                 </div>
               </div>
+              {plan?.last_change && (
+                <div className="plan-change-summary">
+                  <Check size={17} />
+                  <span>
+                    Plan{" "}
+                    {plan.last_change.action === "refine"
+                      ? "refined"
+                      : "extended"}{" "}
+                    · {plan.last_change.days} days ·{" "}
+                    {labelDate(plan.last_change.start_date, {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                    –
+                    {labelDate(plan.last_change.end_date, {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                </div>
+              )}
+
               {credentials && (
                 <div className="credential-box">
                   Save this password for future sign-ins:{" "}

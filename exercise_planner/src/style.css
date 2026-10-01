@@ -48,6 +48,7 @@ aside {
   padding: 32px 20px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .brand {
   font-family: Manrope;
