@@ -117,15 +117,16 @@ def generate(profile, media, start: date, progress=None, report=lambda *args:Non
             except PlanningError as e: validation[role]=str(e)
         review=provider.review(context,plans)
         audits.append(review.model_dump())
+        report('reviewing', review.summary, {'review':review.model_dump(),'validation':validation})
         major = {r:[issue.feedback for issue in review.issues if issue.role==r and issue.major] for r in roles}
         for r,msg in validation.items(): major[r].append(msg)
         affected = {r:'\n'.join(messages) for r,messages in major.items() if messages}
         if not affected and review.approved: break
         if not affected: raise PlanningError('Review did not approve the plan. Retry with more specific preferences.')
         for r,feedback in affected.items():
-            if revisions[r]>=3: raise PlanningError(f'{r.title()} plan still requires changes after three revisions. Adjust your preferences and retry.')
+            if revisions[r]>=3: raise PlanningError(f'{r.title()} plan still requires changes after three revisions. Adjust your preferences and retry. Last review: {feedback}')
             revisions[r]+=1
-            report('revising',f'{r.title()} agent is revising its plan ({revisions[r]}/3).')
+            report('revising',f'{r.title()} agent is revising its plan ({revisions[r]}/3). {feedback}')
             plans[r]=provider.generate(r,{**context,'previous_plan':plans[r].model_dump()},feedback)
     days=[]
     for i in range(28):

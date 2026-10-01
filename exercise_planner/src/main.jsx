@@ -125,8 +125,8 @@ function App() {
     setNotifications(me.notifications);
     if (me.account.role === "admin") {
       setUsers(await api("/admin/users"));
-      setPage("Users");
-    } else {
+    }
+    {
       const [tracking, photos] = await Promise.all([
         api("/progress"),
         api("/media"),
@@ -151,7 +151,10 @@ function App() {
     let alive = true;
     api("/me")
       .then(async () => {
-        if (alive) await refresh();
+        if (alive) {
+          const me = await refresh();
+          if (me.account.role === "admin") setPage("Users");
+        }
       })
       .catch((e) => {
         if (e.status !== 401 && alive) setError(e.message);
@@ -405,7 +408,7 @@ function App() {
         </div>
         <div className="nav-label">YOUR SPACE</div>
         <nav>
-          {(account?.role === "admin" ? [[Users, "Users"]] : NAV).map(
+          {(account?.role === "admin" ? [[Users, "Users"], ...NAV] : NAV).map(
             ([Icon, p]) => (
               <button
                 className={page === p ? "active" : ""}
@@ -510,6 +513,7 @@ function App() {
                     await api("/admin/return", { method: "POST" });
                     setImpersonating(false);
                     await refresh();
+                    setPage("Users");
                   })
                 }
               >
@@ -618,7 +622,7 @@ function App() {
                 </button>
               </form>
             </div>
-          ) : account.role === "admin" ? (
+          ) : account.role === "admin" && page === "Users" ? (
             <>
               <div className="page-heading">
                 <span className="eyebrow">ADMINISTRATION</span>
@@ -2082,7 +2086,7 @@ function App() {
                   );
                   action(async () => {
                     await api(
-                      account.role === "admin"
+                      account.role === "admin" && selectedTask?.id
                         ? "/admin/users/" + selectedTask.id + "/password"
                         : "/auth/password",
                       { method: "PUT", body: { password } },
@@ -2094,7 +2098,7 @@ function App() {
               >
                 <h2>Set a new password.</h2>
                 <p>
-                  {account.role === "admin"
+                  {account.role === "admin" && selectedTask?.id
                     ? selectedTask.email
                     : account.email}
                 </p>
@@ -2145,7 +2149,7 @@ function App() {
                   <br />
                   {account?.email}
                 </p>
-                {account?.role !== "admin" && (
+                {account && (
                   <>
                     <button
                       className="outline full"
@@ -2156,7 +2160,10 @@ function App() {
                     </button>
                     <button
                       className="outline full"
-                      onClick={() => setModal("password")}
+                      onClick={() => {
+                        setSelectedTask(null);
+                        setModal("password");
+                      }}
                     >
                       Change password <KeyRound size={16} />
                     </button>

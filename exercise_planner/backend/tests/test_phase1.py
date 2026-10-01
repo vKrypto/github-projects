@@ -170,3 +170,23 @@ def test_successful_regeneration_archives_previous_tracking(client,monkeypatch):
     assert len(history)==1 and history[0]['completed']==1
     client.post('/api/auth/logout');signup(client,'other@example.com')
     assert client.get('/api/progress').json()['history']==[]
+
+
+def test_admin_can_have_personal_profile_without_losing_admin_access(client,monkeypatch):
+    r=client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin'})
+    assert r.status_code==200
+    identifier=r.json()['account']['id']
+    assert client.put('/api/profile',json={**PROFILE,'name':'Administrator (sample)','email':'admin@example.com'}).status_code==200
+    me=client.get('/api/me').json()
+    assert me['account']['role']=='admin' and me['account']['id']==identifier
+    assert me['profile']['weight']==75
+    assert client.get('/api/admin/users').status_code==200
+    monkeypatch.setitem(planning.PROVIDERS,'test',FakeProvider);monkeypatch.setenv('LLM_PROVIDER','test')
+    job_id=client.post('/api/plans/generate').json()['id']
+    for _ in range(50):
+        job=client.get('/api/jobs/'+job_id).json()
+        if job['status'] in ('completed','failed'):break
+        time.sleep(.02)
+    assert job['status']=='completed',job
+    assert len(client.get('/api/plan').json()['plan']['days'])==28
+    assert client.get('/api/me').json()['account']['role']=='admin'

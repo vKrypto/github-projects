@@ -38,7 +38,7 @@ Admin credentials are `admin@example.com` / `admin`, as requested. `ADMIN_EMAIL`
 - Selected care routines begin on day 15, or on day 1 when early care is selected. Users can start care early and regenerate.
 - Planning runs in the background with persisted job status, visible progress, retryable errors, and dashboard notifications. If the process restarts mid-job, the job becomes retryable. Previously published plans remain available when regeneration fails. Successful regeneration archives the previous plan and tracking totals, shown under Previous plans in Progress.
 - The dashboard and four-week calendar show dated tasks, detailed routines/recipes, completed/skipped/pending status, day-specific calorie and movement totals, water logs, check-ins, weight trends, completion graphs, adherence summaries, and habit feedback. Saved user feedback is passed into subsequent planning.
-- Admins can create/list/delete accounts, set passwords, and enter a user’s workspace. Impersonation has an explicit return-to-admin action. Deletion removes the tenant's database records and local files.
+- Admins can create/list/delete accounts, set passwords, and enter a user’s workspace. They also have their own profile and wellness pages alongside the Users screen. Impersonation has an explicit return-to-admin action. Deletion removes the tenant's database records and local files.
 - Database reads/writes and media endpoints derive ownership from the authenticated session. Different tenants cannot access one another’s data. Passwords use salted PBKDF2 hashes, and sessions use opaque HttpOnly cookies with hashed tokens stored in SQLite.
 
 Daily progress photos are stored as a private journal; AI photo-progress analysis and MCP are **Phase 2**, outside this implementation.
@@ -67,3 +67,13 @@ Run the API and frontend before browser tests. The backend tests use isolated te
 A live OpenAI run was also verified: 28 days, all three planning roles, approved independent review, and delayed care. Its real saved plan was exercised in the browser for task completion/skipping, all four calendar weeks, routine details, water logging, check-ins, photos, and progress charts. `tests/live-plan.spec.js` runs when a temporary live-verification account descriptor is available under `backend/data/verification.json`; otherwise it is skipped.
 
 Implementation follows the official [OpenAI structured outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs) and FastAPI documentation for [file uploads](https://fastapi.tiangolo.com/tutorial/request-files/).
+
+## Administrator sample onboarding
+
+A fictional sample profile is saved for `admin@example.com`: age 29, 175 cm, 75 kg, beginner, vegetarian, gym access, and optional skin/hair care beginning in week 3. Its account keeps the admin role. Sign in, then select **Overview** for the personal plan or **Users** for administration.
+
+The seed helper preserves existing profiles and plans and resumes polling an active planning job:
+
+```sh
+.venv/bin/python scripts/seed_admin_sample.py
+```

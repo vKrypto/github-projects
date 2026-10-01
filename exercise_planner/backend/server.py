@@ -43,6 +43,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS plans(tenant TEXT PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE, data TEXT NOT NULL, created TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS plan_history(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, data TEXT NOT NULL, statuses TEXT NOT NULL, created TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, status TEXT, message TEXT, created TEXT, updated TEXT);
+        CREATE TABLE IF NOT EXISTS job_audit(id TEXT PRIMARY KEY, job TEXT REFERENCES jobs(id) ON DELETE CASCADE, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, data TEXT NOT NULL, created TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS statuses(tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, date TEXT, task_id TEXT, status TEXT, PRIMARY KEY(tenant,date,task_id));
         CREATE TABLE IF NOT EXISTS checkins(tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, date TEXT, water INTEGER, weight REAL, notes TEXT, PRIMARY KEY(tenant,date));
         CREATE TABLE IF NOT EXISTS media(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, kind TEXT, date TEXT, filename TEXT, created TEXT);
@@ -125,8 +126,10 @@ def deliver_notification(identifier):
     with connect() as con: con.execute('UPDATE notifications SET email_status=? WHERE id=?',(status,identifier))
 
 def run_job(identifier,tenant,profile):
-    def report(status,message):
-        with connect() as con: con.execute('UPDATE jobs SET status=?,message=?,updated=? WHERE id=?',(status,message,now(),identifier))
+    def report(status,message,details=None):
+        with connect() as con:
+            con.execute('UPDATE jobs SET status=?,message=?,updated=? WHERE id=?',(status,message,now(),identifier))
+            if details is not None: con.execute('INSERT INTO job_audit VALUES(?,?,?,?,?)',(str(uuid.uuid4()),identifier,tenant,json.dumps(details),now()))
     try:
         with connect() as con:
             images=[dict(r) for r in con.execute("SELECT * FROM media WHERE tenant=? AND kind IN ('equipment','body') ORDER BY created DESC",(tenant,))]
@@ -197,7 +200,6 @@ def me(account=Depends(current),forma_admin:str | None=Cookie(default=None)):
 
 @app.put('/api/profile')
 def save_profile(data:Profile,account=Depends(current)):
-    if account['role']=='admin': raise HTTPException(400,'Select a user account first.')
     try: ZoneInfo(data.timezone)
     except Exception: raise HTTPException(422,'Invalid timezone.') from None
     if 'Vegan' in data.diet and 'Vegetarian' in data.diet:

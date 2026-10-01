@@ -146,3 +146,28 @@ test("welcome is responsive without horizontal overflow", async ({ page }) => {
     fullPage: true,
   });
 });
+
+test("administrator can open personal wellness workspace and keep user management", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Administrator sign in" }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByLabel("Email", { exact: true }).fill("admin@example.com");
+  await dialog.getByLabel("Password", { exact: true }).fill("admin");
+  await dialog.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Users", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Overview", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: /A fresh day/ }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Users", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Users", exact: true }),
+  ).toBeVisible();
+  expect((await (await page.request.get("/api/me")).json()).account.role).toBe(
+    "admin",
+  );
+});
