@@ -41,6 +41,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY, account TEXT REFERENCES accounts(id) ON DELETE CASCADE, expires REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS profiles(tenant TEXT PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE, data TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS plans(tenant TEXT PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE, data TEXT NOT NULL, created TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS plan_history(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, data TEXT NOT NULL, statuses TEXT NOT NULL, created TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY, tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, status TEXT, message TEXT, created TEXT, updated TEXT);
         CREATE TABLE IF NOT EXISTS statuses(tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, date TEXT, task_id TEXT, status TEXT, PRIMARY KEY(tenant,date,task_id));
         CREATE TABLE IF NOT EXISTS checkins(tenant TEXT REFERENCES accounts(id) ON DELETE CASCADE, date TEXT, water INTEGER, weight REAL, notes TEXT, PRIMARY KEY(tenant,date));
@@ -137,12 +138,16 @@ def run_job(identifier,tenant,profile):
         if load_profile(tenant)!=profile:
             report('failed','Profile changed during planning. Please regenerate.');return
         with connect() as con:
+            old=con.execute('SELECT data FROM plans WHERE tenant=?',(tenant,)).fetchone()
+            if old:
+                old_statuses=[dict(r) for r in con.execute('SELECT date,task_id,status FROM statuses WHERE tenant=?',(tenant,))]
+                con.execute('INSERT INTO plan_history VALUES(?,?,?,?,?)',(str(uuid.uuid4()),tenant,old['data'],json.dumps(old_statuses),now()))
             con.execute('INSERT OR REPLACE INTO plans VALUES(?,?,?)',(tenant,json.dumps(plan),now()))
             # Regeneration has new task identities; clear obsolete tracking for the affected dates.
             con.execute('DELETE FROM statuses WHERE tenant=? AND date BETWEEN ? AND ?',(tenant,plan['start_date'],plan['end_date']))
         cache.delete(tenant,'plan');cache.set(tenant,'plan',plan)
-        report('completed','Your reviewed four-week plan is ready.')
         notification(tenant,'Your personalized four-week workout, meal and selected care plan is ready.')
+        report('completed','Your reviewed four-week plan is ready.')
     except planning.PlanningError as e: report('failed',str(e))
     except Exception: report('failed','Planning could not finish. Your previous plan is still available. Please retry.')
 
@@ -236,7 +241,15 @@ def progress(account=Depends(current)):
     with connect() as con:
         statuses=[dict(r) for r in con.execute('SELECT date,task_id,status FROM statuses WHERE tenant=?',(account['id'],))]
         checkins=[dict(r) for r in con.execute('SELECT date,water,weight,notes FROM checkins WHERE tenant=? ORDER BY date',(account['id'],))]
-    return {'statuses':statuses,'checkins':checkins}
+    with connect() as con: archived=con.execute('SELECT id,data,statuses,created FROM plan_history WHERE tenant=? ORDER BY created DESC',(account['id'],)).fetchall()
+    history=[]
+    for row in archived:
+        old_plan=json.loads(row['data']);old_statuses={(s['date'],s['task_id']):s['status'] for s in json.loads(row['statuses'])}
+        completed=sum(old_statuses.get((d['date'],t['id']))=='completed' for d in old_plan['days'] for t in d['tasks'])
+        skipped=sum(old_statuses.get((d['date'],t['id']))=='skipped' for d in old_plan['days'] for t in d['tasks'])
+        total=sum(len(d['tasks']) for d in old_plan['days'])
+        history.append({'id':row['id'],'start_date':old_plan['start_date'],'end_date':old_plan['end_date'],'completed':completed,'skipped':skipped,'total':total,'adherence':round(completed/max(1,total)*100)})
+    return {'statuses':statuses,'checkins':checkins,'history':history}
 
 @app.put('/api/tasks/status')
 def task_status(data:TaskStatus,account=Depends(current)):

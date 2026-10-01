@@ -69,7 +69,7 @@ def test_tasks_checkins_feedback_and_tenant_isolation(client):
     assert client.post('/api/feedback',json={'text':'More meal variety'}).status_code==201
     assert client.get('/api/progress').json()['statuses'][0]['status']=='completed'
     client.post('/api/auth/logout');signup(client,'other@example.com')
-    assert client.get('/api/progress').json()=={'statuses':[],'checkins':[]}
+    assert client.get('/api/progress').json()=={'statuses':[],'checkins':[],'history':[]}
     assert client.get('/api/plan').json()['plan'] is None
     assert client.put('/api/tasks/status',json=body).status_code==404
 
@@ -154,3 +154,19 @@ def test_failed_regeneration_preserves_previous_plan(client,monkeypatch):
         time.sleep(.02)
     assert job['status']=='failed'
     assert len(client.get('/api/plan').json()['plan']['days'])==28
+
+
+def test_successful_regeneration_archives_previous_tracking(client,monkeypatch):
+    account=signup(client);old=seed_plan(account);client.put('/api/profile',json=PROFILE)
+    client.put('/api/tasks/status',json={'date':old['start_date'],'task_id':old['days'][0]['tasks'][0]['id'],'status':'completed'})
+    monkeypatch.setitem(planning.PROVIDERS,'test',FakeProvider);monkeypatch.setenv('LLM_PROVIDER','test')
+    job_id=client.post('/api/plans/generate').json()['id']
+    for _ in range(50):
+        job=client.get('/api/jobs/'+job_id).json()
+        if job['status'] in ('completed','failed'):break
+        time.sleep(.02)
+    assert job['status']=='completed',job
+    history=client.get('/api/progress').json()['history']
+    assert len(history)==1 and history[0]['completed']==1
+    client.post('/api/auth/logout');signup(client,'other@example.com')
+    assert client.get('/api/progress').json()['history']==[]

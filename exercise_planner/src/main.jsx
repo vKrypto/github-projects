@@ -69,6 +69,7 @@ const taskIcon = (category) =>
       : Utensils;
 const statusKey = (date, id) => `${date}/${id}`;
 function App() {
+  const [history, setHistory] = useState([]);
   const [account, setAccount] = useState(null),
     [profile, setProfile] = useState(null),
     [plan, setPlan] = useState(null),
@@ -105,6 +106,7 @@ function App() {
     setJob(null);
     setStatuses({});
     setCheckins({});
+    setHistory([]);
     setMedia([]);
     setNotifications([]);
     setUsers([]);
@@ -141,6 +143,7 @@ function App() {
         Object.fromEntries(tracking.checkins.map((c) => [c.date, c])),
       );
       setMedia(photos);
+      setHistory(tracking.history || []);
     }
     return me;
   }
@@ -1096,6 +1099,32 @@ function App() {
                         </div>
                         <WeightChart checkins={checkins} />
                       </section>
+                      {history.length > 0 && (
+                        <section className="progress-page">
+                          <h2>Previous plans</h2>
+                          <p className="muted">
+                            Your earlier progress stays with you when your plan
+                            changes.
+                          </p>
+                          {history.map((h) => (
+                            <div className="history-row" key={h.id}>
+                              <div>
+                                <b>
+                                  {h.start_date} – {h.end_date}
+                                </b>
+                                <small>
+                                  {h.completed} completed · {h.skipped} skipped
+                                  · {h.total} planned
+                                </small>
+                              </div>
+                              <span>{h.adherence}%</span>
+                              <div className="progress-track">
+                                <i style={{ width: `${h.adherence}%` }} />
+                              </div>
+                            </div>
+                          ))}
+                        </section>
+                      )}
                       <section className="progress-page">
                         <h2>Progress photos</h2>
                         <p className="muted">
