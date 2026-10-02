@@ -58,7 +58,7 @@ class OpenAIProvider:
     def generate(self, role, context, revision=''):
         brief = {
             'workout': 'Generate only workouts/mobility/recovery. Balance body areas and rest. Every active task must include structured exercises, one entry per exercise, with a short name and sets/reps for strength or hold_seconds/minutes for timed movements. Reps can be a range such as "10-12 per side". Use null for quantities that do not apply. Include estimated minutes for each exercise when practical, including its rest time; their sum must not exceed the task duration. Task minutes are the total session duration, including rest, and must not double-count individual exercises. For a zero-minute rest day, exercises may be empty. Keep steps consistent with these quantities. Give every exercise an approximate calorie burn (calories, whole kcal) for its prescribed sets, reps or duration, based on the user\'s weight and the intensity. Task calories are the estimated burn for the whole session including warm-up and rest; the exercises\' calories must add up to no more than that. daily_calorie_target=0. Honor available equipment.',
-            'meal': 'Generate breakfast, lunch, dinner, and optional snack EVERY day. Include portions, ingredients, preparation steps and estimated calories. Write every ingredient with its quantity and approximate energy and protein, for example "1/2 cup dry quinoa (~310 kcal, 12 g protein)". Give every meal its nutrition for the stated portions: protein_g, carbs_g, fat_g and fiber_g, consistent with its calories (about 4 kcal per gram of protein or carbohydrate and 9 per gram of fat). Honor ALL allergies and dietary preferences. Set a reasonable daily_calorie_target and daily_nutrition_targets (grams of protein, carbohydrate, fat and fiber) with transparent assumptions using height, weight, age, goal, level and diet; protein is typically about 1.0-1.6 g per kg of body weight depending on the goal. Each day\'s meal totals should approximate these targets. daily_burn_target=0.',
+            'meal': 'Generate breakfast, lunch, dinner, and optional snack EVERY day. Include portions, ingredients, preparation steps and estimated calories. Write every ingredient with its quantity and approximate energy and protein, for example "1/2 cup dry quinoa (~310 kcal, 12 g protein)". Give every meal its nutrition for the stated portions: protein_g, carbs_g, fat_g and fiber_g, consistent with its calories (about 4 kcal per gram of protein or carbohydrate and 9 per gram of fat). Honor ALL allergies and dietary preferences. Set a reasonable daily_calorie_target and daily_nutrition_targets (grams of protein, carbohydrate, fat and fiber) with transparent assumptions using height, weight, age, goal, level and diet; protein is typically about 1.0-1.6 g per kg of body weight depending on the goal. Each day\'s meal totals should approximate these targets: before answering, add up every day\'s meal calories and protein and adjust portions or protein-rich foods the user can eat (for example dal, legumes, paneer, tofu, yogurt) until each day is within 15% of daily_calorie_target and daily_nutrition_targets.protein_g. daily_burn_target=0.',
             'care': 'Generate only requested Skin care and/or Hair care. Suggest gentle product categories and patch testing, no brands needed. Calories and targets=0. Keep routines practical; avoid treating conditions.'
         }[role]
         clean = {k:v for k,v in context.items() if k != 'media'}
@@ -95,13 +95,10 @@ def validate_role(role, plan, profile):
         if not day.tasks or not categories <= allowed: raise PlanningError(f'Invalid {role} task categories.')
         if role=='meal' and not {'Breakfast','Lunch','Dinner'}<=categories:
             raise PlanningError('The meal plan must include three meals every day.')
-        if role=='meal' and abs(sum(t.calories for t in day.tasks)-plan.daily_calorie_target)>max(150,plan.daily_calorie_target*.15):
-            raise PlanningError('Daily meal calories do not match the calorie target.')
-        targets = getattr(plan, 'daily_nutrition_targets', None)
-        if role=='meal' and targets and all(hasattr(t,'nutrition') for t in day.tasks):
-            protein = sum(t.nutrition.protein_g for t in day.tasks)
-            if abs(protein-targets.protein_g)>max(15,targets.protein_g*.25):
-                raise PlanningError('Daily meal protein does not match the protein target.')
+        if role=='meal':
+            total, allowed = sum(t.calories for t in day.tasks), round(max(150,plan.daily_calorie_target*.15))
+            if abs(total-plan.daily_calorie_target)>allowed:
+                raise PlanningError(f'Daily meal calories do not match the calorie target: day {day.day} meals total {total} kcal; daily_calorie_target is {plan.daily_calorie_target} kcal (allowed ±{allowed}).')
         for t in day.tasks:
             try: datetime.strptime(t.time,'%H:%M')
             except ValueError: raise PlanningError('Invalid task time.') from None
@@ -121,11 +118,28 @@ def validate_role(role, plan, profile):
                     raise PlanningError('Exercise durations exceed the total workout duration.')
                 if sum(e.calories for e in t.exercises)>t.calories*1.25+25:
                     raise PlanningError('Exercise calorie estimates exceed the session burn.')
-            if role=='meal' and hasattr(t,'nutrition'):
-                n = t.nutrition
-                # Calories from macros (4/4/9 kcal per gram) should roughly match the meal estimate.
-                if abs(4*n.protein_g+4*n.carbs_g+9*n.fat_g-t.calories)>max(100,t.calories*.3):
-                    raise PlanningError('Meal protein, carbohydrate and fat do not match its calories.')
+    if role=='meal':
+        problems = nutrition_problems(plan)
+        if problems:
+            raise PlanningError('Fix these nutrition mismatches: '+' '.join(problems)+' Adjust protein-rich portions, or set a realistic protein target, so every day is in range, and keep each meal\'s macros consistent with its calories.')
+
+def nutrition_problems(plan):
+    """Every mismatch with its numbers, so one revision can correct them all."""
+    targets = getattr(plan, 'daily_nutrition_targets', None)
+    problems = []
+    for day in plan.days:
+        meals = [t for t in day.tasks if hasattr(t,'nutrition')]
+        for t in meals:
+            n = t.nutrition
+            # Calories from macros (4/4/9 kcal per gram) should roughly match the meal estimate.
+            macro = 4*n.protein_g+4*n.carbs_g+9*n.fat_g
+            if abs(macro-t.calories)>max(100,t.calories*.3):
+                problems.append(f'Day {day.day} {t.category}: {n.protein_g} g protein, {n.carbs_g} g carbs and {n.fat_g} g fat give about {macro} kcal, but the meal lists {t.calories} kcal.')
+        if targets and meals and len(meals)==len(day.tasks):
+            protein, allowed = sum(t.nutrition.protein_g for t in meals), round(max(15,targets.protein_g*.25))
+            if abs(protein-targets.protein_g)>allowed:
+                problems.append(f'Day {day.day} meals provide {protein} g protein; daily_nutrition_targets.protein_g is {targets.protein_g} g (allowed ±{allowed} g).')
+    return problems
 
 def generate(profile, media, start: date, progress=None, report=lambda *args:None, provider=None, *, days_count=28, journey_offset=0, preferences=None, current_plan=None, action='generate'):
     provider = provider or PROVIDERS[os.getenv('LLM_PROVIDER','openai')]()
