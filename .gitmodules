@@ -31,3 +31,7 @@
 [submodule "monitoring_stack"]
 	path = monitoring_stack
 	url = https://github.com/vKrypto/monitoring_stack.git
+[submodule "exercise_planner"]
+	path = exercise_planner
+	url = https://github.com/vKrypto/self-care.git
+	branch = main
