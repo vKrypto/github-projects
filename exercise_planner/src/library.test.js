@@ -140,7 +140,8 @@ test("each guide has its photos on disk, instructions and photo credits", () => 
         for (const file of [photo.src, photo.thumb])
           assert.ok(existsSync(new URL(file.slice(1), PUBLIC)), file);
         assert.ok(photo.alt && photo.credit && photo.license, photo.src);
-        assert.match(photo.source, /^https:\/\//);
+        if (photo.source) assert.match(photo.source, /^https:\/\//);
+        else assert.equal(photo.license, "Original illustration", photo.src);
       }
     }
   }
@@ -272,6 +273,17 @@ test("dishes and exercises likely in future plans resolve to the specific guide"
   assert.deepEqual(exercise("Incline bench press"), ["incline-dumbbell-press"]);
   assert.deepEqual(exercise("Reverse crunches"), ["reverse-crunch"]);
   assert.deepEqual(exercise("Surya Namaskar: 5 rounds"), ["sun-salutation"]);
+  assert.deepEqual(exercise("High knees: 3 x 30 seconds"), ["high-knees"]);
+  assert.deepEqual(exercise("Wall sit: hold 45 seconds"), ["wall-sit"]);
+  assert.deepEqual(exercise("Clamshells: 2 sets of 15 per side"), [
+    "clamshell",
+  ]);
+  assert.deepEqual(exercise("Lateral lunges: 3 sets of 10"), ["side-lunge"]);
+  assert.deepEqual(exercise("Half pigeon: hold 1 minute per side"), [
+    "pigeon-pose",
+  ]);
+  assert.equal(meal("Snack – Date and Almond Energy Balls"), "energy-balls");
+  assert.equal(meal("Lunch – Veggie Burrito Bowl"), "burrito-bowl");
 });
 
 test("workout focus comes from the title, then from the exercises' body areas", () => {

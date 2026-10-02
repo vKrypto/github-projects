@@ -40,6 +40,17 @@ const COPY = {
   },
 };
 
+// Original illustrations have no external source page to link to.
+function Credit({ photo }) {
+  return photo.source ? (
+    <a href={photo.source} target="_blank" rel="noreferrer">
+      {photo.credit}
+    </a>
+  ) : (
+    photo.credit
+  );
+}
+
 export function GuideLink({ type, id, className, children, ...props }) {
   return (
     <a
@@ -192,11 +203,8 @@ export function PhotoFocus({ type, guide, start = 0, onClose }) {
         )}
         <footer>
           <small>
-            Photo:{" "}
-            <a href={photo.source} target="_blank" rel="noreferrer">
-              {photo.credit}
-            </a>{" "}
-            · {photo.license}
+            {photo.source ? "Photo" : "Image"}: <Credit photo={photo} /> ·{" "}
+            {photo.license}
           </small>
           {type && (
             <GuideLink
@@ -293,15 +301,11 @@ function GuideArticle({ type, guide }) {
           : "General guidance only. Your plan's recipe sets the exact portions; check ingredients against your allergies."}
       </p>
       <footer className="guide-credits">
-        <h2>Photo credits</h2>
+        <h2>Image credits</h2>
         <ul>
           {guide.photos.map((photo) => (
             <li key={photo.src}>
-              {photo.caption}:{" "}
-              <a href={photo.source} target="_blank" rel="noreferrer">
-                {photo.credit}
-              </a>
-              , {photo.license}
+              {photo.caption}: <Credit photo={photo} />, {photo.license}
             </li>
           ))}
         </ul>

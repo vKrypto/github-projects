@@ -764,6 +764,47 @@
         "anda curry"
       ]
     },
+    "energy-balls": {
+      "name": "Energy Balls",
+      "summary": "No-bake bites of dates, oats, nuts and seeds — a portable snack.",
+      "facts": {
+        "Best for": "Snack or before a workout",
+        "Diet": "Vegan · gluten-free with certified oats",
+        "Good source of": "Fibre, healthy fats, natural sugars",
+        "Commonly contains": "Tree nuts or peanuts"
+      },
+      "photos": [
+        {
+          "src": "/library/food/energy-balls.webp",
+          "thumb": "/library/food/energy-balls.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Energy balls on a board",
+          "alt": "Energy Balls: energy balls on a board",
+          "credit": "anasegota",
+          "license": "CC0",
+          "source": "https://www.flickr.com/photos/150121377@N03/34277553406"
+        }
+      ],
+      "steps": [
+        "Blend soft pitted dates with oats, nuts or seeds and a pinch of cinnamon.",
+        "Add a spoon of nut butter or water if the mixture is too dry.",
+        "Roll into walnut-sized balls; coat in sesame or coconut if you like.",
+        "Chill for 30 minutes to firm up."
+      ],
+      "tips": [
+        "Two balls make a typical snack — they're energy-dense.",
+        "Keep in the fridge for up to a week."
+      ],
+      "aliases": [
+        "energy balls",
+        "energy ball",
+        "energy bites",
+        "date balls",
+        "protein balls",
+        "bliss balls"
+      ]
+    },
     "falafel-bowl": {
       "name": "Falafel Salad Bowl with Tahini",
       "summary": "Crisp falafel over salad, finished with a creamy tahini dressing.",
@@ -2757,6 +2798,45 @@
         "vegetable burger",
         "bean burger",
         "lentil burger"
+      ]
+    },
+    "burrito-bowl": {
+      "name": "Veggie Burrito Bowl",
+      "summary": "Rice, beans, vegetables and salsa in a bowl — a burrito without the wrap.",
+      "facts": {
+        "Best for": "Lunch or dinner",
+        "Diet": "Vegetarian · vegan without cheese and sour cream",
+        "Good source of": "Plant protein, fibre, complex carbs",
+        "Commonly contains": "Dairy (cheese, sour cream)"
+      },
+      "photos": [
+        {
+          "src": "/library/food/burrito-bowl.webp",
+          "thumb": "/library/food/burrito-bowl.thumb.webp",
+          "width": 500,
+          "height": 500,
+          "caption": "Veggie burrito bowl",
+          "alt": "Veggie Burrito Bowl: veggie burrito bowl",
+          "credit": "chfrank_cgn",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/49814345@N04/48712594497"
+        }
+      ],
+      "steps": [
+        "Cook brown rice and warm black or kidney beans with cumin.",
+        "Sauté peppers, onion and corn.",
+        "Fill a bowl with rice, beans, vegetables and lettuce.",
+        "Top with salsa, lime and a spoon of yogurt or avocado."
+      ],
+      "tips": [
+        "Use more beans and vegetables than rice for a lighter bowl.",
+        "Prepare the components ahead for quick lunches."
+      ],
+      "aliases": [
+        "burrito bowl",
+        "bean burrito bowl",
+        "veggie burrito bowl",
+        "mexican rice bowl"
       ]
     },
     "veggie-omelette": {

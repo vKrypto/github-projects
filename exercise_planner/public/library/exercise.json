@@ -894,6 +894,54 @@
         "balasana"
       ]
     },
+    "clamshell": {
+      "name": "Clamshell",
+      "area": "Legs",
+      "summary": "A side-lying exercise that strengthens the outer hips and glutes.",
+      "facts": {
+        "Targets": "Outer hips, glutes",
+        "Equipment": "Mat; mini band optional",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/clamshell-1.svg",
+          "thumb": "/library/exercise/clamshell-1.svg",
+          "width": 400,
+          "height": 300,
+          "caption": "Lying on one side, knees bent and stacked",
+          "alt": "Clamshell: lying on one side, knees bent and stacked",
+          "credit": "Forma illustration",
+          "license": "Original illustration"
+        },
+        {
+          "src": "/library/exercise/clamshell-2.svg",
+          "thumb": "/library/exercise/clamshell-2.svg",
+          "width": 400,
+          "height": 300,
+          "caption": "Top knee opened, feet together",
+          "alt": "Clamshell: top knee opened, feet together",
+          "credit": "Forma illustration",
+          "license": "Original illustration"
+        }
+      ],
+      "steps": [
+        "Lie on your side with hips and knees bent and your feet together.",
+        "Rest your head on your lower arm and keep your hips stacked.",
+        "Keeping your feet touching, lift your top knee as high as you can without rolling your hips back.",
+        "Lower slowly. Finish the reps, then switch sides."
+      ],
+      "tips": [
+        "Keep the movement small and controlled.",
+        "Add a mini band above the knees to make it harder."
+      ],
+      "aliases": [
+        "clamshell",
+        "clam shell",
+        "clam",
+        "side lying hip abduction"
+      ]
+    },
     "cobra-pose": {
       "name": "Cobra Pose",
       "area": "Stretching",
@@ -2318,6 +2366,54 @@
         "captain chair leg raise"
       ]
     },
+    "high-knees": {
+      "name": "High Knees",
+      "area": "Cardio",
+      "summary": "Running on the spot while driving the knees up — a quick cardio warm-up.",
+      "facts": {
+        "Targets": "Heart and lungs, hip flexors, calves",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/high-knees-1.svg",
+          "thumb": "/library/exercise/high-knees-1.svg",
+          "width": 400,
+          "height": 300,
+          "caption": "Right knee driven up, left arm forward",
+          "alt": "High Knees: right knee driven up, left arm forward",
+          "credit": "Forma illustration",
+          "license": "Original illustration"
+        },
+        {
+          "src": "/library/exercise/high-knees-2.svg",
+          "thumb": "/library/exercise/high-knees-2.svg",
+          "width": 400,
+          "height": 300,
+          "caption": "Left knee driven up, right arm forward",
+          "alt": "High Knees: left knee driven up, right arm forward",
+          "credit": "Forma illustration",
+          "license": "Original illustration"
+        }
+      ],
+      "steps": [
+        "Stand tall with feet hip-width apart.",
+        "Drive one knee up toward hip height while swinging the opposite arm forward.",
+        "Switch legs quickly, landing softly on the balls of your feet.",
+        "Keep going at the planned pace for the time or reps given."
+      ],
+      "tips": [
+        "March instead of running for a low-impact version.",
+        "Stay tall — don't lean back to lift the knees higher."
+      ],
+      "aliases": [
+        "high knee",
+        "high knee run",
+        "high knee march",
+        "running in place"
+      ]
+    },
     "hip-thrust": {
       "name": "Hip Thrust",
       "area": "Legs",
@@ -3599,6 +3695,58 @@
         "pelvic tilt"
       ]
     },
+    "pigeon-pose": {
+      "name": "Pigeon Pose",
+      "area": "Stretching",
+      "summary": "A deep hip-opening stretch for the glutes and hip flexors.",
+      "facts": {
+        "Targets": "Glutes, outer hips, hip flexors",
+        "Equipment": "Mat",
+        "Level": "Beginner–Intermediate"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/pigeon-pose-1.webp",
+          "thumb": "/library/exercise/pigeon-pose-1.thumb.webp",
+          "width": 1000,
+          "height": 750,
+          "caption": "Half pigeon, folding forward",
+          "alt": "Pigeon Pose: half pigeon, folding forward",
+          "credit": "personaltrainertoronto",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/121183998@N08/44067008531"
+        },
+        {
+          "src": "/library/exercise/pigeon-pose-2.webp",
+          "thumb": "/library/exercise/pigeon-pose-2.thumb.webp",
+          "width": 823,
+          "height": 1000,
+          "caption": "Advanced variation: one-legged king pigeon",
+          "alt": "Pigeon Pose: advanced variation: one-legged king pigeon",
+          "credit": "lululemon athletica",
+          "license": "CC BY 2.0",
+          "source": "https://commons.wikimedia.org/w/index.php?curid=23029951"
+        }
+      ],
+      "steps": [
+        "From hands and knees, bring your right knee forward behind your right wrist, shin angled across the mat.",
+        "Slide your left leg straight back with the top of the foot on the floor.",
+        "Square your hips and walk your hands forward, lowering your chest as far as is comfortable.",
+        "Breathe slowly for the planned time, then switch sides."
+      ],
+      "tips": [
+        "Put a folded blanket under the hip of the front leg if it doesn't reach the floor.",
+        "Use the figure-four stretch instead if you feel any knee discomfort.",
+        "The advanced variation is optional — the forward fold gives most of the benefit."
+      ],
+      "aliases": [
+        "pigeon pose",
+        "half pigeon",
+        "pigeon stretch",
+        "kapotasana",
+        "eka pada rajakapotasana"
+      ]
+    },
     "plank": {
       "name": "Plank",
       "area": "Core",
@@ -4252,6 +4400,55 @@
         "spinal twist",
         "seated twist",
         "seated spinal twist"
+      ]
+    },
+    "side-lunge": {
+      "name": "Side Lunge",
+      "area": "Legs",
+      "summary": "A sideways lunge that strengthens the legs and stretches the inner thighs.",
+      "facts": {
+        "Targets": "Quads, glutes, inner thighs",
+        "Equipment": "None",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/side-lunge-1.webp",
+          "thumb": "/library/exercise/side-lunge-1.thumb.webp",
+          "width": 1000,
+          "height": 666,
+          "caption": "Group performing side lunges",
+          "alt": "Side Lunge: group performing side lunges",
+          "credit": "Lance Cpl. Jennifer J. Pirante",
+          "license": "Public domain",
+          "source": "https://commons.wikimedia.org/wiki/File:USMC-100330-M-3740P-008.jpg"
+        },
+        {
+          "src": "/library/exercise/side-lunge-2.webp",
+          "thumb": "/library/exercise/side-lunge-2.thumb.webp",
+          "width": 1000,
+          "height": 667,
+          "caption": "Lowered into a side lunge",
+          "alt": "Side Lunge: lowered into a side lunge",
+          "credit": "U.S. Army 22MPAD by Spc. Joshua Maxie",
+          "license": "Public domain",
+          "source": "https://commons.wikimedia.org/wiki/File:Civil_Affairs_Team_1511_Partners_with_Spirited_Youth_Association_(8533170).jpg"
+        }
+      ],
+      "steps": [
+        "Stand with feet together, hands at your chest.",
+        "Take a wide step to one side and sit your hips back over that foot, bending the knee.",
+        "Keep the other leg straight with its foot flat on the floor.",
+        "Push through the bent leg to return to standing. Alternate sides or finish one side first."
+      ],
+      "tips": [
+        "Keep your chest up and your bent knee in line with your toes.",
+        "Step less wide if you feel strain in your inner thigh."
+      ],
+      "aliases": [
+        "side lunge",
+        "lateral lunge",
+        "side lunge stretch"
       ]
     },
     "neck-stretch": {
@@ -5102,6 +5299,53 @@
       ],
       "aliases": [
         "walking lunge"
+      ]
+    },
+    "wall-sit": {
+      "name": "Wall Sit",
+      "area": "Legs",
+      "summary": "A static squat against a wall that builds leg endurance.",
+      "facts": {
+        "Targets": "Quads, glutes",
+        "Equipment": "Wall",
+        "Level": "Beginner"
+      },
+      "photos": [
+        {
+          "src": "/library/exercise/wall-sit-1.svg",
+          "thumb": "/library/exercise/wall-sit-1.svg",
+          "width": 400,
+          "height": 300,
+          "caption": "Back against the wall, feet forward",
+          "alt": "Wall Sit: back against the wall, feet forward",
+          "credit": "Forma illustration",
+          "license": "Original illustration"
+        },
+        {
+          "src": "/library/exercise/wall-sit-2.svg",
+          "thumb": "/library/exercise/wall-sit-2.svg",
+          "width": 400,
+          "height": 300,
+          "caption": "Holding with knees bent to 90°",
+          "alt": "Wall Sit: holding with knees bent to 90°",
+          "credit": "Forma illustration",
+          "license": "Original illustration"
+        }
+      ],
+      "steps": [
+        "Stand with your back against a wall and your feet about half a metre in front of you.",
+        "Slide down the wall until your knees are bent to about 90°, or as low as is comfortable.",
+        "Keep your back flat on the wall and your knees over your ankles.",
+        "Hold for the planned time, then slide back up."
+      ],
+      "tips": [
+        "Start higher (knees less bent) and lower as you get stronger.",
+        "Breathe normally — don't hold your breath."
+      ],
+      "aliases": [
+        "wall sit",
+        "wall squat",
+        "wall sitting"
       ]
     },
     "warrior-pose": {
