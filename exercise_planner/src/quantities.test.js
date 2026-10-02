@@ -131,3 +131,11 @@ test("quantity-first steps name the exercise that follows the numbers", () => {
     ],
   );
 });
+
+test("whole-minute holds read in minutes", () => {
+  assert.equal(exerciseQuantity({ hold_seconds: 300 }), "5 min hold");
+  assert.equal(
+    exerciseQuantity({ sets: 3, hold_seconds: 90 }),
+    "3 sets × 90 sec hold",
+  );
+});

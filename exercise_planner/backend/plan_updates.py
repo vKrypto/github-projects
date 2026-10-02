@@ -55,6 +55,9 @@ def merge_adjustment(current, generated, action, statuses, job_id, preference, c
         day.setdefault('daily_nutrition_targets', current.get('daily_nutrition_targets'))
     for key in ('provider', 'model', 'summaries', 'assumptions', 'reviews', 'revisions', 'review_summary'):
         merged[key] = deepcopy(generated[key])
+    # Plans created before nutrition targets existed adopt the first ones generated.
+    if not merged.get('daily_nutrition_targets'):
+        merged['daily_nutrition_targets'] = deepcopy(generated.get('daily_nutrition_targets'))
     change = {'action': action, 'days': len(generated['days']), 'start_date': generated['start_date'],
               'end_date': generated['end_date'], 'preferences': preference, 'created': created, 'job_id': job_id}
     merged['changes'] = [*current.get('changes', []), change]

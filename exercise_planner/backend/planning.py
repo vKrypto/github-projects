@@ -1,5 +1,5 @@
 """Provider-independent role planning with review and at most three revisions per role."""
-import base64, json, os
+import base64, json, os, re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 from pathlib import Path
@@ -142,20 +142,34 @@ def nutrition_problems(plan):
                 problems.append(f'Day {day.day} meals provide {protein} g protein; daily_nutrition_targets.protein_g is {targets.protein_g} g (allowed ±{allowed} g).')
     return problems
 
-def normalize_meal_macros(plan):
-    """Scale each meal's protein, carbohydrate and fat to its calorie estimate.
+INGREDIENT_PROTEIN = re.compile(r'(\d+(?:\.\d+)?)\s*g\s+protein', re.I)
 
-    Calories are what the daily checks validate, so they stay primary; models
-    often list macros that add up to a different total. Scaling keeps the
-    model's macro ratio while making the numbers on the cards agree.
+def ingredient_protein(task):
+    """Sum of the per-ingredient protein estimates, when most ingredient lines state one."""
+    found = [float(m.group(1)) for line in task.ingredients if (m := INGREDIENT_PROTEIN.search(line))]
+    if task.ingredients and len(found)*2 >= len(task.ingredients):
+        return round(sum(found))
+
+def normalize_meal_macros(plan):
+    """Make each meal's protein, carbohydrate and fat agree with its calorie estimate.
+
+    Calories are what the daily checks validate, so they stay primary. Protein
+    comes from the itemised ingredient estimates when available; the calories
+    left over are split between carbohydrate and fat in the model's ratio.
     """
     for day in plan.days:
         for t in day.tasks:
             n = getattr(t, 'nutrition', None)
-            macro = n and 4*n.protein_g+4*n.carbs_g+9*n.fat_g
-            if macro and abs(macro-t.calories)>max(50,t.calories*.1):
-                factor = t.calories/macro
-                n.protein_g, n.carbs_g, n.fat_g = (round(v*factor) for v in (n.protein_g, n.carbs_g, n.fat_g))
+            if n is None: continue
+            protein = ingredient_protein(t)
+            if protein is not None: n.protein_g = min(protein, 300)
+            rest, other = t.calories-4*n.protein_g, 4*n.carbs_g+9*n.fat_g
+            if rest > 0 and abs(rest-other) > max(50, t.calories*.1):
+                if other:
+                    factor = rest/other
+                    n.carbs_g, n.fat_g = round(n.carbs_g*factor), round(n.fat_g*factor)
+                else:
+                    n.carbs_g = round(rest/4)
 
 def generate(profile, media, start: date, progress=None, report=lambda *args:None, provider=None, *, days_count=28, journey_offset=0, preferences=None, current_plan=None, action='generate'):
     provider = provider or PROVIDERS[os.getenv('LLM_PROVIDER','openai')]()
@@ -176,6 +190,7 @@ def generate(profile, media, start: date, progress=None, report=lambda *args:Non
         report('reviewing','Review agent is checking balance, dietary constraints and routines.')
         validation={}
         for role,plan in plans.items():
+            if role=='meal': normalize_meal_macros(plan)
             try: validate_role(role,plan,profile)
             except PlanningError as e: validation[role]=str(e)
             else:
@@ -194,7 +209,6 @@ def generate(profile, media, start: date, progress=None, report=lambda *args:Non
             revisions[r]+=1
             report('revising',f'{r.title()} agent is revising its plan ({revisions[r]}/3). {feedback}')
             plans[r]=provider.generate(r,{**context,'previous_plan':plans[r].model_dump()},feedback)
-    normalize_meal_macros(plans['meal'])
     targets = getattr(plans['meal'], 'daily_nutrition_targets', None)
     nutrition_targets = targets.model_dump() if targets else None
     days=[]

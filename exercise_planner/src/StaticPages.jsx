@@ -4,6 +4,8 @@ import { GUIDE_TYPES, guideHref, normalize, useLibrary } from "./library";
 import { GuideLink } from "./Guide";
 
 const LABELS = { exercise: "Exercises", food: "Foods" };
+const clock = (seconds) =>
+  `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 
 function CopyLink({ href }) {
   const [copied, setCopied] = useState(false);
@@ -119,6 +121,7 @@ export default function StaticPages() {
                 <th>Page</th>
                 <th>Link</th>
                 <th>Photos</th>
+                {type === "exercise" && <th>Video</th>}
                 <th>Matches plan text</th>
                 <th>Photo licences</th>
                 <th>Actions</th>
@@ -142,6 +145,23 @@ export default function StaticPages() {
                       <code>{href}</code>
                     </td>
                     <td>{item.photos.length}</td>
+                    {type === "exercise" && (
+                      <td>
+                        {item.video ? (
+                          <a
+                            className="static-video"
+                            href={`https://www.youtube.com/watch?v=${item.video.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            title={item.video.title}
+                          >
+                            {clock(item.video.seconds)} · {item.video.channel}
+                          </a>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                    )}
                     <td
                       className="static-aliases"
                       title={item.aliases.join(", ")}

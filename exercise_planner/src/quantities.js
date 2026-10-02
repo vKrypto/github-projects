@@ -16,7 +16,10 @@ export function exerciseQuantity(exercise) {
       ? `${sets}${side[1]} reps ${side[2]}`
       : `${sets}${exercise.reps} reps`;
   }
-  if (exercise.hold_seconds) return `${sets}${exercise.hold_seconds} sec hold`;
+  if (exercise.hold_seconds)
+    return exercise.hold_seconds >= 60 && exercise.hold_seconds % 60 === 0
+      ? `${sets}${exercise.hold_seconds / 60} min hold`
+      : `${sets}${exercise.hold_seconds} sec hold`;
   if (exercise.minutes) return `${sets}${formatDuration(exercise.minutes)}`;
   return "";
 }

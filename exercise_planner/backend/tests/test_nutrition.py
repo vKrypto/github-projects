@@ -44,16 +44,27 @@ def test_off_target_protein_is_reported_with_the_day_and_numbers():
     assert 'allowed ±22 g' in feedback
 
 
-def test_meal_macros_are_scaled_to_the_calorie_estimate():
+def test_meal_macros_keep_protein_and_fill_calories_with_carbs_and_fat():
     plan = meal_plan()
     meal = plan.days[0].tasks[0]
     meal.nutrition.protein_g, meal.nutrition.carbs_g, meal.nutrition.fat_g = 20, 50, 10  # 370 kcal for a 600 kcal meal
     untouched = plan.days[0].tasks[1].nutrition.model_dump()
     planning.normalize_meal_macros(plan)
     n = meal.nutrition
+    assert n.protein_g == 20
     assert abs(4*n.protein_g + 4*n.carbs_g + 9*n.fat_g - 600) <= 10
-    assert (n.protein_g, n.carbs_g, n.fat_g) == (32, 81, 16)
+    assert (n.carbs_g, n.fat_g) == (90, 18)
     assert plan.days[0].tasks[1].nutrition.model_dump() == untouched
+
+
+def test_meal_protein_comes_from_itemised_ingredient_estimates():
+    plan = meal_plan()
+    meal = plan.days[0].tasks[0]
+    meal.ingredients = ['150 g firm tofu (~180 kcal, 20 g protein)', '1/2 cup brown rice, dry (~170 kcal, 4 g protein)',
+                        '1 tsp sesame oil (~40 kcal)', '1 cup broccoli (~55 kcal, 4.5 g protein)']
+    meal.nutrition.protein_g = 53
+    planning.normalize_meal_macros(plan)
+    assert meal.nutrition.protein_g == 28  # 20 + 4 + 4.5, rounded
 
 
 def test_nutrition_feedback_gets_limited_revisions_then_the_plan_publishes():

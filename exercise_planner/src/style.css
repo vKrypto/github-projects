@@ -3569,3 +3569,74 @@ a:focus-visible {
 .task-detail-meta {
   flex-wrap: wrap;
 }
+
+/* Exercise video (click to play) */
+.video-frame {
+  position: relative;
+  max-width: 720px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid #394334;
+  border-radius: 10px;
+  background: #0d1210;
+}
+.video-frame iframe,
+.video-frame button,
+.video-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video-frame button {
+  position: relative;
+  padding: 0;
+}
+.video-frame img {
+  object-fit: cover;
+  opacity: 0.85;
+}
+.video-frame button:hover img {
+  opacity: 1;
+}
+.video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding-left: 4px;
+  border-radius: 50%;
+  background: #bed8aa;
+  color: #24331e;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 8px 30px #0008;
+}
+.video-duration {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: #101515d9;
+  color: #e7eceb;
+  font-size: 11px;
+}
+.video-meta {
+  max-width: 720px;
+  margin: 8px 0 0;
+  color: #9faa94;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.video-meta a {
+  color: #b8cfa7;
+  text-decoration: underline;
+}
+.static-video {
+  color: #b8cfa7;
+  text-decoration: underline;
+  white-space: normal;
+}

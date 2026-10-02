@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Dumbbell,
   LoaderCircle,
+  Play,
   Search,
   Utensils,
   X,
@@ -244,6 +245,53 @@ export function TaskGuides({ task }) {
   );
 }
 
+const clock = (seconds) =>
+  `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+
+// Click-to-play: nothing loads from YouTube until the viewer asks for it.
+function VideoGuide({ video }) {
+  const [playing, setPlaying] = useState(false);
+  const watch = `https://www.youtube.com/watch?v=${video.id}`;
+  return (
+    <section className="guide-section guide-video">
+      <h2>Watch how it's done</h2>
+      <div className="video-frame">
+        {playing ? (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1&rel=0`}
+            title={video.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            aria-label={`Play video: ${video.title}`}
+          >
+            <img
+              src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
+              alt=""
+              loading="lazy"
+            />
+            <span className="video-play">
+              <Play size={26} fill="currentColor" />
+            </span>
+            <span className="video-duration">{clock(video.seconds)}</span>
+          </button>
+        )}
+      </div>
+      <p className="video-meta">
+        {video.title} · {video.channel} ·{" "}
+        <a href={watch} target="_blank" rel="noreferrer">
+          Open on YouTube
+        </a>
+      </p>
+    </section>
+  );
+}
+
 function GuideArticle({ type, guide }) {
   const [focus, setFocus] = useState(null);
   const copy = COPY[type];
@@ -279,6 +327,7 @@ function GuideArticle({ type, guide }) {
           </figure>
         ))}
       </div>
+      {guide.video && <VideoGuide video={guide.video} />}
       <section className="guide-section">
         <h2>{copy.steps}</h2>
         <ol className="guide-steps">
