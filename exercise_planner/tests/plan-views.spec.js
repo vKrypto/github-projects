@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { localDate, shiftDate } from "../src/api.js";
+import { memberMe, openPlan, removeMember, signUpMember } from "./member.js";
 
 const exercise = (name, reps, calories) => ({
   name,
@@ -83,29 +83,19 @@ async function signIn(page) {
 }
 
 async function workspace(page) {
-  await signIn(page);
-  await page.evaluate(() => localStorage.removeItem("forma.planView"));
-  const me = await (await page.request.get("/api/me")).json();
-  const start = localDate();
-  me.plan.days = me.plan.days.slice(0, 28).map((d, index) => ({
-    ...d,
-    date: shiftDate(start, index),
-    tasks: structuredClone(tasks),
-    daily_nutrition_targets: {
+  const me = memberMe(await signUpMember(page), { tasks });
+  for (const day of me.plan.days)
+    day.daily_nutrition_targets = {
       protein_g: 95,
       carbs_g: 250,
       fat_g: 60,
       fiber_g: 30,
-    },
-  }));
-  me.plan.start_date = start;
-  me.plan.end_date = shiftDate(start, 27);
-  me.job = null;
-  await page.route("**/api/me", (route) => route.fulfill({ json: me }));
-  await page.reload();
-  await page.getByRole("heading", { name: "Users", exact: true }).waitFor();
-  await page.getByRole("button", { name: "Overview", exact: true }).click();
+    };
+  await page.evaluate(() => localStorage.removeItem("forma.planView"));
+  await openPlan(page, me);
 }
+
+test.afterEach(({ page }) => removeMember(page));
 
 test("cards show meal nutrition against targets and estimated exercise burn", async ({
   page,

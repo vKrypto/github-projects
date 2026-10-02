@@ -172,24 +172,26 @@ def test_successful_regeneration_archives_previous_tracking(client,monkeypatch):
     assert client.get('/api/progress').json()['history']==[]
 
 
-def test_admin_can_have_personal_profile_without_losing_admin_access(client,monkeypatch):
-    r=client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin123'})
-    assert r.status_code==200
-    identifier=r.json()['account']['id']
-    assert client.put('/api/profile',json={**PROFILE,'name':'Administrator (sample)','email':'admin@example.com'}).status_code==200
+def test_admin_is_platform_staff_without_a_personal_plan(client):
+    assert client.post('/api/auth/login',json={'email':'admin@example.com','password':'admin123'}).status_code==200
     me=client.get('/api/me').json()
-    assert me['account']['role']=='admin' and me['account']['id']==identifier
-    assert me['profile']['weight']==75
+    assert me['account']['role']=='admin'
+    assert me['profile'] is None and me['plan'] is None and me['job'] is None and me['notifications']==[]
+    personal=[('put','/api/profile',{**PROFILE,'email':'admin@example.com'}),('post','/api/plans/generate',None),
+              ('post','/api/plans/refine',{'days':7,'preferences':'More legs'}),('post','/api/plans/extend',{'days':7,'preferences':'More legs'}),
+              ('get','/api/plan',None),('get','/api/progress',None),('get','/api/preferences',None),('get','/api/media',None),
+              ('put','/api/tasks/status',{'date':'2026-10-01','task_id':'meal-1','status':'completed'}),
+              ('put','/api/checkins',{'date':'2026-10-01','water':2}),('post','/api/feedback',{'text':'Great'})]
+    for method,path,body in personal:
+        r=getattr(client,method)(path,**({'json':body} if body is not None else {}))
+        assert r.status_code==403,(path,r.status_code)
     assert client.get('/api/admin/users').status_code==200
-    monkeypatch.setitem(planning.PROVIDERS,'test',FakeProvider);monkeypatch.setenv('LLM_PROVIDER','test')
-    job_id=client.post('/api/plans/generate').json()['id']
-    for _ in range(50):
-        job=client.get('/api/jobs/'+job_id).json()
-        if job['status'] in ('completed','failed'):break
-        time.sleep(.02)
-    assert job['status']=='completed',job
-    assert len(client.get('/api/plan').json()['plan']['days'])==28
-    assert client.get('/api/me').json()['account']['role']=='admin'
+    assert client.put('/api/auth/password',json={'password':'admin12345'}).status_code==200
+    # "Login as" uses the member's own session, so the member's workspace stays reachable.
+    member=client.post('/api/admin/users',json={'name':'Alex','email':'alex@example.com'}).json()['id']
+    assert client.post(f"/api/admin/users/{member}/impersonate").status_code==200
+    assert client.put('/api/profile',json=PROFILE).status_code==200
+    assert client.get('/api/progress').status_code==200
 
 
 def test_provider_role_schemas_reject_cross_role_tasks_and_invalid_times():

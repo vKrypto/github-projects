@@ -1,6 +1,10 @@
-"""Fill the administrator's own onboarding and create a reviewed plan.
-Run from the repository root: .venv/bin/python scripts/seed_admin_sample.py
-Existing profiles are preserved; this script is safe to rerun.
+"""Create the sample member account, fill its onboarding and prepare a reviewed plan.
+
+Administrators are platform staff without plans, so the sample lives in a
+regular member account. The script signs in as the administrator, creates the
+member if needed, and works through "Login as".
+Run from the repository root: .venv/bin/python scripts/seed_sample_member.py
+Existing profiles and plans are preserved; this script is safe to rerun.
 """
 import os, time
 from pathlib import Path
@@ -9,13 +13,21 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).resolve().parents[1] / '.env')
 client = httpx.Client(base_url=os.getenv('FORMA_API_URL','http://127.0.0.1:8000'), timeout=30)
-email = os.getenv('ADMIN_EMAIL','admin@example.com')
-response = client.post('/api/auth/login',json={'email':email,'password':os.getenv('ADMIN_PASSWORD','admin123')})
+email = os.getenv('SAMPLE_EMAIL','sample@example.com')
+response = client.post('/api/auth/login',json={'email':os.getenv('ADMIN_EMAIL','admin@example.com'),'password':os.getenv('ADMIN_PASSWORD','admin123')})
 response.raise_for_status()
+member = next((u for u in client.get('/api/admin/users').json() if u['email']==email), None)
+if member is None:
+    response = client.post('/api/admin/users',json={'name':'Sample Member','email':email,'password':os.getenv('SAMPLE_PASSWORD','sample123')})
+    response.raise_for_status()
+    member = {'id':response.json()['id']}
+    print('Created sample member',email,flush=True)
+client.post(f"/api/admin/users/{member['id']}/impersonate").raise_for_status()
 me = client.get('/api/me').json()
+assert me['account']['role']=='user' and me['account']['email']==email
 if not me['profile']:
     profile = {
-        'name':'Administrator (Sample)', 'email':email,
+        'name':'Sample Member', 'email':email,
         'focus':['Physique','Overall wellness','Skin care','Hair care'],
         'body_areas':['Arms','Legs','Torso'], 'custom_area':'Core stability and balanced strength',
         'diet':['Vegetarian'], 'allergies':'None',
@@ -25,8 +37,7 @@ if not me['profile']:
         'limitations':'No known limitations',
         'notifications':False,'timezone':'Asia/Kolkata'
     }
-    response=client.put('/api/profile',json=profile)
-    response.raise_for_status()
+    client.put('/api/profile',json=profile).raise_for_status()
     print('Sample onboarding saved for',email,flush=True)
 else:
     print('Existing onboarding preserved for',email,flush=True)
@@ -49,12 +60,10 @@ for _ in range(240):
         last=job['status']
     if job['status']=='failed': raise SystemExit('Planning failed: '+job['message'])
     if job['status']=='completed':
-        me=client.get('/api/me').json()
-        plan=me['plan']
-        assert me['account']['role']=='admin'
+        plan=client.get('/api/me').json()['plan']
         assert len(plan['days'])==28 and plan['reviews'][-1]['approved']
         assert all(not any(t['role']=='care' for t in d['tasks']) for d in plan['days'][:14])
-        print('Verified: administrator access preserved; 28 reviewed days; care starts in week 3.',flush=True)
+        print('Verified: 28 reviewed days; care starts in week 3.',flush=True)
         print('Plan dates:',plan['start_date'],'to',plan['end_date'],flush=True)
         break
     time.sleep(3)

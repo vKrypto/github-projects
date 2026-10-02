@@ -71,6 +71,11 @@ const NAV = [
   [Sparkles, "Care routines"],
   [TrendingUp, "Progress"],
 ];
+const ADMIN_PAGES = ["Users", "Static pages"];
+const ADMIN_NAV = [
+  [Users, "Users"],
+  [BookOpen, "Static pages"],
+];
 const statusKey = (date, id) => `${date}/${id}`;
 function App() {
   const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(() => {
@@ -156,6 +161,10 @@ function App() {
     [credentials, setCredentials] = useState(null),
     [impersonating, setImpersonating] = useState(false),
     [selectedTask, setSelectedTask] = useState(null);
+  const isAdmin = account?.role === "admin";
+  useEffect(() => {
+    if (isAdmin && !ADMIN_PAGES.includes(page)) setPage("Users");
+  }, [isAdmin, page]);
   const noticeTimer = useRef();
   const toast = (message) => {
     setNotice(message);
@@ -189,7 +198,13 @@ function App() {
     setNotifications(me.notifications);
     setPreferences(me.preferences || []);
     if (me.account.role === "admin") {
+      // Platform staff: no plan or tracking of their own.
       setUsers(await api("/admin/users"));
+      setStatuses({});
+      setCheckins({});
+      setMedia([]);
+      setHistory([]);
+      return me;
     }
     {
       const [tracking, photos] = await Promise.all([
@@ -536,23 +551,20 @@ function App() {
         <div className="workspace">
           <div className="avatar small">{name[0].toUpperCase()}</div>
           <div>
-            <b>
-              {account?.role === "admin"
-                ? "Administration"
-                : "My wellness space"}
-            </b>
+            <b>{isAdmin ? "Administration" : "My wellness space"}</b>
             <small>
-              {account ? "Personal workspace" : "Your next chapter"}
+              {isAdmin
+                ? "Platform management"
+                : account
+                  ? "Personal workspace"
+                  : "Your next chapter"}
             </small>
           </div>
           <ChevronRight size={15} />
         </div>
-        <div className="nav-label">YOUR SPACE</div>
+        <div className="nav-label">{isAdmin ? "PLATFORM" : "YOUR SPACE"}</div>
         <nav id="side-navigation" aria-label="Main navigation">
-          {(account?.role === "admin"
-            ? [[Users, "Users"], [BookOpen, "Static pages"], ...NAV]
-            : NAV
-          ).map(([Icon, p]) => (
+          {(isAdmin ? ADMIN_NAV : NAV).map(([Icon, p]) => (
             <button
               className={page === p ? "active" : ""}
               key={p}
@@ -577,28 +589,32 @@ function App() {
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <div className="journey">
-            <div className="journey-icon">
-              <Leaf size={20} />
+          {!isAdmin && (
+            <div className="journey">
+              <div className="journey-icon">
+                <Leaf size={20} />
+              </div>
+              <b>A little better, every day.</b>
+              <p>
+                Small steps. Lasting change.
+                <br />
+                You’ve got this.
+              </p>
+              <span>
+                YOUR WELLNESS JOURNEY <ArrowUpRight size={14} />
+              </span>
+              <div className="mini-track">
+                <i
+                  style={{
+                    width: plan ? `${(week / totalWeeks) * 100}%` : "0%",
+                  }}
+                />
+              </div>
+              <small>
+                {plan ? `Week ${week} of ${totalWeeks}` : "Made around you"}
+              </small>
             </div>
-            <b>A little better, every day.</b>
-            <p>
-              Small steps. Lasting change.
-              <br />
-              You’ve got this.
-            </p>
-            <span>
-              YOUR WELLNESS JOURNEY <ArrowUpRight size={14} />
-            </span>
-            <div className="mini-track">
-              <i
-                style={{ width: plan ? `${(week / totalWeeks) * 100}%` : "0%" }}
-              />
-            </div>
-            <small>
-              {plan ? `Week ${week} of ${totalWeeks}` : "Made around you"}
-            </small>
-          </div>
+          )}
           <button
             className="settings"
             aria-label="Settings"
@@ -638,14 +654,17 @@ function App() {
       <main>
         <header>
           <div className="breadcrumb">
-            My wellness space <ChevronRight size={14} />
+            {isAdmin ? "Administration" : "My wellness space"}{" "}
+            <ChevronRight size={14} />
             <span>{account ? page : "Welcome"}</span>
           </div>
           <div className="header-right">
             <span className="live-dot" />
-            {account
-              ? "Your personal wellness space"
-              : "A plan that fits your life"}
+            {isAdmin
+              ? "Platform administration"
+              : account
+                ? "Your personal wellness space"
+                : "A plan that fits your life"}
             <button
               onClick={() => setModal(account ? "settings" : "login")}
               className="avatar small"
@@ -782,9 +801,9 @@ function App() {
                 </button>
               </form>
             </div>
-          ) : account.role === "admin" && page === "Static pages" ? (
+          ) : isAdmin && page === "Static pages" ? (
             <StaticPages />
-          ) : account.role === "admin" && page === "Users" ? (
+          ) : isAdmin ? (
             <>
               <div className="page-heading">
                 <span className="eyebrow">ADMINISTRATION</span>
@@ -2426,13 +2445,26 @@ function App() {
               </>
             ) : (
               <>
-                <h2>Your settings.</h2>
+                <h2>
+                  {isAdmin ? "Administrator settings." : "Your settings."}
+                </h2>
                 <p>
                   {account?.name}
                   <br />
                   {account?.email}
                 </p>
-                {account && (
+                {isAdmin && (
+                  <button
+                    className="outline full"
+                    onClick={() => {
+                      setSelectedTask(null);
+                      setModal("password");
+                    }}
+                  >
+                    Change password <KeyRound size={16} />
+                  </button>
+                )}
+                {account && !isAdmin && (
                   <>
                     <button
                       className="outline full"

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { localDate, shiftDate } from "../src/api.js";
+import { memberMe, openPlan, removeMember, signUpMember } from "./member.js";
 
 const exercise = {
   name: "Bicep curls",
@@ -59,27 +59,9 @@ const sampleTasks = [
 ];
 
 async function workspace(page, synthetic) {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Administrator sign in" }).click();
-  await page
-    .getByRole("dialog")
-    .getByRole("button", { name: "Sign in", exact: true })
-    .click();
-  await page.getByRole("heading", { name: "Users", exact: true }).waitFor();
-  const me = await (await page.request.get("/api/me")).json();
-  const start = localDate();
-  me.plan.days = me.plan.days
-    .slice(0, 28)
-    .map((d, index) => ({
-      ...d,
-      date: shiftDate(start, index),
-      ...(synthetic ? { tasks: structuredClone(sampleTasks) } : {}),
-    }));
-  me.plan.start_date = start;
-  me.plan.end_date = shiftDate(start, 27);
-  me.job = null;
+  const account = await signUpMember(page);
+  const me = memberMe(account, synthetic ? { tasks: sampleTasks } : {});
   const statuses = [];
-  await page.route("**/api/me", (route) => route.fulfill({ json: me }));
   await page.route("**/api/progress", (route) =>
     route.fulfill({ json: { statuses, checkins: [], history: [] } }),
   );
@@ -92,10 +74,10 @@ async function workspace(page, synthetic) {
     else statuses.push(body);
     return route.fulfill({ json: body });
   });
-  await page.reload();
-  await page.getByRole("heading", { name: "Users", exact: true }).waitFor();
-  await page.getByRole("button", { name: "Overview", exact: true }).click();
+  await openPlan(page, me);
 }
+
+test.afterEach(({ page }) => removeMember(page));
 
 test("daily cards show totals, sets/reps, portions and tracked completion", async ({
   page,
@@ -158,8 +140,6 @@ test("daily cards show totals, sets/reps, portions and tracked completion", asyn
     "1 hr",
   );
   await page.reload();
-  await page.getByRole("heading", { name: "Users", exact: true }).waitFor();
-  await page.getByRole("button", { name: "Overview", exact: true }).click();
   await expect(daily.locator(".workout-card").first()).toHaveClass(/completed/);
   await daily
     .locator(".meal-card")

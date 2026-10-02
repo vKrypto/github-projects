@@ -1,41 +1,20 @@
 import { test, expect } from "@playwright/test";
-import { shiftDate, localDate } from "../src/api.js";
+import { shiftDate } from "../src/api.js";
+import { memberMe, openPlan, removeMember, signUpMember } from "./member.js";
 
 async function workspace(page) {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Administrator sign in" }).click();
-  await page
-    .getByRole("dialog")
-    .getByRole("button", { name: "Sign in", exact: true })
-    .click();
-  await page.getByRole("heading", { name: "Users", exact: true }).waitFor();
-  const source = await (await page.request.get("/api/me")).json();
-  const me = structuredClone(source);
-  const start = localDate();
-  me.plan.days = me.plan.days
-    .slice(0, 28)
-    .map((d, i) => ({
-      ...d,
-      date: shiftDate(start, i),
-      week: Math.floor(i / 7) + 1,
-    }));
-  me.plan.start_date = start;
-  me.plan.end_date = shiftDate(start, 27);
-  delete me.plan.last_change;
-  me.preferences = [];
-  me.job = null;
-  await page.route("**/api/me", (r) => r.fulfill({ json: me }));
+  const me = memberMe(await signUpMember(page));
   await page.route("**/api/preferences", (r) =>
     r.fulfill({ json: me.preferences }),
   );
   await page.route("**/api/progress", (r) =>
     r.fulfill({ json: { statuses: [], checkins: [], history: [] } }),
   );
-  await page.reload();
-  await page.getByRole("heading", { name: "Users", exact: true }).waitFor();
-  await page.getByRole("button", { name: "Overview", exact: true }).click();
+  await openPlan(page, me);
   return me;
 }
+
+test.afterEach(({ page }) => removeMember(page));
 
 function update(me, mode, body, id) {
   const original = me.plan;

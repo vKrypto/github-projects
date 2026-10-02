@@ -90,6 +90,12 @@ def current(forma_session: str | None=Cookie(default=None)): return resolve_sess
 def admin(account=Depends(current)):
     if account['role']!='admin': raise HTTPException(403,'Administrator access required.')
     return account
+# Administrators are platform staff: they manage users and guides but never
+# have a profile, plan or tracking of their own. "Login as" switches to the
+# member's own session, so impersonation still reaches these endpoints.
+def member(account=Depends(current)):
+    if account['role']=='admin': raise HTTPException(403,'Administrators manage the platform and do not have a personal plan.')
+    return account
 
 def public(account): return {k:account[k] for k in ('id','email','name','role','created')}
 def load_profile(tenant):
@@ -267,13 +273,15 @@ def logout(response:Response,forma_session:str | None=Cookie(default=None)):
 
 @app.get('/api/me')
 def me(account=Depends(current),forma_admin:str | None=Cookie(default=None)):
+    if account['role']=='admin':
+        return {'account':public(account),'profile':None,'plan':None,'job':None,'notifications':[],'preferences':[],'impersonating':False}
     with connect() as con:
         job=con.execute('SELECT * FROM jobs WHERE tenant=? ORDER BY created DESC LIMIT 1',(account['id'],)).fetchone()
         notices=[dict(r) for r in con.execute('SELECT * FROM notifications WHERE tenant=? ORDER BY created DESC LIMIT 10',(account['id'],))]
     return {'account':public(account),'profile':load_profile(account['id']),'plan':load_plan(account['id']),'job':dict(job) if job else None,'notifications':notices,'preferences':load_preferences(account['id']),'impersonating':bool(forma_admin) and account['role']!='admin'}
 
 @app.put('/api/profile')
-def save_profile(data:Profile,account=Depends(current)):
+def save_profile(data:Profile,account=Depends(member)):
     try: ZoneInfo(data.timezone)
     except Exception: raise HTTPException(422,'Invalid timezone.') from None
     if 'Vegan' in data.diet and 'Vegetarian' in data.diet:
@@ -291,23 +299,23 @@ def password(data:PasswordChange,account=Depends(current)):
     return {'saved':True}
 
 @app.post('/api/plans/generate',status_code=202)
-def start_plan(account=Depends(current)):
+def start_plan(account=Depends(member)):
     return queue_job(account)
 
 @app.post('/api/plans/refine',status_code=202)
-def refine_plan(data:PlanAdjustment,account=Depends(current)):
+def refine_plan(data:PlanAdjustment,account=Depends(member)):
     return queue_job(account,'refine',data)
 
 @app.post('/api/plans/extend',status_code=202)
-def extend_plan(data:PlanAdjustment,account=Depends(current)):
+def extend_plan(data:PlanAdjustment,account=Depends(member)):
     return queue_job(account,'extend',data)
 
 @app.get('/api/preferences')
-def preferences(account=Depends(current)):
+def preferences(account=Depends(member)):
     return load_preferences(account['id'])
 
 @app.post('/api/jobs/{identifier}/retry',status_code=202)
-def retry_job(identifier:str,account=Depends(current)):
+def retry_job(identifier:str,account=Depends(member)):
     with connect() as con:
         row=con.execute('SELECT * FROM jobs WHERE id=? AND tenant=?',(identifier,account['id'])).fetchone()
         if not row: raise HTTPException(404,'Planning job not found.')
@@ -317,16 +325,16 @@ def retry_job(identifier:str,account=Depends(current)):
     return queue_job(account,row['action'],adjustment,row['preferences_id'])
 
 @app.get('/api/jobs/{identifier}')
-def job(identifier:str,account=Depends(current)):
+def job(identifier:str,account=Depends(member)):
     with connect() as con: row=con.execute('SELECT * FROM jobs WHERE id=? AND tenant=?',(identifier,account['id'])).fetchone()
     if not row: raise HTTPException(404,'Planning job not found.')
     return dict(row)
 
 @app.get('/api/plan')
-def get_plan(account=Depends(current)): return {'plan':load_plan(account['id'])}
+def get_plan(account=Depends(member)): return {'plan':load_plan(account['id'])}
 
 @app.get('/api/progress')
-def progress(account=Depends(current)):
+def progress(account=Depends(member)):
     with connect() as con:
         statuses=[dict(r) for r in con.execute('SELECT date,task_id,status FROM statuses WHERE tenant=?',(account['id'],))]
         checkins=[dict(r) for r in con.execute('SELECT date,water,weight,notes FROM checkins WHERE tenant=? ORDER BY date',(account['id'],))]
@@ -341,7 +349,7 @@ def progress(account=Depends(current)):
     return {'statuses':statuses,'checkins':checkins,'history':history}
 
 @app.put('/api/tasks/status')
-def task_status(data:TaskStatus,account=Depends(current)):
+def task_status(data:TaskStatus,account=Depends(member)):
     selected=check_date(data.date)
     plan=load_plan(account['id'])
     day=next((d for d in (plan or {}).get('days',[]) if d['date']==selected),None)
@@ -350,18 +358,18 @@ def task_status(data:TaskStatus,account=Depends(current)):
     return {'saved':True}
 
 @app.put('/api/checkins')
-def checkin(data:CheckIn,account=Depends(current)):
+def checkin(data:CheckIn,account=Depends(member)):
     check_date(data.date)
     with connect() as con: con.execute('INSERT OR REPLACE INTO checkins VALUES(?,?,?,?,?)',(account['id'],data.date,data.water,data.weight,data.notes))
     return {'saved':True}
 
 @app.post('/api/feedback',status_code=201)
-def feedback(data:Feedback,account=Depends(current)):
+def feedback(data:Feedback,account=Depends(member)):
     with connect() as con: con.execute('INSERT INTO feedback VALUES(?,?,?,?)',(str(uuid.uuid4()),account['id'],data.text,now()))
     return {'saved':True}
 
 @app.post('/api/media',status_code=201)
-async def upload(file:UploadFile=File(...),kind:str=Form(...),selected_date:str=Form(default=''),account=Depends(current)):
+async def upload(file:UploadFile=File(...),kind:str=Form(...),selected_date:str=Form(default=''),account=Depends(member)):
     if kind not in ('equipment','body','progress'): raise HTTPException(422,'Invalid image purpose.')
     selected_date=check_date(selected_date) if selected_date else today().isoformat()
     raw=await file.read(10*1024*1024+1)
@@ -381,18 +389,18 @@ async def upload(file:UploadFile=File(...),kind:str=Form(...),selected_date:str=
     return {'id':identifier,'kind':kind,'date':selected_date,'url':'/api/media/'+identifier}
 
 @app.get('/api/media')
-def media(account=Depends(current)):
+def media(account=Depends(member)):
     with connect() as con: rows=con.execute('SELECT id,kind,date,created FROM media WHERE tenant=? ORDER BY created DESC',(account['id'],)).fetchall()
     return [{**dict(r),'url':'/api/media/'+r['id']} for r in rows]
 
 @app.get('/api/media/{identifier}')
-def get_media(identifier:str,account=Depends(current)):
+def get_media(identifier:str,account=Depends(member)):
     with connect() as con: row=con.execute('SELECT filename FROM media WHERE id=? AND tenant=?',(identifier,account['id'])).fetchone()
     if not row: raise HTTPException(404,'Image not found.')
     return FileResponse(DATA/'media'/account['id']/row['filename'],media_type='image/jpeg',headers={'Cache-Control':'private, no-store'})
 
 @app.delete('/api/media/{identifier}')
-def delete_media(identifier:str,account=Depends(current)):
+def delete_media(identifier:str,account=Depends(member)):
     with connect() as con:
         row=con.execute('SELECT filename FROM media WHERE id=? AND tenant=?',(identifier,account['id'])).fetchone()
         if not row: raise HTTPException(404,'Image not found.')
