@@ -34,19 +34,43 @@ def test_consistent_nutrition_passes_validation():
     planning.validate_role('workout', quantified_workout(), PROFILE)
 
 
-@pytest.mark.parametrize('problem', ['macros', 'protein'])
-def test_inconsistent_meal_nutrition_feeds_planning_validation(problem):
+def test_off_target_protein_is_reported_with_the_day_and_numbers():
     plan = meal_plan()
-    if problem == 'macros':
-        plan.days[0].tasks[0].nutrition.fat_g = 60  # 960 kcal of macros for a 600 kcal meal
-    else:
-        for task in plan.days[0].tasks:
-            task.nutrition.protein_g, task.nutrition.carbs_g = 10, 95  # same calories, 30 g protein a day
-    with pytest.raises(planning.PlanningError) as error:
-        planning.validate_role('meal', plan, PROFILE)
-    # Feedback names the day and the numbers so a revision can correct it.
-    assert 'Day 1' in str(error.value)
-    assert ('960 kcal' if problem == 'macros' else '30 g protein') in str(error.value)
+    for task in plan.days[0].tasks:
+        task.nutrition.protein_g, task.nutrition.carbs_g = 10, 95  # same calories, 30 g protein a day
+    planning.validate_role('meal', plan, PROFILE)  # estimates alone never fail validation
+    feedback = planning.nutrition_feedback(plan)
+    assert 'Day 1 meals provide 30 g protein' in feedback
+    assert 'allowed ±22 g' in feedback
+
+
+def test_meal_macros_are_scaled_to_the_calorie_estimate():
+    plan = meal_plan()
+    meal = plan.days[0].tasks[0]
+    meal.nutrition.protein_g, meal.nutrition.carbs_g, meal.nutrition.fat_g = 20, 50, 10  # 370 kcal for a 600 kcal meal
+    untouched = plan.days[0].tasks[1].nutrition.model_dump()
+    planning.normalize_meal_macros(plan)
+    n = meal.nutrition
+    assert abs(4*n.protein_g + 4*n.carbs_g + 9*n.fat_g - 600) <= 10
+    assert (n.protein_g, n.carbs_g, n.fat_g) == (32, 81, 16)
+    assert plan.days[0].tasks[1].nutrition.model_dump() == untouched
+
+
+def test_nutrition_feedback_gets_limited_revisions_then_the_plan_publishes():
+    class Stubborn(FakeProvider):
+        def generate(self, role, context, revision=''):
+            self.generated.append((role, revision))
+            if role != 'meal': return super().generate(role, context, revision)
+            plan = meal_plan()
+            for task in plan.days[0].tasks:
+                task.nutrition.protein_g, task.nutrition.carbs_g = 10, 95
+            return plan
+    provider = Stubborn()
+    plan = planning.generate(PROFILE, [], date(2026, 10, 1), provider=provider, days_count=2)
+    meal_revisions = [r for role, r in provider.generated if role == 'meal' and r]
+    assert len(meal_revisions) == planning.NUTRITION_REVISIONS
+    assert 'Day 1 meals provide 30 g protein' in meal_revisions[0]
+    assert plan['revisions']['meal'] == planning.NUTRITION_REVISIONS
 
 
 def test_exercise_burn_cannot_exceed_the_session_estimate():
@@ -72,7 +96,7 @@ def test_generated_plan_keeps_nutrition_targets_and_estimates():
     assert workout['exercises'][0]['calories'] == 80
 
 
-def test_nutrition_feedback_lists_every_off_target_day_at_once():
+def test_protein_feedback_lists_every_off_target_day_at_once():
     plan = meal_plan()
     for day in plan.days[:3]:
         for task in day.tasks:
