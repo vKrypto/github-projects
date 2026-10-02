@@ -99,6 +99,13 @@ test("card photos open in focus mode and names link to guide pages", async ({
   ).toBeVisible();
   await expect(page.locator(".guide-photos img")).toHaveCount(2);
   await expect(page.locator(".guide-steps li")).toHaveCount(5);
+  // The video loads from YouTube only after the viewer presses play.
+  await expect(page.locator(".guide-video iframe")).toHaveCount(0);
+  await page.getByRole("button", { name: /^Play video:/ }).click();
+  await expect(page.locator(".guide-video iframe")).toHaveAttribute(
+    "src",
+    /^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]{11}\?autoplay=1/,
+  );
 
   await page.getByRole("link", { name: "Back to plan" }).click();
   await expect(page).toHaveURL(/\/$/);

@@ -175,6 +175,10 @@ test("admin static pages tab lists every guide page", async ({ page }) => {
   await expect(rows.first()).toBeVisible();
   const exerciseCount = await rows.count();
   expect(exerciseCount).toBeGreaterThan(100);
+  await expect(rows.first().locator(".static-video")).toHaveAttribute(
+    "href",
+    /youtube\.com\/watch\?v=/,
+  );
   await page.getByRole("tab", { name: /Foods/ }).click();
   await page.getByRole("searchbox").fill("biryani");
   await expect(rows).toHaveCount(1);

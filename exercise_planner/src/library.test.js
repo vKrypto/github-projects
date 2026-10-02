@@ -335,3 +335,15 @@ test("every exercise guide names the body area it works", () => {
   for (const [id, item] of Object.entries(exercises.items))
     assert.ok(areas.has(item.area), id);
 });
+
+test("every exercise guide has one short how-to video", () => {
+  const seen = new Set();
+  for (const [id, item] of Object.entries(exercises.items)) {
+    assert.ok(item.video, `${id} has a video`);
+    assert.match(item.video.id, /^[\w-]{11}$/, id);
+    assert.ok(item.video.seconds > 0 && item.video.seconds <= 300, id);
+    assert.ok(item.video.title && item.video.channel, id);
+    assert.ok(!seen.has(item.video.id), `${id} reuses a video`);
+    seen.add(item.video.id);
+  }
+});
