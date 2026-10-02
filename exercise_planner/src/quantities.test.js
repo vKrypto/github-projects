@@ -102,3 +102,32 @@ test("daily nutrition totals add meals that carry nutrition and skip older plans
     { protein_g: 52, carbs_g: 140, fat_g: 28, fiber_g: 22 },
   );
 });
+
+test("quantity-first steps name the exercise that follows the numbers", () => {
+  const exercises = workoutExercises({
+    title: "Core",
+    steps: [
+      "Perform 3 sets of 15 bird dogs per side.",
+      "Perform 3 sets of 20-second front planks.",
+      "Perform 3 sets of 12 cable leg curls per leg.",
+      "Perform 3 sets of 15 Russian twists (without weight).",
+      "Perform 3 sets of 10 slow bird dogs focusing on control.",
+      "Warm up with 5 minutes easy treadmill walk.",
+      "Perform foam rolling or self-massage if available for 5-10 minutes.",
+      "Hold standing calf stretch 30 seconds each leg.",
+    ],
+  });
+  assert.deepEqual(
+    exercises.map((e) => [e.name, exerciseQuantity(e)]),
+    [
+      ["Bird dogs", "3 sets × 15 reps per side"],
+      ["Front planks", "3 sets × 20 sec hold"],
+      ["Cable leg curls", "3 sets × 12 reps per leg"],
+      ["Russian twists", "3 sets × 15 reps"],
+      ["Bird dogs", "3 sets × 10 reps"],
+      ["Warm up with treadmill walk", "5 min"],
+      ["Foam rolling or self-massage", "10 min"],
+      ["Standing calf stretch", "30 sec hold"],
+    ],
+  );
+});

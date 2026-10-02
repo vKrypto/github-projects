@@ -195,31 +195,33 @@ test("guide links accept ids, typed names and the apostrophe form", () => {
   assert.equal(resolveGuide(exercises, "underwater basket weaving"), null);
 });
 
-test("rows named after a session find the exercises in their steps", () => {
+test("rows whose name matches no guide use the steps they came from", () => {
+  const task = {
+    title: "Upper Body Finisher",
+    steps: ["Finisher: 3 sets of 12 goblet squats, then 3 sets of 10 push-ups"],
+  };
+  const [row] = workoutExercises(task);
+  assert.equal(row.name, "Finisher");
+  assert.deepEqual(ids(exerciseRowGuides(exercises, task, row)), [
+    "goblet-squat",
+    "push-up",
+  ]);
+});
+
+test("quantity-first steps become rows that link to their guides", () => {
   const task = {
     title: "Strength Training: Upper Body Dumbbell Circuit",
     steps: [
       "Perform 3 sets of 10-12 reps dumbbell bicep curls.",
-      "Perform 3 sets of 10-12 reps tricep kickbacks with dumbbells.",
-      "Rest 60 seconds between sets.",
+      "Perform 3 sets of 15 bird dogs per side.",
+      "Include 5 minutes foam rolling if available.",
     ],
   };
-  const [row] = workoutExercises(task);
-  assert.equal(row.name, task.title);
-  assert.deepEqual(ids(exerciseRowGuides(exercises, task, row)), [
-    "dumbbell-bicep-curl",
-    "tricep-kickback",
-  ]);
-
-  const mobility = {
-    title: "Light Cardio and Mobility",
-    steps: ["Include 5 minutes foam rolling if available."],
-  };
-  const [include] = workoutExercises(mobility);
-  assert.equal(include.name, "Include");
-  assert.deepEqual(ids(exerciseRowGuides(exercises, mobility, include)), [
-    "foam-rolling",
-  ]);
+  const rows = workoutExercises(task);
+  assert.deepEqual(
+    rows.map((row) => ids(exerciseRowGuides(exercises, task, row))),
+    [["dumbbell-bicep-curl"], ["bird-dog"], ["foam-rolling"]],
+  );
 });
 
 test("task guides cover every exercise in the full routine", () => {

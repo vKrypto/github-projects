@@ -9,7 +9,9 @@ export function formatDuration(minutes) {
 export function exerciseQuantity(exercise) {
   const sets = exercise.sets ? `${exercise.sets} sets × ` : "";
   if (exercise.reps) {
-    const side = exercise.reps.match(/^(.*?)\s+((?:per|each) side)$/i);
+    const side = exercise.reps.match(
+      /^(.*?)\s+((?:per|each) (?:side|leg|arm))$/i,
+    );
     return side
       ? `${sets}${side[1]} reps ${side[2]}`
       : `${sets}${exercise.reps} reps`;
@@ -18,6 +20,23 @@ export function exerciseQuantity(exercise) {
   if (exercise.minutes) return `${sets}${formatDuration(exercise.minutes)}`;
   return "";
 }
+
+const LEADING_VERB =
+  /^\s*(?:perform|do|complete|include|practice|try|add|hold)\s+/i;
+
+// Steps that start with their quantity ("Perform 3 sets of 15 bird dogs per
+// side.") name the exercise after it; drop the qualifiers that follow.
+function trailingName(text) {
+  return text
+    .replace(/^\s*(?:reps?\s+)?(?:each\s+)?(?:of\s+)?/i, "")
+    .replace(/^(?:slow|controlled|easy)\s+/i, "")
+    .split(
+      /[(.;]|,\s*(?:\d|rest\b)| (?:per|each|focusing|for|at|using|until|if)\b| slow(?:ly)?\b| lying (?:down|on)\b| with (?:a )?light\b/i,
+    )[0]
+    .trim();
+}
+
+const capitalize = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
 // Older saved plans have exercise prescriptions in their routine steps.
 // Extract explicit quantities only; never allocate session time across exercises.
@@ -35,39 +54,61 @@ export function workoutExercises(task) {
       const compact = text.match(
         /(\d+)\s*[x×]\s*(\d+(?:\s*[-–]\s*\d+)?)(?:\s*(reps?|seconds?|secs?|minutes?|mins?))?\b/i,
       );
-      const seconds = text.match(/(\d+)\s*(?:seconds?|secs?)\b/i);
-      const minutes = text.match(/(\d+)\s*(?:minutes?|mins?)\b/i);
-      if (!reps && !compact && !seconds && !minutes) continue;
+      const seconds = text.match(/(\d+)\s*-?\s*(?:seconds?|secs?)\b/i);
+      const minutes = text.match(/(\d+)\s*-?\s*(?:minutes?|mins?)\b/i);
+      // "3 sets of 15 bird dogs": a count without the word "reps".
+      const setsOf =
+        !reps &&
+        text.match(
+          /(\d+)\s*sets?\s+of\s+(\d+(?:\s*[-–]\s*\d+)?)\b(?!\s*-?\s*(?:reps?|repetitions?|seconds?|secs?|minutes?|mins?)\b)/i,
+        );
+      if (!reps && !compact && !seconds && !minutes && !setsOf) continue;
       const timedCompact =
         compact && /^(seconds?|secs?|minutes?|mins?)$/i.test(compact[3] || "");
       const secondsCompact =
         compact && /^(seconds?|secs?)$/i.test(compact[3] || "");
-      const firstQuantity = Math.min(
-        ...[sets, reps, compact, seconds, minutes]
-          .filter(Boolean)
-          .map((m) => m.index),
+      const quantities = [sets, reps, compact, seconds, minutes, setsOf].filter(
+        Boolean,
+      );
+      const firstQuantity = Math.min(...quantities.map((m) => m.index));
+      const lastQuantity = Math.max(
+        ...quantities.map((m) => m.index + m[0].length),
       );
       let name = text.includes(":")
         ? text.slice(0, text.indexOf(":"))
         : text.slice(0, firstQuantity);
       name = name
-        .replace(/^\s*(perform|do|complete)\s+/i, "")
+        .replace(LEADING_VERB, "")
+        .replace(/\s+(?:for\s+)?\d+\s*[-–]\s*$/, "")
+        .replace(/\s+if available$/i, "")
         .replace(/\s+(?:for|hold for|hold|do|perform|complete)\s*$/i, "")
         .trim()
         .replace(/[-–,]\s*$/, "")
         .trim();
+      if (!text.includes(":")) {
+        const after = trailingName(text.slice(lastQuantity));
+        if (/^(?:include|perform|do|complete)?$/i.test(name)) name = after;
+        else if (/\s(?:with|by|of)$/i.test(name) && after)
+          name = `${name} ${after}`;
+      }
       if (!name || /^(hold|for|walk continuously for)$/i.test(name))
         name = task.title;
+      const side = text.match(/\b(?:per|each)\s+(side|leg|arm)\b/i);
+      let count = reps
+        ? `${reps[1]}${reps[2] ? ` ${reps[2]}` : ""}`
+        : compact && !timedCompact
+          ? compact[2]
+          : setsOf
+            ? setsOf[2]
+            : null;
+      if (count && side && !/(?:per|each) (?:side|leg|arm)$/i.test(count))
+        count = `${count} per ${side[1].toLowerCase()}`;
       const entry = {
-        name,
+        name: capitalize(name),
         sets: sets ? Number(sets[1]) : compact ? Number(compact[1]) : null,
-        reps: reps
-          ? `${reps[1]}${reps[2] ? ` ${reps[2]}` : ""}`
-          : compact && !timedCompact
-            ? compact[2]
-            : null,
+        reps: count,
         hold_seconds:
-          !reps && (!compact || timedCompact)
+          !reps && !setsOf && (!compact || timedCompact)
             ? Number(seconds?.[1] || (secondsCompact ? compact[2] : 0)) || null
             : null,
         minutes: minutes ? Number(minutes[1]) : null,
