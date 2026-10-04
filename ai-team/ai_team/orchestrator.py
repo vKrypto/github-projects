@@ -5,7 +5,7 @@ import traceback
 from concurrent.futures import ThreadPoolExecutor
 
 from . import db
-from .agents import Cancelled
+from .agents import VERIFIER, Cancelled, run_role, verification_state
 from .config import settings
 from .graph import team_graph
 from .triage import triage
@@ -83,6 +83,32 @@ def run_task(task: dict) -> None:
         db.add_event(tid, "orchestrator", "error", traceback.format_exc()[-4000:])
 
 
+def verify_task(task: dict) -> None:
+    """Independent check of whether the task is actually done, against the current code.
+    Never changes the task's status; records a verdict (done | partial | not_done) and a report."""
+    tid, turn = task["id"], task.get("turn") or 1
+    db.add_event(tid, "orchestrator", "status", "verification started")
+    requests = [f"[turn {m['turn']}] {m['content']}" for m in db.list_messages(tid) if m["role"] == "user"]
+    state = team_graph.get_state({"configurable": {"thread_id": str(tid)}}).values or {}
+    files = state.get("all_changed_files") or state.get("changed_files") or []
+    brief = ("Verify whether this task is done. All of these requests must be satisfied:\n\n"
+             + "\n\n".join(requests))
+    if files:
+        brief += "\n\nFiles the team changed while working on it:\n" + "\n".join(f"- {f}" for f in files)
+    if task.get("result"):
+        brief += f"\n\nThe developer's last summary (claims to check, not facts):\n{task['result']}"
+    try:
+        report, _ = run_role(VERIFIER, task, brief)  # fresh session: an independent look every time
+        verdict = verification_state(report)
+        db.update_task(tid, verify_state=verdict, verification=report, verified_at=db.now())
+        db.add_message(tid, turn, "verifier", report)
+        db.add_event(tid, "orchestrator", "status", f"verification: {verdict.upper()}")
+    except Exception as e:
+        log.exception("verification of task %s failed", tid)
+        db.update_task(tid, verify_state="error", verification=f"{type(e).__name__}: {e}", verified_at=db.now())
+        db.add_event(tid, "orchestrator", "error", traceback.format_exc()[-4000:])
+
+
 class Orchestrator:
     def __init__(self):
         self.stop = threading.Event()
@@ -102,15 +128,15 @@ class Orchestrator:
         while not self.stop.is_set():
             if not self.slots.acquire(timeout=settings.poll_interval):
                 continue
-            task = db.claim_next_queued()
-            if task is None:
+            job = db.claim_next_job()
+            if job is None:
                 self.slots.release()
                 self.stop.wait(settings.poll_interval)
                 continue
-            self.pool.submit(self._run, task)
+            self.pool.submit(self._run, *job)
 
-    def _run(self, task):
+    def _run(self, kind: str, task: dict):
         try:
-            run_task(task)
+            (verify_task if kind == "verify" else run_task)(task)
         finally:
             self.slots.release()

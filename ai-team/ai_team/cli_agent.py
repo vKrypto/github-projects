@@ -16,6 +16,7 @@ ROLE_TOOLS = {
     "planner": "Read,Grep,Glob",
     "reviewer": "Read,Grep,Glob",
     "coder": "Read,Grep,Glob,Edit,Write,Bash",
+    "verifier": "Read,Grep,Glob,Bash",  # runs tests; told not to modify files
 }
 # Deny rules apply even under bypassPermissions. `//` = absolute path in Claude Code rules.
 DENY = ["Bash(git:*)", "Bash(git *)", "WebFetch", "WebSearch", "Read(//run/secrets/**)"]

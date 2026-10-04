@@ -78,9 +78,11 @@ def sandboxed(command: str, cwd: Path) -> list[str]:
     return argv + ["--chdir", str(cwd), "sh", "-c", command]
 
 
-def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None = None) -> list[BaseTool]:
+def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None = None,
+               commands: bool = False) -> list[BaseTool]:
     """Build the tool set for one agent run. `log(kind, msg)` records tool activity on the task;
-    files written by the agent are added to `changed` so the reviewer knows what to look at."""
+    files written by the agent are added to `changed` so the reviewer knows what to look at.
+    `commands` adds run_command to a read-only set (the verifier runs tests but edits nothing)."""
     changed = changed if changed is not None else set()
 
     def guarded(fn):
@@ -148,8 +150,6 @@ def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None 
         return "\n".join(hits) or "no matches"
 
     tools = [list_dir, read_file, search]
-    if read_only:
-        return tools
 
     @tool
     @guarded
@@ -187,4 +187,6 @@ def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None 
         out = (r.stdout + ("\n[stderr]\n" + r.stderr if r.stderr else ""))[-12_000:]
         return f"exit={r.returncode}\n{out}"
 
+    if read_only:
+        return tools + ([run_command] if commands else [])
     return tools + [write_file, edit_file, run_command]

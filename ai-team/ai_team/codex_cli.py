@@ -18,7 +18,7 @@ from pathlib import Path
 from .config import settings
 
 EFFORT = {"fast": "low", "balanced": "medium", "deep": "high"}
-READ_ONLY_ROLES = {"planner", "reviewer"}
+READ_ONLY_ROLES = {"planner", "reviewer", "verifier"}
 
 
 class CliError(Exception):

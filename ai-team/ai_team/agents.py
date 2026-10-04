@@ -20,6 +20,7 @@ class Role:
     name: str
     read_only: bool
     prompt: str
+    commands: bool = False  # read-only roles that may still run commands (tests, builds)
 
 
 PLANNER = Role("planner", True, """Role: Tech Lead / Planner.
@@ -44,7 +45,17 @@ Check correctness, edge cases, security, and consistency with surrounding code. 
 End your answer with exactly one line:
 VERDICT: APPROVED   or   VERDICT: CHANGES_REQUESTED""")
 
-ROLES = {r.name: r for r in (PLANNER, CODER, REVIEWER)}
+VERIFIER = Role("verifier", True, """Role: Independent Verifier / QA.
+Decide whether the task is ACTUALLY done, judged on the current state of the code, not on anyone's summary.
+You are given every request in the task's conversation; all of them must be satisfied.
+- Turn the requests into a checklist of concrete requirements.
+- Check each one yourself: read the code, and run the tests / build / the program where possible.
+- Do not modify, create or delete files; you only inspect and run checks.
+Report: the checklist, each item marked [x] met / [ ] not met / [~] partly, with evidence (file:line,
+command + result). Then list the gaps, if any, as concrete fixes. End with exactly one line:
+VERIFICATION: DONE   or   VERIFICATION: PARTIAL   or   VERIFICATION: NOT_DONE""", commands=True)
+
+ROLES = {r.name: r for r in (PLANNER, CODER, REVIEWER, VERIFIER)}
 
 
 class Cancelled(Exception):
@@ -94,7 +105,7 @@ def run_role(role: Role, task: dict, brief: str, changed: set | None = None,
         log("status", "resuming conversation")
     agent = create_agent(
         llm.model_for(meta.get("model_tier", "balanced")),
-        make_tools(role.read_only, log, changed),
+        make_tools(role.read_only, log, changed, commands=role.commands),
         system_prompt=system_prompt,
         name=role.name,
         checkpointer=memory.checkpointer,
@@ -114,6 +125,12 @@ def run_role(role: Role, task: dict, brief: str, changed: set | None = None,
     return final, thread
 
 
+def verification_state(report: str) -> str:
+    """done | partial | not_done from the verifier's last VERIFICATION line ("error" if missing)."""
+    m = re.findall(r"VERIFICATION:\s*(DONE|PARTIAL|NOT_DONE)", report)
+    return m[-1].lower() if m else "error"
+
+
 def verdict(review: str) -> bool:
     m = re.findall(r"VERDICT:\s*(APPROVED|CHANGES_REQUESTED)", review)
     return bool(m) and m[-1] == "APPROVED"
@@ -126,4 +143,6 @@ def mock_output(role: Role, task: dict) -> str:
                 f"3. Add/adjust tests\nAcceptance: behaviour matches the request.")
     if role.name == "coder":
         return "[mock] No files changed (mock provider). Would implement the plan above."
+    if role.name == "verifier":
+        return "[mock] - [x] request handled (mock provider)\nVERIFICATION: DONE"
     return "[mock] Looks consistent with the plan.\nVERDICT: APPROVED"

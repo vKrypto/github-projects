@@ -50,8 +50,14 @@ _conn.executescript(
     CREATE INDEX IF NOT EXISTS idx_messages_task ON messages(task_id);
     """
 )
-# Migrations for databases created before conversations existed.
-if "turn" not in {r["name"] for r in _conn.execute("PRAGMA table_info(tasks)")}:
+# Migrations for databases created before these columns existed.
+_cols = {r["name"] for r in _conn.execute("PRAGMA table_info(tasks)")}
+for _col, _ddl in (("verify_state", "TEXT"),     # NULL | queued | running | done | partial | not_done | error
+                   ("verification", "TEXT"),     # the verifier's report
+                   ("verified_at", "TEXT")):
+    if _col not in _cols:
+        _conn.execute(f"ALTER TABLE tasks ADD COLUMN {_col} {_ddl}")
+if "turn" not in _cols:
     _conn.execute("ALTER TABLE tasks ADD COLUMN turn INTEGER NOT NULL DEFAULT 1")
     _conn.execute("INSERT INTO messages (task_id, turn, role, content, ts) "
                   "SELECT id, 1, 'user', text, created_at FROM tasks")
@@ -102,21 +108,27 @@ def update_task(task_id: int, **fields) -> None:
         _conn.execute(f"UPDATE tasks SET {cols} WHERE id = ?", (*fields.values(), task_id))
 
 
-def claim_next_queued() -> dict | None:
-    """Atomically move the oldest queued task to running and return it."""
+def claim_next_job() -> tuple[str, dict] | None:
+    """Atomically claim the oldest pending job: ("run", task) for a queued turn, or ("verify", task)
+    for a queued verification. Returns None when there is nothing to do."""
     with _lock:
-        r = _conn.execute("SELECT id FROM tasks WHERE status = 'queued' ORDER BY id LIMIT 1").fetchone()
+        r = _conn.execute("SELECT id, status, verify_state FROM tasks WHERE status = 'queued' "
+                          "OR verify_state = 'queued' ORDER BY id LIMIT 1").fetchone()
         if r is None:
             return None
-        _conn.execute("UPDATE tasks SET status = 'running', started_at = ?, error = NULL WHERE id = ?",
-                      (now(), r["id"]))
-    return get_task(r["id"])
+        if r["status"] == "queued":
+            _conn.execute("UPDATE tasks SET status = 'running', started_at = ?, error = NULL WHERE id = ?",
+                          (now(), r["id"]))
+            return "run", get_task(r["id"])
+        _conn.execute("UPDATE tasks SET verify_state = 'running' WHERE id = ?", (r["id"],))
+    return "verify", get_task(r["id"])
 
 
 def requeue_running() -> None:
-    """On startup, tasks left 'running' by a crash go back to the queue."""
+    """On startup, work left 'running' by a crash goes back to the queue."""
     with _lock:
         _conn.execute("UPDATE tasks SET status = 'queued' WHERE status = 'running'")
+        _conn.execute("UPDATE tasks SET verify_state = 'queued' WHERE verify_state = 'running'")
 
 
 def add_event(task_id: int, agent: str, kind: str, content: str) -> None:

@@ -288,6 +288,27 @@ flowchart LR
   Redis could replace the SQLite checkpointer later (`langgraph-checkpoint-redis`), e.g. for several
   orchestrator replicas.
 
+### Re-verify (is it actually done?)
+
+**Verify** on a finished task, or `POST /api/tasks/{id}/verify`, queues an independent check of the
+**current code** against **every request in the task's conversation**:
+
+- **A separate `verifier` agent**, started fresh each time (no shared session, so it doesn't inherit the team's
+  assumptions). It gets all user requests, the files changed across all turns, and the developer's last
+  summary as *claims to check*.
+- **It reads code and runs tests/builds but must not edit:**
+  - claude: `Read,Grep,Glob,Bash`, with git denied
+  - codex: the step fails if it edits files
+  - langchain: read tools + `run_command`
+- **The report:** a checklist (`[x]` met / `[~]` partly / `[ ]` not met) with evidence, the gaps as concrete
+  fixes, and a final `VERIFICATION: DONE | PARTIAL | NOT_DONE`.
+- **The verdict is stored next to the task** (`verify_state`, `verification`, `verified_at`), shown as a badge,
+  and added to the conversation. It **never changes the task's status**.
+- **On PARTIAL or NOT_DONE,** **Continue with gaps** prefills a follow-up asking the team to fix them. The
+  verifier's report is part of the conversation history the team sees.
+- **It runs through the orchestrator queue** (counts against `AI_TEAM_MAX_PARALLEL`), never while the task
+  itself is running. A new turn or retry clears the earlier verdict as stale.
+
 ### Model selection
 Triage sets `model_tier` (`fast` / `balanced` / `deep`). It maps to `AI_TEAM_MODEL_FAST/BALANCED/DEEP`.
 The provider (`anthropic`, `openai`, `ollama`, …) is global, via `AI_TEAM_PROVIDER`.

@@ -82,6 +82,8 @@ def retry_task(task_id: int, bg: BackgroundTasks):
     t = _get(task_id)
     if t["status"] not in ("failed", "cancelled", "done"):
         raise HTTPException(409, f"cannot retry a {t['status']} task")
+    if t["verify_state"] in ("queued", "running"):
+        raise HTTPException(409, "verification in progress; wait for it to finish")
     turn = t["turn"] or 1
     db.delete_messages(task_id, turn, roles=("assistant", "system"))
     db.add_event(task_id, "user", "status", f"retry requested (turn {turn})")
@@ -93,6 +95,22 @@ def retry_task(task_id: int, bg: BackgroundTasks):
         bg.add_task(triage_task, task_id)
     else:
         db.update_task(task_id, status="queued", error=None, started_at=None, finished_at=None)
+    db.update_task(task_id, verify_state=None)  # earlier verdict is stale once the turn re-runs
+    return db.get_task(task_id)
+
+
+@app.post("/api/tasks/{task_id}/verify")
+def verify_task(task_id: int):
+    """Queue an independent re-verification: is the task actually done, judged on the current code?"""
+    t = _get(task_id)
+    if t["status"] not in ("done", "failed", "cancelled"):
+        raise HTTPException(409, f"task is {t['status']}; verify it once it has finished")
+    if t["verify_state"] in ("queued", "running"):
+        raise HTTPException(409, "verification already in progress")
+    if not t["metadata"]:
+        raise HTTPException(409, "task was never triaged; retry it first")
+    db.update_task(task_id, verify_state="queued")
+    db.add_event(task_id, "user", "status", "re-verification requested")
     return db.get_task(task_id)
 
 
@@ -113,12 +131,14 @@ def continue_task(task_id: int, body: FollowUp):
     t = _get(task_id)
     if t["status"] not in ("done", "failed", "cancelled"):
         raise HTTPException(409, f"task is {t['status']}; wait until it finishes to continue it")
+    if t["verify_state"] in ("queued", "running"):
+        raise HTTPException(409, "verification in progress; wait for it to finish")
     if not t["metadata"]:
         raise HTTPException(409, "task was never triaged; retry it first")
     turn = (t["turn"] or 1) + 1
     db.add_message(task_id, turn, "user", body.text.strip())
     db.update_task(task_id, turn=turn, status="queued", error=None, plan=None, result=None, review=None,
-                   started_at=None, finished_at=None)
+                   started_at=None, finished_at=None, verify_state=None)  # earlier verdict is now stale
     db.add_event(task_id, "user", "status", f"follow-up (turn {turn}): {body.text.strip()[:200]}")
     return db.get_task(task_id)
 

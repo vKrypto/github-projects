@@ -31,6 +31,7 @@ class TeamState(TypedDict, total=False):
     approved: bool
     rounds: int                # coder runs within this turn
     changed_files: list[str]   # files changed within this turn
+    all_changed_files: list[str]  # files changed across all turns (for verification)
     sessions: dict             # role -> CLI session id / langchain thread, resumed on later runs
 
 
@@ -73,6 +74,7 @@ def coder_node(state: TeamState) -> TeamState:
     db.update_task(task["id"], result=result)
     db.add_event(task["id"], "coder", "status", "files changed: " + (", ".join(sorted(changed)) or "none"))
     return {"result": result, "rounds": state.get("rounds", 0) + 1, "changed_files": sorted(changed),
+            "all_changed_files": sorted(changed | set(state.get("all_changed_files") or [])),
             "sessions": sessions}
 
 
