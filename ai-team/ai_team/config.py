@@ -1,0 +1,33 @@
+"""Runtime settings, read from env vars prefixed AI_TEAM_ (or ai-team/.env)."""
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+APP_DIR = Path(__file__).resolve().parent.parent  # ai-team/
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="AI_TEAM_", env_file=APP_DIR / ".env", extra="ignore")
+
+    workspace_root: Path = APP_DIR.parent
+    db_path: Path = APP_DIR / "data" / "tasks.db"
+
+    provider: str = "mock"  # mock | anthropic | openai | ollama
+    model_fast: str = "claude-haiku-4-5-20251001"
+    model_balanced: str = "claude-sonnet-5-5"
+    model_deep: str = "claude-opus-5-5"
+    model_triage: str = "claude-haiku-4-5-20251001"
+
+    max_parallel: int = 1
+    max_review_rounds: int = 2
+    agent_max_steps: int = 40
+    command_timeout: int = 120
+    poll_interval: float = 2.0
+
+    def model_for_tier(self, tier: str) -> str:
+        return {"fast": self.model_fast, "deep": self.model_deep}.get(tier, self.model_balanced)
+
+
+settings = Settings()
+settings.workspace_root = settings.workspace_root.resolve()
+settings.db_path.parent.mkdir(parents=True, exist_ok=True)
