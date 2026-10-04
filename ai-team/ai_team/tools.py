@@ -29,11 +29,16 @@ class SandboxError(Exception):
     pass
 
 
+def is_hidden(p: Path) -> bool:
+    p = p.resolve()
+    return any(p == h or h in p.parents for h in settings.hidden_dirs)
+
+
 def list_projects() -> list[str]:
     root = settings.workspace_root
     return sorted(
         p.name for p in root.iterdir()
-        if p.is_dir() and not p.name.startswith(".") and p.resolve() != APP_DIR and p.name not in SKIP_DIRS
+        if p.is_dir() and not p.name.startswith(".") and not is_hidden(p) and p.name not in SKIP_DIRS
     )
 
 
@@ -42,7 +47,7 @@ def resolve(path: str, write: bool = False) -> Path:
     p = (root / path).resolve() if not os.path.isabs(path) else Path(path).resolve()
     if p != root and root not in p.parents:
         raise SandboxError(f"{path!r} is outside the workspace")
-    if p == APP_DIR or APP_DIR in p.parents:
+    if is_hidden(p):
         raise SandboxError("the ai-team folder is off-limits")
     if p.name.startswith(".env") and p.name != ".env.example":
         raise SandboxError("secret files (.env*) are off-limits")
@@ -63,7 +68,7 @@ def sandboxed(command: str, cwd: Path) -> list[str]:
     root = str(settings.workspace_root)
     argv = [bwrap, "--ro-bind", "/", "/", "--bind", root, root, "--dev", "/dev", "--proc", "/proc",
             "--tmpfs", "/tmp", "--die-with-parent"]
-    hidden = [APP_DIR, settings.workspace_root / ".git", *settings.workspace_root.glob("*/.git")]
+    hidden = [*settings.hidden_dirs, settings.workspace_root / ".git", *settings.workspace_root.glob("*/.git")]
     for h in hidden:
         if h.is_dir():
             argv += ["--tmpfs", str(h)]
@@ -100,7 +105,7 @@ def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None 
         for dirpath, dirnames, filenames in os.walk(base):
             d = Path(dirpath)
             level = len(d.relative_to(base).parts)
-            dirnames[:] = sorted(n for n in dirnames if n not in SKIP_DIRS and (d / n).resolve() != APP_DIR)
+            dirnames[:] = sorted(n for n in dirnames if n not in SKIP_DIRS and not is_hidden(d / n))
             if level >= depth:
                 dirnames[:] = []
             for n in dirnames:
@@ -127,7 +132,7 @@ def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None 
         """Regex-search file contents under `path`; `glob` filters file names (e.g. '*.py')."""
         base, rx, hits = resolve(path), re.compile(pattern), []
         for dirpath, dirnames, filenames in os.walk(base):
-            dirnames[:] = [n for n in dirnames if n not in SKIP_DIRS and (Path(dirpath) / n).resolve() != APP_DIR]
+            dirnames[:] = [n for n in dirnames if n not in SKIP_DIRS and not is_hidden(Path(dirpath) / n)]
             for f in filenames:
                 if not fnmatch.fnmatch(f, glob) or f.startswith(".env"):
                     continue
@@ -176,7 +181,8 @@ def make_tools(read_only: bool, log=lambda kind, msg: None, changed: set | None 
         Only the workspace is writable; git is not available."""
         if BLOCKED_CMD.search(command):
             raise SandboxError("command not allowed (no git, sudo or destructive ops)")
-        r = subprocess.run(sandboxed(command, resolve(cwd)), capture_output=True, text=True,
+        workdir = resolve(cwd)
+        r = subprocess.run(sandboxed(command, workdir), cwd=workdir, capture_output=True, text=True,
                            timeout=settings.command_timeout)
         out = (r.stdout + ("\n[stderr]\n" + r.stderr if r.stderr else ""))[-12_000:]
         return f"exit={r.returncode}\n{out}"

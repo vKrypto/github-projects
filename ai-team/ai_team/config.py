@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="AI_TEAM_", env_file=APP_DIR / ".env", extra="ignore")
 
     workspace_root: Path = APP_DIR.parent
+    # Folders inside the workspace agents must never see (ai-team/ itself, wherever it is mounted).
+    hidden_dirs: list[Path] = [APP_DIR]
     db_path: Path = APP_DIR / "data" / "tasks.db"
 
     provider: str = "mock"  # mock | anthropic | openai | ollama
@@ -30,4 +32,5 @@ class Settings(BaseSettings):
 
 settings = Settings()
 settings.workspace_root = settings.workspace_root.resolve()
+settings.hidden_dirs = [p.resolve() for p in settings.hidden_dirs]
 settings.db_path.parent.mkdir(parents=True, exist_ok=True)

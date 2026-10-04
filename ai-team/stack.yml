@@ -1,0 +1,32 @@
+# docker stack deploy -c stack.yml -c stack.gitmask.yml ai_team   (use ./deploy.sh)
+version: "3.8"
+
+services:
+  app:
+    image: ai-team:latest
+    env_file: .env            # provider, keys, models, orchestrator knobs
+    # Container paths; these override anything the same names hold in .env.
+    environment:
+      AI_TEAM_WORKSPACE_ROOT: /workspace
+      AI_TEAM_DB_PATH: /data/tasks.db
+      AI_TEAM_HIDDEN_DIRS: '["/workspace/ai-team"]'
+    ports:
+      - target: 8765
+        published: ${AI_TEAM_PORT:-8765}
+        mode: host
+    volumes:
+      # The agents' whole world: the repos folder. Nothing else from the host is visible.
+      - type: bind
+        source: ${WORKSPACE_HOST_DIR}
+        target: /workspace
+      # Hide ai-team/ itself (source, .env, task DB) from the agents.
+      - type: tmpfs
+        target: /workspace/ai-team
+      # Task DB + event log on an inspectable host path.
+      - type: bind
+        source: ${DATA_HOST_DIR}
+        target: /data
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure

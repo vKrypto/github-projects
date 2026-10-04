@@ -3,13 +3,38 @@
 A dashboard where you type tasks in plain words. Each task is triaged into metadata, queued, then worked
 by a team of agents (planner → senior developer → reviewer) orchestrated with **LangGraph**.
 
-## Run
+Setup: `cp .env.example .env`, then pick a provider and add its key (`mock` works with no key).
+For local dev: `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`.
+
+## Deploy (Docker Swarm stack)
 
 ```bash
 cd ai-team
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env          # pick a provider + key; `mock` works with no key
-.venv/bin/python -m ai_team   # http://127.0.0.1:8765
+./deploy.sh          # builds ai-team:latest, `docker swarm init` if needed, deploys stack `ai_team`
+```
+
+- Single-node swarm on this workstation. The control plane is bound to `127.0.0.1:2377`.
+- Dashboard: `http://<host>:8765` (`AI_TEAM_PORT` to change). Published in host mode, so it's **reachable
+  from the LAN with no auth**.
+- Config comes from `ai-team/.env` (`env_file`). Edit it, then re-run `./deploy.sh`. Comments must be on
+  their own lines; Docker keeps inline `# …` as part of the value.
+- Task DB lives on the host at `ai-team/data/tasks.db`.
+- Logs: `docker service logs -f ai_team_app` · Remove: `docker stack rm ai_team`.
+- Every deploy builds a uniquely tagged image so the service actually rolls. Deploys also regenerate
+  `stack.gitmask.yml`, so **re-run after adding a repo** to get its `.git` masked.
+
+**Isolation in the container.** Bubblewrap can't run inside a container under Docker's AppArmor profile,
+so the container itself is the sandbox:
+- It sees only `~/github` (mounted at `/workspace`). The rest of the host, including `~/.ssh`, is invisible.
+- `/workspace/ai-team` is covered by an empty tmpfs.
+- Every `.git` dir is covered by an empty tmpfs, and every submodule `.git` file by `/dev/null`.
+- The image has no git binary.
+- It runs as UID 1000, so files the coder writes stay owned by you.
+
+## Run without Docker (dev)
+
+```bash
+.venv/bin/python -m ai_team   # http://127.0.0.1:8765 — stop the stack first, same port
 ```
 
 ## Architecture
@@ -63,12 +88,13 @@ The provider (`anthropic`, `openai`, `ollama`, …) is global, via `AI_TEAM_PROV
   Each top-level folder there is a project. Paths outside it, `ai-team/` itself and `.env*` files are denied.
 - **No git at all:** There is no git tool, any command mentioning git is refused, and `.git/` folders
   can't be read. The coder's write tools record changed files, and that list is what the reviewer gets.
-- **Shell:** `run_command` runs under **bubblewrap**. The whole filesystem is read-only except the workspace.
+- **Shell (dev mode):** `run_command` runs under **bubblewrap**. The whole filesystem is read-only except the workspace.
   `ai-team/` and every `.git/` are hidden, and the git binary is masked. Network stays open so agents can
   talk to local services. Without `bwrap` it falls back to a plain shell (only the regex guard applies).
 
 ### Known POC limits
-- `run_command` can still *read* files outside the workspace (e.g. `~/.ssh`), because bwrap binds `/` read-only.
+- In dev mode `run_command` can still *read* files outside the workspace (e.g. `~/.ssh`); the stack doesn't have this gap.
+- The dashboard/API has no auth, and the stack publishes it on the LAN.
 - Polling instead of SSE/websockets; a single process holds the API, triage and orchestrator.
 - No per-task checkpointing: a task interrupted by a restart re-runs from the start.
 - Cancelling a running task takes effect at the next agent step, not instantly.
