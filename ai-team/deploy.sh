@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 # Build the image and (re)deploy the ai_team swarm stack on this machine.
+#   ./deploy.sh            deploy (logs in to Claude first if the CLI backend has no token yet)
+#   ./deploy.sh --relogin  create a fresh Claude token, then deploy
 set -euo pipefail
 cd "$(dirname "$0")"
 
 STACK=ai_team
+SECRET_PREFIX=ai_team_claude_token_
+RELOGIN=false
+[ "${1:-}" = "--relogin" ] && RELOGIN=true
+
 [ -f .env ] || { cp .env.example .env; echo "created .env from .env.example (provider=mock)"; }
+env_get() { sed -n "s/^$1=//p" .env | tail -1; }
 # Root working dir = the only host folder mounted writable into the container.
-WORKSPACE_HOST_DIR="$(sed -n 's/^AI_TEAM_WORKSPACE_ROOT=//p' .env | tail -1)"
+WORKSPACE_HOST_DIR="$(env_get AI_TEAM_WORKSPACE_ROOT)"
 export WORKSPACE_HOST_DIR="$(realpath "${WORKSPACE_HOST_DIR:-..}")"
 export DATA_HOST_DIR="$PWD/data"
 export AI_TEAM_PORT="${AI_TEAM_PORT:-8765}"
+BACKEND="$(env_get AI_TEAM_AGENT_BACKEND)"
 mkdir -p "$DATA_HOST_DIR"
 
 if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" != "active" ]; then
@@ -18,12 +26,44 @@ if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" != "active" ]; then
   docker swarm init --advertise-addr 127.0.0.1 --listen-addr 127.0.0.1:2377 >/dev/null
 fi
 
+# --- Claude login → swarm secret (CLI backend only) -------------------------------------------
+# The token from `claude setup-token` is a long-lived, inference-only OAuth token for your Claude
+# subscription. It is stored as an (encrypted) swarm secret, never in .env or the image. Secrets
+# are immutable, so each login creates a new timestamped one and older ones are pruned.
+find_claude() {
+  command -v claude 2>/dev/null && return
+  ls -1d "$HOME"/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude 2>/dev/null | sort -V | tail -1
+}
+SECRET=""
+if [ "$BACKEND" = "cli" ]; then
+  SECRET="$(docker secret ls --format '{{.Name}}' | grep "^$SECRET_PREFIX" | sort | tail -1 || true)"
+  if [ -z "$SECRET" ] || $RELOGIN; then
+    TOKEN="${CLAUDE_CODE_OAUTH_TOKEN:-}"
+    if [ -z "$TOKEN" ]; then
+      [ -t 0 ] || { echo "Claude login needs an interactive terminal (or export CLAUDE_CODE_OAUTH_TOKEN)." >&2; exit 1; }
+      CLAUDE="$(find_claude)"
+      [ -n "$CLAUDE" ] || { echo "claude CLI not found; install it or export CLAUDE_CODE_OAUTH_TOKEN." >&2; exit 1; }
+      echo "== Claude login: a browser window opens; approve, then copy the token it prints. =="
+      "$CLAUDE" setup-token
+      read -rsp "Paste the token (input hidden): " TOKEN; echo
+    fi
+    TOKEN="$(printf '%s' "$TOKEN" | tr -d '[:space:]')"
+    [[ "$TOKEN" == sk-ant-* ]] || { echo "that doesn't look like a Claude token (expected sk-ant-…)" >&2; exit 1; }
+    SECRET="$SECRET_PREFIX$(date +%Y%m%d%H%M%S)"
+    printf '%s' "$TOKEN" | docker secret create "$SECRET" - >/dev/null
+    unset TOKEN
+    echo "stored Claude token as swarm secret $SECRET"
+  fi
+fi
+
 docker build -q --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" -t ai-team:latest . >/dev/null
 TAG="ai-team:$(date +%Y%m%d-%H%M%S)"
 docker tag ai-team:latest "$TAG"   # unique tag so `stack deploy` actually rolls the service
 
-# No git for agents: cover every .git folder with an empty tmpfs and every submodule .git file with /dev/null.
-# Generated each deploy, so new repos are picked up on the next ./deploy.sh.
+# Generated each deploy:
+# - No git for agents: every .git folder gets an empty tmpfs, every submodule .git file /dev/null
+#   (new repos are picked up on the next ./deploy.sh).
+# - The Claude token secret, mounted at /run/secrets/claude_oauth_token, readable by the agent user only.
 {
   echo 'version: "3.8"'
   echo 'services:'
@@ -38,8 +78,19 @@ docker tag ai-team:latest "$TAG"   # unique tag so `stack deploy` actually rolls
       echo "      - {type: bind, source: /dev/null, target: \"$target\", read_only: true}"
     fi
   done
-} > stack.gitmask.yml
+  if [ -n "$SECRET" ]; then
+    echo '    secrets:'
+    echo "      - {source: $SECRET, target: claude_oauth_token, uid: \"$(id -u)\", gid: \"$(id -g)\", mode: 0400}"
+    echo 'secrets:'
+    echo "  $SECRET: {external: true}"
+  fi
+} > stack.generated.yml
 
 # `docker stack deploy` doesn't read .env for ${VAR} substitution; env_file is read separately.
-docker stack deploy --resolve-image never -c stack.yml -c stack.gitmask.yml "$STACK"
-echo "deployed $TAG → http://localhost:$AI_TEAM_PORT"
+docker stack deploy --resolve-image never -c stack.yml -c stack.generated.yml "$STACK"
+
+# Drop superseded token secrets (ones still attached to a running task are skipped by docker).
+for old in $(docker secret ls --format '{{.Name}}' | grep "^$SECRET_PREFIX" | grep -vx "${SECRET:-none}" || true); do
+  docker secret rm "$old" >/dev/null 2>&1 || true
+done
+echo "deployed $TAG (backend: ${BACKEND:-langchain}) → http://localhost:$AI_TEAM_PORT"

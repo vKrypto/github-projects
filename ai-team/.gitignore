@@ -2,4 +2,4 @@
 data/
 .env
 __pycache__/
-stack.gitmask.yml
+stack.generated.yml

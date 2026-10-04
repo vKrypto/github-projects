@@ -1,4 +1,4 @@
-# docker stack deploy -c stack.yml -c stack.gitmask.yml ai_team   (use ./deploy.sh)
+# docker stack deploy -c stack.yml -c stack.generated.yml ai_team   (use ./deploy.sh)
 version: "3.8"
 
 services:
