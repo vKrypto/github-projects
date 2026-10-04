@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from . import cli_agent, llm
+from . import cli_agent, codex_cli, llm
 from .config import settings
 from .tools import list_projects
 
@@ -42,9 +42,11 @@ def triage(text: str) -> dict:
     prompt = PROMPT.format(projects="\n".join(f"- {p}" for p in projects), text=text)
     if llm.is_mock():
         meta = heuristic(text, projects)
-    elif settings.use_cli:
+    elif settings.backend == "claude":
         meta = TaskMetadata.model_validate(
             cli_agent.structured(prompt, TaskMetadata.model_json_schema(), settings.cli_model_triage))
+    elif settings.backend == "codex":
+        meta = TaskMetadata.model_validate(codex_cli.structured(prompt, TaskMetadata.model_json_schema()))
     else:
         model = llm.get_model(settings.model_triage).with_structured_output(
             TaskMetadata, method="function_calling")  # tool calling works across gateway-routed models

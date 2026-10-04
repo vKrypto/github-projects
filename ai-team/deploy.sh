@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the image and (re)deploy the ai_team swarm stack on this machine.
-#   ./deploy.sh            deploy (logs in to Claude first if the CLI backend has no token yet)
-#   ./deploy.sh --relogin  create a fresh Claude token, then deploy
+#   ./deploy.sh            deploy (logs in first if the claude/codex backend has no credentials yet)
+#   ./deploy.sh --relogin  log in again (new Claude token / new Codex device login), then deploy
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -26,7 +26,9 @@ if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" != "active" ]; then
   docker swarm init --advertise-addr 127.0.0.1 --listen-addr 127.0.0.1:2377 >/dev/null
 fi
 
-# --- Claude login → swarm secret (CLI backend only) -------------------------------------------
+[ "$BACKEND" = "cli" ] && BACKEND=claude   # old name
+
+# --- Claude login → swarm secret (claude backend only) -------------------------------------------
 # The token from `claude setup-token` is a long-lived, inference-only OAuth token for your Claude
 # subscription. It is stored as an (encrypted) swarm secret, never in .env or the image. Secrets
 # are immutable, so each login creates a new timestamped one and older ones are pruned.
@@ -35,7 +37,7 @@ find_claude() {
   ls -1d "$HOME"/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude 2>/dev/null | sort -V | tail -1
 }
 SECRET=""
-if [ "$BACKEND" = "cli" ]; then
+if [ "$BACKEND" = "claude" ]; then
   SECRET="$(docker secret ls --format '{{.Name}}' | grep "^$SECRET_PREFIX" | sort | tail -1 || true)"
   if [ -z "$SECRET" ] || $RELOGIN; then
     TOKEN="${CLAUDE_CODE_OAUTH_TOKEN:-}"
@@ -59,6 +61,23 @@ fi
 docker build -q --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" -t ai-team:latest . >/dev/null
 TAG="ai-team:$(date +%Y%m%d-%H%M%S)"
 docker tag ai-team:latest "$TAG"   # unique tag so `stack deploy` actually rolls the service
+
+# --- Codex login (codex backend only) ----------------------------------------------------------
+# ChatGPT-subscription device login, run inside the image so it is a separate session from any Codex
+# on this host (sharing one would make the two rotate each other's refresh tokens). Codex refreshes
+# and rewrites its tokens, so they live in a writable host folder (ai-team/data/codex, gitignored,
+# mode 700) mounted via /data — not in a read-only swarm secret.
+if [ "$BACKEND" = "codex" ]; then
+  mkdir -p "$DATA_HOST_DIR/codex" && chmod 700 "$DATA_HOST_DIR/codex"
+  if [ ! -f "$DATA_HOST_DIR/codex/auth.json" ] || $RELOGIN; then
+    [ -t 0 ] || { echo "Codex login needs an interactive terminal." >&2; exit 1; }
+    echo "== Codex login: open the URL shown, sign in with ChatGPT and enter the code. =="
+    echo "   (If it says device login is disabled: ChatGPT → Settings → Security → enable device code auth for Codex.)"
+    docker run --rm -it -v "$DATA_HOST_DIR:/data" -e CODEX_HOME=/data/codex "$TAG" \
+      codex login --device-auth -c 'cli_auth_credentials_store="file"'
+    [ -f "$DATA_HOST_DIR/codex/auth.json" ] || { echo "Codex login did not complete." >&2; exit 1; }
+  fi
+fi
 
 # Generated each deploy:
 # - No git for agents: every .git folder gets an empty tmpfs, every submodule .git file /dev/null

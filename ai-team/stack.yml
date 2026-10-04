@@ -10,6 +10,7 @@ services:
       AI_TEAM_WORKSPACE_ROOT: /workspace
       AI_TEAM_DB_PATH: /data/tasks.db
       AI_TEAM_HIDDEN_DIRS: '["/workspace/ai-team"]'
+      AI_TEAM_CODEX_HOME: /data/codex     # Codex login state (refreshing), on the host in ai-team/data/codex
     ports:
       - target: 8765
         published: ${AI_TEAM_PORT:-8765}

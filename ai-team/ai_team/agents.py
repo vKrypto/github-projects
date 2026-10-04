@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from langchain.agents import create_agent
 from langchain_core.messages import AIMessage
 
-from . import cli_agent, db, llm
+from . import cli_agent, codex_cli, db, llm
 from .config import settings
 from .tools import make_tools
 
@@ -70,13 +70,17 @@ def run_role(role: Role, task: dict, brief: str, changed: set | None = None) -> 
 
     system_prompt = (COMMON.format(root=settings.workspace_root, project=meta.get("project", "general"))
                      + "\n\n" + role.prompt)
-    if settings.use_cli:
+    if settings.backend in ("claude", "codex"):
         def cancelled():
             t = db.get_task(tid)
             return t is not None and t["status"] == "cancelled"
+        changed = changed if changed is not None else set()
+        tier = meta.get("model_tier", "balanced")
         try:
-            return cli_agent.run(role.name, system_prompt, brief, meta.get("model") or settings.cli_model_balanced,
-                                 meta.get("project"), log, changed if changed is not None else set(), cancelled)
+            if settings.backend == "claude":
+                return cli_agent.run(role.name, system_prompt, brief, settings.model_for_tier(tier),
+                                     meta.get("project"), log, changed, cancelled)
+            return codex_cli.run(role.name, system_prompt, brief, tier, meta.get("project"), log, changed, cancelled)
         except InterruptedError:
             raise Cancelled()
 
