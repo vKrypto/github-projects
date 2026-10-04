@@ -42,7 +42,8 @@ def triage(text: str) -> dict:
     if llm.is_mock():
         meta = heuristic(text, projects)
     else:
-        model = llm.get_model(settings.model_triage).with_structured_output(TaskMetadata)
+        model = llm.get_model(settings.model_triage).with_structured_output(
+            TaskMetadata, method="function_calling")  # tool calling works across gateway-routed models
         meta = model.invoke(PROMPT.format(projects="\n".join(f"- {p}" for p in projects), text=text))
         if meta.project not in projects:
             meta.project = "general"

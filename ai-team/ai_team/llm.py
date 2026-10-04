@@ -15,7 +15,12 @@ def is_mock() -> bool:
 def get_model(model: str) -> BaseChatModel:
     if is_mock():
         raise RuntimeError("mock provider has no chat model")
-    return init_chat_model(model, model_provider=settings.provider, max_tokens=8192, timeout=300)
+    kwargs = {}
+    if settings.base_url:
+        kwargs["base_url"] = settings.base_url
+    if settings.api_key or settings.base_url:
+        kwargs["api_key"] = settings.api_key or "unused"  # client insists on a key; keyless gateways ignore it
+    return init_chat_model(model, model_provider=settings.provider, max_tokens=8192, timeout=300, **kwargs)
 
 
 def model_for(tier: str) -> BaseChatModel:

@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     db_path: Path = APP_DIR / "data" / "tasks.db"
 
     provider: str = "mock"  # mock | anthropic | openai | ollama
+    # OpenAI-compatible gateway (e.g. OmniRoute) when provider=openai; key may be blank for keyless gateways.
+    base_url: str | None = None
+    api_key: str | None = None
     model_fast: str = "claude-haiku-4-5-20251001"
     model_balanced: str = "claude-sonnet-5-5"
     model_deep: str = "claude-opus-5-5"

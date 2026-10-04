@@ -4,11 +4,13 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 STACK=ai_team
-export WORKSPACE_HOST_DIR="$(cd .. && pwd)"
+[ -f .env ] || { cp .env.example .env; echo "created .env from .env.example (provider=mock)"; }
+# Root working dir = the only host folder mounted writable into the container.
+WORKSPACE_HOST_DIR="$(sed -n 's/^AI_TEAM_WORKSPACE_ROOT=//p' .env | tail -1)"
+export WORKSPACE_HOST_DIR="$(realpath "${WORKSPACE_HOST_DIR:-..}")"
 export DATA_HOST_DIR="$PWD/data"
 export AI_TEAM_PORT="${AI_TEAM_PORT:-8765}"
 mkdir -p "$DATA_HOST_DIR"
-[ -f .env ] || { cp .env.example .env; echo "created .env from .env.example (provider=mock)"; }
 
 if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" != "active" ]; then
   echo "initialising single-node swarm"
