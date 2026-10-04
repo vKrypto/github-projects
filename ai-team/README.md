@@ -19,6 +19,16 @@ cd ai-team
 - Config comes from `ai-team/.env` (`env_file`). Edit it, then re-run `./deploy.sh`. Comments must be on
   their own lines; Docker keeps inline `# …` as part of the value.
 - Task DB lives on the host at `ai-team/data/tasks.db`.
+- **Every deploy is verified** before the script reports success:
+  - the new container is running, with no swarm rollback
+  - the Docker healthcheck reports healthy
+  - API and dashboard answer on the port, with the expected backend and the workspace mounted
+  - isolation holds (no git, `.git` masked, `ai-team/` hidden)
+  - the backend has its credentials or gateway
+
+  On any failure it prints the service tasks and the last logs, then exits 1. A version that doesn't
+  start is rolled back by swarm automatically (`update_config.failure_action: rollback`).
+  `./deploy.sh --smoke` adds one tiny real LLM call. `DEPLOY_TIMEOUT` (default 180s) bounds the wait.
 - Logs: `docker service logs -f ai_team_app` · Remove: `docker stack rm ai_team`.
 - Every deploy builds a uniquely tagged image so the service actually rolls. Deploys also regenerate
   `stack.generated.yml`, so **re-run after adding a repo** to get its `.git` masked.
@@ -33,31 +43,36 @@ so the container itself is the sandbox:
 
 ### Agent backends
 
-`AI_TEAM_AGENT_BACKEND` in `.env` picks who runs the agents:
+`AI_TEAM_AGENT_BACKEND` in `.env` picks who runs the agents. The CLI backends use **subscriptions,
+not pay-as-you-go API keys**.
 
-| Backend | Who runs each role | File access | Auth |
+| Backend | Who runs each role | Auth (`./deploy.sh` does the login) | Where the credential lives |
 |---|---|---|---|
-| `cli` | Claude Code headless (`claude -p`) | the CLI's own tools, limited per role (below) | `claude setup-token` via `./deploy.sh` |
-| `langchain` | LangChain `create_agent` | `tools.py` | `AI_TEAM_PROVIDER` / base URL / key |
+| `claude` | Claude Code headless (`claude -p`) | `claude setup-token` (browser), ~1-year inference-only token | encrypted swarm secret → `/run/secrets/claude_oauth_token` |
+| `codex` | Codex CLI headless (`codex exec --json`) | `codex login --device-auth` (ChatGPT plan), run inside the image | `ai-team/data/codex/` (mode 700, gitignored), mounted at `/data/codex` |
+| `langchain` | LangChain `create_agent` + `tools.py` | `AI_TEAM_PROVIDER` / base URL | `.env` |
 
-**CLI tools per role:**
-- planner and reviewer: `Read,Grep,Glob`
-- coder: adds `Edit,Write,Bash`
+- **Rotate:** `./deploy.sh --relogin` gets a new Claude token or a new Codex login.
+- **Both CLIs log in separately from the host CLIs.** Copying the host's stored login would break: Claude's
+  access token expires within hours, and both CLIs rotate refresh tokens, so host and container would log
+  each other out.
+- **Codex's credentials can't be a swarm secret.** Swarm secrets are read-only, but Codex rewrites its
+  tokens when it refreshes them.
 
-**Always denied:** `git`, WebFetch/WebSearch, and reading `/run/secrets`. Models per tier come from
-`AI_TEAM_CLI_MODEL_*` (default `haiku` / `sonnet` / `opus`).
+**Role limits:**
+- **Claude:**
+  - planner and reviewer: `Read,Grep,Glob`
+  - coder: adds `Edit,Write,Bash`
+  - always denied: `git`, web tools, reading `/run/secrets`
+  - models per tier: `AI_TEAM_CLI_MODEL_*`
+- **Codex:**
+  - Its own sandbox needs bubblewrap, which Docker's AppArmor blocks, so it runs with `--dangerously-bypass-approvals-and-sandbox` and the container is the sandbox.
+  - It can't be limited to read-only tools. Planner and reviewer are told they're read-only, and **a step fails if they change any file**.
+  - Tiers set reasoning effort `low`/`medium`/`high`. `AI_TEAM_CODEX_MODEL_*` empty means your plan's default model.
 
-**Login.** On the first `./deploy.sh` with `AI_TEAM_AGENT_BACKEND=cli`, the script runs
-`claude setup-token` (browser approval) and asks you to paste the token. The token is a long-lived,
-inference-only token for your Claude subscription. It's stored as an encrypted swarm secret
-(`ai_team_claude_token_<timestamp>`), never in `.env` or the image. Inside the container it's a file
-at `/run/secrets/claude_oauth_token`, and only the CLI process receives it.
-- Rotate with `./deploy.sh --relogin`. Superseded secrets are pruned.
-- For non-interactive deploys: `CLAUDE_CODE_OAUTH_TOKEN=… ./deploy.sh`.
-
-Agents run as the same user that can read the token. The deny rule stops the CLI's Read tool, but a
-`cat` through Bash could still print it. Treat the token as exposed to whatever the agents read, and
-revoke it if a repo looks hostile.
+**Shared caveat:** agents run as the same user that can read their credentials (the Claude token file, or
+`/data/codex/auth.json`, plus the task DB in `/data`). A shell command could print them. Treat credentials
+as exposed to whatever the agents read, and re-login if a repo looks hostile.
 
 ## Run without Docker (dev)
 
@@ -67,33 +82,162 @@ revoke it if a repo looks hostile.
 
 ## Architecture
 
+### System overview
+
+Everything runs in one container on a single-node Docker Swarm. The only host folder it can write to is
+the root working dir (`~/github`), mounted at `/workspace`.
+
+```mermaid
+flowchart LR
+    user(["You (browser)"])
+
+    subgraph host["Workstation · single-node Docker Swarm"]
+        direction LR
+        subgraph ctr["ai_team_app container (UID 1000, no git binary)"]
+            direction TB
+            dash["Dashboard<br/>dashboard/index.html"]
+            api["FastAPI<br/>api.py"]
+            db[("SQLite<br/>tasks + events")]
+            triage["Triage<br/>triage.py"]
+            orch["Orchestrator<br/>orchestrator.py"]
+            tgraph["Team graph<br/>graph.py · LangGraph"]
+            agents["Role runner<br/>agents.py"]
+
+            subgraph backends["Agent backend · AI_TEAM_AGENT_BACKEND"]
+                direction TB
+                claude["claude<br/>Claude Code: claude -p"]
+                codex["codex<br/>Codex CLI: codex exec --json"]
+                lc["langchain<br/>create_agent + tools.py"]
+            end
+        end
+
+        ws[("/workspace = ~/github<br/>repos: read/write<br/>ai-team/ and .git hidden")]
+        data[("ai-team/data<br/>tasks.db · codex login")]
+        secret[["Swarm secret<br/>Claude token"]]
+    end
+
+    anthropic(["Anthropic<br/>Claude subscription"])
+    openai(["OpenAI<br/>ChatGPT plan"])
+    omni(["OmniRoute gateway<br/>192.168.100.10:10200"])
+
+    user -->|":8765"| dash
+    dash -->|"REST, polls every 2.5s"| api
+    api --> db
+    api -->|"new task"| triage
+    triage -->|"metadata, status queued"| db
+    orch -->|"claim next queued"| db
+    orch --> tgraph --> agents
+    agents --> claude & codex & lc
+    claude --> ws
+    codex --> ws
+    lc --> ws
+    agents -->|"activity log"| db
+    claude -.-> anthropic
+    codex -.-> openai
+    lc -.-> omni
+    secret -.->|"/run/secrets"| claude
+    data -.->|"/data"| db
+    data -.->|"/data/codex"| codex
 ```
- Dashboard (dashboard/index.html, vanilla JS, polls every 2.5s)
-     │  POST /api/tasks {text}                     GET /api/tasks?status&task_type&project&q
-     ▼
- FastAPI (api.py) ──► SQLite (db.py: tasks + events)
-     │ background
-     ▼
- Triage (triage.py) — one structured-output LLM call
-     → title, project, task_type, workflow (agents), work_kind, complexity, model_tier, rationale
-     │ status: triaging → queued
-     ▼
- Orchestrator (orchestrator.py) — thread; claims queued tasks, runs AI_TEAM_MAX_PARALLEL at once
-     │ status: queued → running → done | failed | cancelled
-     ▼
- Team graph (graph.py, LangGraph StateGraph)
-     START ─► planner ─► coder ─► reviewer ─► END
-                            ▲          │ CHANGES_REQUESTED (≤ AI_TEAM_MAX_REVIEW_ROUNDS)
-                            └──────────┘
-     Nodes are skipped based on triage's `workflow` (e.g. review-only → reviewer; question → planner).
-     ▼
- Agents (agents.py) — each a LangChain `create_agent` tool-calling loop with its own role prompt
-     planner  (read-only)  explores code, writes plan + acceptance criteria, or answers questions
-     coder    (read/write) implements the plan, runs tests, addresses review feedback
-     reviewer (read-only)  reads the changed files, ends with VERDICT: APPROVED | CHANGES_REQUESTED
-     ▼
- Workspace tools (tools.py) — the agents' only access to the filesystem
-     list_dir · read_file · search · write_file · edit_file · run_command
+
+### Task lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> triaging: POST /api/tasks
+    triaging --> queued: triage sets project, type, agents, tier
+    triaging --> failed: triage error
+    queued --> running: orchestrator claims it, up to AI_TEAM_MAX_PARALLEL at once
+    running --> done: workflow finished, reviewer approved if there was code
+    running --> failed: agent error, or not approved after max review rounds
+    triaging --> cancelled: Cancel
+    queued --> cancelled: Cancel
+    running --> cancelled: Cancel, takes effect at the next agent event
+    done --> triaging: Retry, which re-triages
+    failed --> triaging: Retry
+    cancelled --> triaging: Retry
+```
+
+### Team graph (LangGraph)
+
+Triage picks the `workflow`, and routing skips the agents a task doesn't need. A review-only task goes
+straight to the reviewer, and a question goes only to the planner.
+
+```mermaid
+flowchart LR
+    S((START)) --> E{"first agent<br/>in workflow"}
+    E -->|planner| P["Planner<br/>read-only<br/>plan + acceptance criteria,<br/>or answers the question"]
+    E -->|coder| C
+    E -->|reviewer| R
+    P --> AP{"coder in<br/>workflow?"}
+    AP -->|yes| C["Developer<br/>read/write<br/>implements, runs tests,<br/>records changed files"]
+    AP -->|"no, reviewer is"| R
+    AP -->|neither| X((END))
+    C --> AC{"reviewer in<br/>workflow?"}
+    AC -->|yes| R["Reviewer<br/>read-only<br/>reads changed files,<br/>gives a VERDICT"]
+    AC -->|no| X
+    R --> V{"APPROVED?"}
+    V -->|yes| X
+    V -->|"CHANGES_REQUESTED<br/>and rounds below max"| C
+    V -->|"rounds used up"| X
+```
+
+### One agent step
+
+The model never touches the disk. It asks for a tool, and the tool runs inside the container. Whatever a
+tool reads is sent to the provider as text.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant G as Team graph
+    participant R as Role runner
+    participant B as CLI or LangChain loop
+    participant M as LLM provider
+    participant W as /workspace
+
+    G->>R: run role with brief (task, plan, review feedback)
+    R->>B: start with role prompt, allowed tools, project dir
+    loop until the model gives a final answer
+        B->>M: conversation so far + tool definitions
+        M-->>B: tool call, e.g. Read app/main.py
+        B->>W: run tool (git denied, .git and ai-team hidden)
+        W-->>B: result
+        B-->>R: stream event (message, tool call, file change)
+        R->>R: append to activity log, check for Cancel
+    end
+    M-->>B: final answer
+    B-->>R: result + changed files
+    R-->>G: plan, summary or VERDICT
+```
+
+### Deploy flow (`./deploy.sh`)
+
+```mermaid
+flowchart TD
+    A["./deploy.sh [--relogin]"] --> B["read .env<br/>root working dir, backend"]
+    B --> C{"swarm active?"}
+    C -->|no| C1["docker swarm init<br/>bound to 127.0.0.1"] --> D
+    C -->|yes| D{"backend"}
+    D -->|claude| E{"token secret exists<br/>and no --relogin?"}
+    E -->|no| E1["claude setup-token in browser<br/>paste token<br/>docker secret create"] --> F
+    E -->|yes| F
+    D -->|codex or langchain| F["docker build<br/>unique image tag"]
+    F --> G{"backend is codex<br/>and not logged in,<br/>or --relogin?"}
+    G -->|yes| G1["codex login --device-auth<br/>inside the image<br/>saved to data/codex"] --> H
+    G -->|no| H["generate stack.generated.yml<br/>tmpfs over every .git<br/>/dev/null over submodule .git files<br/>attach token secret"]
+    H --> I["docker stack deploy ai_team<br/>stack.yml + stack.generated.yml"]
+    I --> V1{"new container running?<br/>no swarm rollback"}
+    V1 -->|yes| V2{"healthcheck<br/>healthy?"}
+    V2 -->|yes| V3{"API + dashboard on :8765<br/>expected backend,<br/>workspace mounted?"}
+    V3 -->|yes| V4{"isolation: no git,<br/>.git masked,<br/>ai-team hidden?"}
+    V4 -->|yes| V5{"backend credentials ok?<br/>(--smoke: one real call)"}
+    V5 -->|yes| J["prune old token secrets<br/>✓ deployed and verified"]
+    V1 -->|no| X["✗ print tasks + logs<br/>exit 1"]
+    V2 -->|no| X
+    V3 -->|no| X
+    V4 -->|no| X
+    V5 -->|no| X
 ```
 
 | Module | Responsibility |
@@ -102,7 +246,10 @@ revoke it if a repo looks hostile.
 | `db.py` | Task + event persistence (SQLite, `data/tasks.db`) |
 | `llm.py` | Model factory (`init_chat_model`), tier → model |
 | `triage.py` | Task → metadata (LLM; keyword heuristic under `mock`) |
-| `agents.py` | Role definitions + agent runner, streams activity into the event log |
+| `agents.py` | Role definitions + role runner; dispatches to the configured backend, streams activity into the event log |
+| `cli_agent.py` | Claude Code backend (`claude -p`, per-role tool limits, token from the swarm secret) |
+| `codex_cli.py` | Codex CLI backend (`codex exec --json`, ChatGPT login state, read-only guard) |
+| `tools.py` | Sandboxed workspace tools for the `langchain` backend |
 | `graph.py` | LangGraph workflow and routing |
 | `orchestrator.py` | Queue worker, status transitions, cancellation, crash recovery |
 | `api.py` | REST API + serves the dashboard |

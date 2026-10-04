@@ -31,3 +31,11 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+      # A new version that doesn't become healthy within `monitor` is rolled back automatically;
+      # deploy.sh detects the rollback and fails. stop-first: the host-mode port can't be shared.
+      update_config:
+        order: stop-first
+        failure_action: rollback
+        monitor: 60s
+      rollback_config:
+        order: stop-first

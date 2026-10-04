@@ -32,6 +32,6 @@ ENV AI_TEAM_WORKSPACE_ROOT=/workspace \
     AI_TEAM_HIDDEN_DIRS='["/workspace/ai-team"]' \
     AI_TEAM_CODEX_HOME=/data/codex
 EXPOSE 8765
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=2s \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/api/meta', timeout=4)"
 CMD ["python", "-m", "ai_team", "--host", "0.0.0.0", "--port", "8765"]
