@@ -21,7 +21,7 @@ cd ai-team
 - Task DB lives on the host at `ai-team/data/tasks.db`.
 - Logs: `docker service logs -f ai_team_app` · Remove: `docker stack rm ai_team`.
 - Every deploy builds a uniquely tagged image so the service actually rolls. Deploys also regenerate
-  `stack.gitmask.yml`, so **re-run after adding a repo** to get its `.git` masked.
+  `stack.generated.yml`, so **re-run after adding a repo** to get its `.git` masked.
 
 **Isolation in the container.** Bubblewrap can't run inside a container under Docker's AppArmor profile,
 so the container itself is the sandbox:
@@ -30,6 +30,34 @@ so the container itself is the sandbox:
 - Every `.git` dir is covered by an empty tmpfs, and every submodule `.git` file by `/dev/null`.
 - The image has no git binary.
 - It runs as UID 1000, so files the coder writes stay owned by you.
+
+### Agent backends
+
+`AI_TEAM_AGENT_BACKEND` in `.env` picks who runs the agents:
+
+| Backend | Who runs each role | File access | Auth |
+|---|---|---|---|
+| `cli` | Claude Code headless (`claude -p`) | the CLI's own tools, limited per role (below) | `claude setup-token` via `./deploy.sh` |
+| `langchain` | LangChain `create_agent` | `tools.py` | `AI_TEAM_PROVIDER` / base URL / key |
+
+**CLI tools per role:**
+- planner and reviewer: `Read,Grep,Glob`
+- coder: adds `Edit,Write,Bash`
+
+**Always denied:** `git`, WebFetch/WebSearch, and reading `/run/secrets`. Models per tier come from
+`AI_TEAM_CLI_MODEL_*` (default `haiku` / `sonnet` / `opus`).
+
+**Login.** On the first `./deploy.sh` with `AI_TEAM_AGENT_BACKEND=cli`, the script runs
+`claude setup-token` (browser approval) and asks you to paste the token. The token is a long-lived,
+inference-only token for your Claude subscription. It's stored as an encrypted swarm secret
+(`ai_team_claude_token_<timestamp>`), never in `.env` or the image. Inside the container it's a file
+at `/run/secrets/claude_oauth_token`, and only the CLI process receives it.
+- Rotate with `./deploy.sh --relogin`. Superseded secrets are pruned.
+- For non-interactive deploys: `CLAUDE_CODE_OAUTH_TOKEN=… ./deploy.sh`.
+
+Agents run as the same user that can read the token. The deny rule stops the CLI's Read tool, but a
+`cat` through Bash could still print it. Treat the token as exposed to whatever the agents read, and
+revoke it if a repo looks hostile.
 
 ## Run without Docker (dev)
 
