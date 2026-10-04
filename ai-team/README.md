@@ -28,7 +28,7 @@ cd ai-team
 
   On any failure it prints the service tasks and the last logs, then exits 1. A version that doesn't
   start is rolled back by swarm automatically (`update_config.failure_action: rollback`).
-  `./deploy.sh --smoke` adds one tiny real LLM call. `DEPLOY_TIMEOUT` (default 180s) bounds the wait.
+  `DEPLOY_TIMEOUT` (default 180s) bounds the wait.
 - Logs: `docker service logs -f ai_team_app` · Remove: `docker stack rm ai_team`.
 - Every deploy builds a uniquely tagged image so the service actually rolls. Deploys also regenerate
   `stack.generated.yml`, so **re-run after adding a repo** to get its `.git` masked.
@@ -48,11 +48,17 @@ not pay-as-you-go API keys**.
 
 | Backend | Who runs each role | Auth (`./deploy.sh` does the login) | Where the credential lives |
 |---|---|---|---|
-| `claude` | Claude Code headless (`claude -p`) | `claude setup-token` (browser), ~1-year inference-only token | encrypted swarm secret → `/run/secrets/claude_oauth_token` |
+| `claude` | Claude Code headless (`claude -p`) | `claude setup-token` (browser), ~1-year inference-only token | `ai-team/data/claude/oauth_token` (mode 600, gitignored) → swarm secret → `/run/secrets/claude_oauth_token` |
 | `codex` | Codex CLI headless (`codex exec --json`) | `codex login --device-auth` (ChatGPT plan), run inside the image | `ai-team/data/codex/` (mode 700, gitignored), mounted at `/data/codex` |
 | `langchain` | LangChain `create_agent` + `tools.py` | `AI_TEAM_PROVIDER` / base URL | `.env` |
 
-- **Rotate:** `./deploy.sh --relogin` gets a new Claude token or a new Codex login.
+- **Checked before every deploy:** the stored credential is tested with one tiny real call ("Reply with
+  exactly: OK") from a throwaway container of the new image. If it's missing or rejected, e.g.
+  `401 OAuth access token is invalid`, the script logs in again, updates the file and re-checks. Login
+  needs an interactive terminal; non-interactive runs stop with a clear error before touching the stack.
+- **Rotate on demand:** `./deploy.sh --relogin`.
+- **The Claude swarm secret is named after the token's hash**, so it's recreated only when the token changes.
+- **Non-interactive seeding:** `CLAUDE_CODE_OAUTH_TOKEN=… ./deploy.sh` saves the given token to the file.
 - **Both CLIs log in separately from the host CLIs.** Copying the host's stored login would break: Claude's
   access token expires within hours, and both CLIs rotate refresh tokens, so host and container would log
   each other out.
@@ -217,21 +223,19 @@ sequenceDiagram
 flowchart TD
     A["./deploy.sh [--relogin]"] --> B["read .env<br/>root working dir, backend"]
     B --> C{"swarm active?"}
-    C -->|no| C1["docker swarm init<br/>bound to 127.0.0.1"] --> D
-    C -->|yes| D{"backend"}
-    D -->|claude| E{"token secret exists<br/>and no --relogin?"}
-    E -->|no| E1["claude setup-token in browser<br/>paste token<br/>docker secret create"] --> F
-    E -->|yes| F
-    D -->|codex or langchain| F["docker build<br/>unique image tag"]
-    F --> G{"backend is codex<br/>and not logged in,<br/>or --relogin?"}
-    G -->|yes| G1["codex login --device-auth<br/>inside the image<br/>saved to data/codex"] --> H
-    G -->|no| H["generate stack.generated.yml<br/>tmpfs over every .git<br/>/dev/null over submodule .git files<br/>attach token secret"]
+    C -->|yes| F["docker build<br/>unique image tag"]
+    C -->|no| C1["docker swarm init<br/>bound to 127.0.0.1"] --> F
+    F --> G{"backend"}
+    G -->|"claude or codex"| K{"stored credential works?<br/>one tiny real call"}
+    K -->|"no, or --relogin"| L["log in again<br/>claude setup-token, or<br/>codex login --device-auth<br/>update data/claude or data/codex"] --> K
+    K -->|yes| M["claude only: swarm secret<br/>named by token hash"] --> H
+    G -->|langchain| H["generate stack.generated.yml<br/>tmpfs over every .git<br/>/dev/null over submodule .git files<br/>attach token secret"]
     H --> I["docker stack deploy ai_team<br/>stack.yml + stack.generated.yml"]
     I --> V1{"new container running?<br/>no swarm rollback"}
     V1 -->|yes| V2{"healthcheck<br/>healthy?"}
     V2 -->|yes| V3{"API + dashboard on :8765<br/>expected backend,<br/>workspace mounted?"}
     V3 -->|yes| V4{"isolation: no git,<br/>.git masked,<br/>ai-team hidden?"}
-    V4 -->|yes| V5{"backend credentials ok?<br/>(--smoke: one real call)"}
+    V4 -->|yes| V5{"backend credentials<br/>reached the container?"}
     V5 -->|yes| J["prune old token secrets<br/>✓ deployed and verified"]
     V1 -->|no| X["✗ print tasks + logs<br/>exit 1"]
     V2 -->|no| X
