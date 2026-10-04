@@ -3,18 +3,24 @@
 FROM python:3.14-slim
 
 ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-
-COPY ai_team ai_team
-COPY dashboard dashboard
 
 # Same UID/GID as the workstation user, so files the coder writes in /workspace stay yours.
 ARG UID=1000
 ARG GID=1000
 RUN groupadd -g ${GID} agent && useradd -u ${UID} -g ${GID} -m agent && mkdir -p /data && chown agent:agent /data
 USER agent
+
+# Claude Code CLI for AI_TEAM_AGENT_BACKEND=cli (official native installer, to ~/.local/bin).
+RUN curl -fsSL https://claude.ai/install.sh | bash
+ENV PATH=/home/agent/.local/bin:$PATH DISABLE_AUTOUPDATER=1
+
+COPY ai_team ai_team
+COPY dashboard dashboard
 
 ENV AI_TEAM_WORKSPACE_ROOT=/workspace \
     AI_TEAM_DB_PATH=/data/tasks.db \

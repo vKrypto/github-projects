@@ -8,7 +8,7 @@ from .config import settings
 
 
 def is_mock() -> bool:
-    return settings.provider == "mock"
+    return settings.provider == "mock" and not settings.use_cli
 
 
 @lru_cache

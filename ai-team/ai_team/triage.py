@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from . import llm
+from . import cli_agent, llm
 from .config import settings
 from .tools import list_projects
 
@@ -39,12 +39,17 @@ Task:
 
 def triage(text: str) -> dict:
     projects = list_projects()
+    prompt = PROMPT.format(projects="\n".join(f"- {p}" for p in projects), text=text)
     if llm.is_mock():
         meta = heuristic(text, projects)
+    elif settings.use_cli:
+        meta = TaskMetadata.model_validate(
+            cli_agent.structured(prompt, TaskMetadata.model_json_schema(), settings.cli_model_triage))
     else:
         model = llm.get_model(settings.model_triage).with_structured_output(
             TaskMetadata, method="function_calling")  # tool calling works across gateway-routed models
-        meta = model.invoke(PROMPT.format(projects="\n".join(f"- {p}" for p in projects), text=text))
+        meta = model.invoke(prompt)
+    if not llm.is_mock():
         if meta.project not in projects:
             meta.project = "general"
         # A workflow must be non-empty and keep the canonical order.
@@ -52,7 +57,7 @@ def triage(text: str) -> dict:
         meta.workflow = [a for a in order if a in meta.workflow] or ["planner"]
     d = meta.model_dump()
     d["model"] = settings.model_for_tier(d["model_tier"]) if not llm.is_mock() else "mock"
-    d["provider"] = settings.provider
+    d["provider"] = settings.backend_label
     return d
 
 

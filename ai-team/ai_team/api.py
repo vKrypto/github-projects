@@ -94,7 +94,7 @@ def meta():
         "counts": db.counts(),
         "projects": list_projects(),
         "task_types": db.distinct("task_type"),
-        "provider": settings.provider,
+        "provider": settings.backend_label,
         "workspace_root": str(settings.workspace_root),
         "max_parallel": settings.max_parallel,
     }

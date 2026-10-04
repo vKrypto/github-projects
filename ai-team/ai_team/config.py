@@ -14,6 +14,17 @@ class Settings(BaseSettings):
     hidden_dirs: list[Path] = [APP_DIR]
     db_path: Path = APP_DIR / "data" / "tasks.db"
 
+    # Who runs the agents: "langchain" (LangChain loop + our tools, via `provider`) or
+    # "cli" (Claude Code headless; its own tools, authenticated with a subscription token).
+    agent_backend: str = "langchain"
+    claude_bin: str = "claude"
+    claude_token_file: Path = Path("/run/secrets/claude_oauth_token")
+    cli_model_fast: str = "haiku"
+    cli_model_balanced: str = "sonnet"
+    cli_model_deep: str = "opus"
+    cli_model_triage: str = "haiku"
+    cli_max_budget_usd: float | None = None
+
     provider: str = "mock"  # mock | anthropic | openai | ollama
     # OpenAI-compatible gateway (e.g. OmniRoute) when provider=openai; key may be blank for keyless gateways.
     base_url: str | None = None
@@ -29,7 +40,17 @@ class Settings(BaseSettings):
     command_timeout: int = 120
     poll_interval: float = 2.0
 
+    @property
+    def use_cli(self) -> bool:
+        return self.agent_backend == "cli"
+
+    @property
+    def backend_label(self) -> str:
+        return "claude-cli" if self.use_cli else self.provider
+
     def model_for_tier(self, tier: str) -> str:
+        if self.use_cli:
+            return {"fast": self.cli_model_fast, "deep": self.cli_model_deep}.get(tier, self.cli_model_balanced)
         return {"fast": self.model_fast, "deep": self.model_deep}.get(tier, self.model_balanced)
 
 
