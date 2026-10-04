@@ -2,8 +2,8 @@
 # Build the image and (re)deploy the ai_team swarm stack on this machine.
 #   ./deploy.sh            deploy (logs in first if the claude/codex backend has no credentials yet)
 #   ./deploy.sh --relogin  log in again (new Claude token / new Codex device login), then deploy
-#   ./deploy.sh --smoke    also make one tiny real LLM call through the backend after deploying
-# Every deploy is verified (rollout, healthcheck, HTTP, isolation, backend credentials); the script
+# Subscription credentials are checked with one tiny real call before deploying, and re-login runs
+# if they are rejected. Every deploy is then verified (rollout, healthcheck, HTTP, isolation); the script
 # exits non-zero with diagnostics if any check fails. DEPLOY_TIMEOUT (default 180s) bounds the wait.
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -12,11 +12,9 @@ STACK=ai_team
 SERVICE="${STACK}_app"
 SECRET_PREFIX=ai_team_claude_token_
 RELOGIN=false
-SMOKE=false
 for arg in "$@"; do
   case "$arg" in
     --relogin) RELOGIN=true ;;
-    --smoke) SMOKE=true ;;
     *) echo "unknown option: $arg" >&2; exit 2 ;;
   esac
 done
@@ -39,56 +37,101 @@ fi
 
 [ "$BACKEND" = "cli" ] && BACKEND=claude   # old name
 
-# --- Claude login → swarm secret (claude backend only) -------------------------------------------
-# The token from `claude setup-token` is a long-lived, inference-only OAuth token for your Claude
-# subscription. It is stored as an (encrypted) swarm secret, never in .env or the image. Secrets
-# are immutable, so each login creates a new timestamped one and older ones are pruned.
-find_claude() {
-  command -v claude 2>/dev/null && return
-  ls -1d "$HOME"/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude 2>/dev/null | sort -V | tail -1
-}
-SECRET=""
-if [ "$BACKEND" = "claude" ]; then
-  SECRET="$(docker secret ls --format '{{.Name}}' | grep "^$SECRET_PREFIX" | sort | tail -1 || true)"
-  if [ -z "$SECRET" ] || $RELOGIN; then
-    TOKEN="${CLAUDE_CODE_OAUTH_TOKEN:-}"
-    if [ -z "$TOKEN" ]; then
-      [ -t 0 ] || { echo "Claude login needs an interactive terminal (or export CLAUDE_CODE_OAUTH_TOKEN)." >&2; exit 1; }
-      CLAUDE="$(find_claude)"
-      [ -n "$CLAUDE" ] || { echo "claude CLI not found; install it or export CLAUDE_CODE_OAUTH_TOKEN." >&2; exit 1; }
-      echo "== Claude login: a browser window opens; approve, then copy the token it prints. =="
-      "$CLAUDE" setup-token
-      read -rsp "Paste the token (input hidden): " TOKEN; echo
-    fi
-    TOKEN="$(printf '%s' "$TOKEN" | tr -d '[:space:]')"
-    [[ "$TOKEN" == sk-ant-* ]] || { echo "that doesn't look like a Claude token (expected sk-ant-…)" >&2; exit 1; }
-    SECRET="$SECRET_PREFIX$(date +%Y%m%d%H%M%S)"
-    printf '%s' "$TOKEN" | docker secret create "$SECRET" - >/dev/null
-    unset TOKEN
-    echo "stored Claude token as swarm secret $SECRET"
-  fi
-fi
-
 docker build -q --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" -t ai-team:latest . >/dev/null
 TAG="ai-team:$(date +%Y%m%d-%H%M%S)"
 docker tag ai-team:latest "$TAG"   # unique tag so `stack deploy` actually rolls the service
 
-# --- Codex login (codex backend only) ----------------------------------------------------------
-# ChatGPT-subscription device login, run inside the image so it is a separate session from any Codex
-# on this host (sharing one would make the two rotate each other's refresh tokens). Codex refreshes
-# and rewrites its tokens, so they live in a writable host folder (ai-team/data/codex, gitignored,
-# mode 700) mounted via /data — not in a read-only swarm secret.
-if [ "$BACKEND" = "codex" ]; then
-  mkdir -p "$DATA_HOST_DIR/codex" && chmod 700 "$DATA_HOST_DIR/codex"
-  if [ ! -f "$DATA_HOST_DIR/codex/auth.json" ] || $RELOGIN; then
-    [ -t 0 ] || { echo "Codex login needs an interactive terminal." >&2; exit 1; }
-    echo "== Codex login: open the URL shown, sign in with ChatGPT and enter the code. =="
-    echo "   (If it says device login is disabled: ChatGPT → Settings → Security → enable device code auth for Codex.)"
-    docker run --rm -it -v "$DATA_HOST_DIR:/data" -e CODEX_HOME=/data/codex "$TAG" \
-      codex login --device-auth -c 'cli_auth_credentials_store="file"'
-    [ -f "$DATA_HOST_DIR/codex/auth.json" ] || { echo "Codex login did not complete." >&2; exit 1; }
+# --- Subscription credentials: validate, re-login if invalid ---------------------------------------
+# Credentials live in ai-team/data/ (gitignored, mode 700), never in .env, git or the image.
+# Before every deploy they are checked with one tiny real call from a throwaway container of the new
+# image. If the call is rejected (or --relogin), the script logs in again and updates the file.
+need_tty() { [ -t 0 ] || { echo "$1 needs an interactive terminal." >&2; exit 1; }; }
+SMOKE_PROMPT="Reply with exactly: OK"
+
+# Claude: long-lived inference-only token from `claude setup-token`, kept in data/claude/oauth_token
+# and handed to the stack as a swarm secret named after the token's hash (recreated only on change).
+CLAUDE_DIR="$DATA_HOST_DIR/claude"
+CLAUDE_TOKEN_FILE="${CLAUDE_TOKEN_FILE:-$CLAUDE_DIR/oauth_token}"
+find_claude() {
+  command -v claude 2>/dev/null && return
+  ls -1d "$HOME"/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude 2>/dev/null | sort -V | tail -1
+}
+claude_check() {   # prints the CLI's answer; succeeds only if the token works
+  [ -s "$CLAUDE_TOKEN_FILE" ] || { echo "no token stored"; return 1; }
+  local out
+  out="$(CLAUDE_CODE_OAUTH_TOKEN="$(cat "$CLAUDE_TOKEN_FILE")" docker run --rm -e CLAUDE_CODE_OAUTH_TOKEN "$TAG" \
+        claude -p "$SMOKE_PROMPT" --model haiku --tools "" --no-session-persistence 2>&1 | tail -1)"
+  echo "$out"
+  [[ "$out" == *OK* ]]
+}
+claude_login() {
+  local token claude
+  token="${CLAUDE_CODE_OAUTH_TOKEN:-}"
+  if [ -z "$token" ]; then
+    need_tty "Claude login"
+    claude="$(find_claude)"
+    echo "== Claude login: approve in the browser, then copy the token it prints. =="
+    if [ -n "$claude" ]; then
+      "$claude" setup-token
+    else   # no host CLI: run it from the image
+      docker run --rm -it "$TAG" claude setup-token
+    fi
+    read -rsp "Paste the token (input hidden): " token; echo
   fi
-fi
+  token="$(printf '%s' "$token" | tr -d '[:space:]')"
+  [[ "$token" == sk-ant-* ]] || { echo "that doesn't look like a Claude token (expected sk-ant-…)" >&2; exit 1; }
+  ( umask 077; printf '%s' "$token" > "$CLAUDE_TOKEN_FILE" )
+  echo "saved token to ${CLAUDE_TOKEN_FILE#"$PWD"/}"
+}
+
+# Codex: ChatGPT device login run inside the image (separate session from any host Codex, so the
+# two never rotate each other's refresh tokens). Codex rewrites its tokens on refresh, so they stay
+# in the writable data/codex folder, mounted via /data.
+CODEX_DIR="$DATA_HOST_DIR/codex"
+codex_check() {
+  [ -s "$CODEX_DIR/auth.json" ] || { echo "not logged in"; return 1; }
+  local out
+  out="$(docker run --rm -v "$DATA_HOST_DIR:/data" -e CODEX_HOME=/data/codex -w /tmp "$TAG" \
+        codex exec --ephemeral --skip-git-repo-check -c 'model_reasoning_effort="low"' "$SMOKE_PROMPT" 2>&1 | tail -1)"
+  echo "$out"
+  [[ "$out" == *OK* ]]
+}
+codex_login() {
+  need_tty "Codex login"
+  echo "== Codex login: open the URL shown, sign in with ChatGPT and enter the code. =="
+  echo "   (If device login is disabled: ChatGPT → Settings → Security → enable device code auth for Codex.)"
+  docker run --rm -it -v "$DATA_HOST_DIR:/data" -e CODEX_HOME=/data/codex "$TAG" \
+    codex login --device-auth -c 'cli_auth_credentials_store="file"'
+}
+
+ensure_login() {   # ensure_login <name> <check_fn> <login_fn>
+  local name="$1" check="$2" login="$3" out
+  if ! $RELOGIN; then
+    if out="$($check)"; then echo "  ✓ $name credentials valid"; return; fi
+    echo "  ! $name credentials invalid ($out); logging in again"
+  fi
+  $login
+  out="$($check)" || { echo "  ✗ $name still rejected after login: $out" >&2; exit 1; }
+  echo "  ✓ $name credentials valid"
+}
+
+SECRET=""
+case "$BACKEND" in
+  claude)
+    mkdir -p "$CLAUDE_DIR" && chmod 700 "$CLAUDE_DIR"
+    if [ ! -s "$CLAUDE_TOKEN_FILE" ] && [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then claude_login; fi
+    echo "checking Claude login…"
+    ensure_login Claude claude_check claude_login
+    SECRET="$SECRET_PREFIX$(sha256sum "$CLAUDE_TOKEN_FILE" | cut -c1-12)"
+    if ! docker secret inspect "$SECRET" >/dev/null 2>&1; then
+      docker secret create "$SECRET" "$CLAUDE_TOKEN_FILE" >/dev/null
+      echo "  ✓ created swarm secret $SECRET"
+    fi ;;
+  codex)
+    mkdir -p "$CODEX_DIR" && chmod 700 "$CODEX_DIR"
+    echo "checking Codex login…"
+    ensure_login Codex codex_check codex_login ;;
+esac
 
 # Generated each deploy:
 # - No git for agents: every .git folder gets an empty tmpfs, every submodule .git file /dev/null
@@ -185,26 +228,14 @@ in_ctr sh -c '! command -v git >/dev/null' || fail "git binary found in the cont
 [ -z "$(in_ctr sh -c 'ls -A /workspace/ai-team 2>/dev/null')" ] || fail "/workspace/ai-team is visible"
 ok "isolation: no git, .git masked, ai-team hidden"
 
-# 5. Backend credentials / reachability (free checks; --smoke adds one real call).
+# 5. Backend credentials reached the running container / gateway reachable.
 case "${BACKEND:-langchain}" in
   claude)
     in_ctr test -s /run/secrets/claude_oauth_token || fail "Claude token secret not mounted"
-    ok "claude: $(in_ctr claude --version 2>/dev/null | head -1), token mounted"
-    if $SMOKE; then
-      out="$(in_ctr sh -c 'CLAUDE_CODE_OAUTH_TOKEN="$(cat /run/secrets/claude_oauth_token)" \
-        claude -p "Reply with exactly: OK" --model haiku --tools "" --no-session-persistence' 2>&1 | tail -1)"
-      [[ "$out" == *OK* ]] || fail "claude smoke call failed: $out"
-      ok "claude smoke call: $out"
-    fi ;;
+    ok "claude: $(in_ctr claude --version 2>/dev/null | head -1), token mounted" ;;
   codex)
     status="$(in_ctr env CODEX_HOME=/data/codex codex login status 2>&1 | tail -1)" || fail "codex: $status"
-    ok "codex: $status"
-    if $SMOKE; then
-      out="$(in_ctr sh -c 'cd /tmp && CODEX_HOME=/data/codex codex exec --ephemeral --skip-git-repo-check \
-        -c model_reasoning_effort="\"low\"" "Reply with exactly: OK"' 2>/dev/null | tail -1)"
-      [[ "$out" == *OK* ]] || fail "codex smoke call failed: $out"
-      ok "codex smoke call: $out"
-    fi ;;
+    ok "codex: $status" ;;
   *)
     BASE_URL="$(env_get AI_TEAM_BASE_URL)"
     if [ -n "$BASE_URL" ]; then
