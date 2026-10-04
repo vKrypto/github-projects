@@ -5,7 +5,7 @@ from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
-from . import db
+from . import db, memory
 from .config import APP_DIR, settings
 from .orchestrator import Orchestrator, triage_task
 from .tools import list_projects
@@ -77,14 +77,49 @@ def cancel_task(task_id: int):
 
 @app.post("/api/tasks/{task_id}/retry")
 def retry_task(task_id: int, bg: BackgroundTasks):
+    """Retry the latest turn. Turn 1 starts over: re-triage and forget all orchestrator/agent memory.
+    A later turn re-runs just that follow-up, keeping earlier turns and agent sessions."""
     t = _get(task_id)
     if t["status"] not in ("failed", "cancelled", "done"):
         raise HTTPException(409, f"cannot retry a {t['status']} task")
-    # Re-triage too: provider/models may have changed since the first run.
-    db.update_task(task_id, status="triaging", metadata=None, project=None, task_type=None, error=None,
-                   plan=None, result=None, review=None, started_at=None, finished_at=None)
-    db.add_event(task_id, "user", "status", "retry requested")
-    bg.add_task(triage_task, task_id)
+    turn = t["turn"] or 1
+    db.delete_messages(task_id, turn, roles=("assistant", "system"))
+    db.add_event(task_id, "user", "status", f"retry requested (turn {turn})")
+    if turn == 1:
+        # Re-triage too: provider/models may have changed since the first run.
+        memory.forget_task(task_id)
+        db.update_task(task_id, status="triaging", metadata=None, project=None, task_type=None, error=None,
+                       plan=None, result=None, review=None, started_at=None, finished_at=None)
+        bg.add_task(triage_task, task_id)
+    else:
+        db.update_task(task_id, status="queued", error=None, started_at=None, finished_at=None)
+    return db.get_task(task_id)
+
+
+class FollowUp(BaseModel):
+    text: str = Field(min_length=1, max_length=20_000)
+
+
+@app.get("/api/tasks/{task_id}/messages")
+def task_messages(task_id: int):
+    _get(task_id)
+    return db.list_messages(task_id)
+
+
+@app.post("/api/tasks/{task_id}/messages", status_code=201)
+def continue_task(task_id: int, body: FollowUp):
+    """Continue the conversation: queue a follow-up turn on the same task. The team resumes with
+    the task's saved state and each agent's own session, like `claude --resume`."""
+    t = _get(task_id)
+    if t["status"] not in ("done", "failed", "cancelled"):
+        raise HTTPException(409, f"task is {t['status']}; wait until it finishes to continue it")
+    if not t["metadata"]:
+        raise HTTPException(409, "task was never triaged; retry it first")
+    turn = (t["turn"] or 1) + 1
+    db.add_message(task_id, turn, "user", body.text.strip())
+    db.update_task(task_id, turn=turn, status="queued", error=None, plan=None, result=None, review=None,
+                   started_at=None, finished_at=None)
+    db.add_event(task_id, "user", "status", f"follow-up (turn {turn}): {body.text.strip()[:200]}")
     return db.get_task(task_id)
 
 

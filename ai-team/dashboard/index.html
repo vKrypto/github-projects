@@ -53,6 +53,16 @@
   .ev.tool { color: var(--muted); }
   .ev.error { color: var(--failed); }
   .empty { color: var(--muted); padding: 24px; text-align: center; }
+  .chat { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+  .msg { padding: 8px 10px; border-radius: 10px; max-width: 92%; white-space: pre-wrap; word-break: break-word; font-size: 13px; }
+  .msg .who { font-size: 11px; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: .03em; }
+  .msg.user { align-self: flex-end; background: color-mix(in srgb, var(--accent) 14%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line)); }
+  .msg.assistant { align-self: flex-start; background: var(--code); border: 1px solid var(--line); max-height: 320px; overflow: auto; }
+  .msg.system { align-self: center; color: var(--failed); font-size: 12px; }
+  .msg.pending { align-self: flex-start; color: var(--muted); font-style: italic; }
+  #compose { margin: 4px 0 12px; }
+  #compose textarea { min-height: 56px; }
+  .turn { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 6px; }
   .err { color: var(--failed); }
   @media (max-width: 860px) { main { grid-template-columns: 1fr; height: auto; } .list, .detail { max-height: 60vh; } }
 </style>
@@ -81,7 +91,17 @@
     <div class="card list" id="list"></div>
   </section>
   <section class="col">
-    <div class="card detail" id="detail"><div class="empty">Select a task to see its plan, work, review and live log.</div></div>
+    <div class="card detail" id="detail">
+      <div id="detail-top"><div class="empty">Select a task to see its conversation, plan, work, review and live log.</div></div>
+      <form id="compose" hidden>
+        <textarea id="followup" placeholder="Continue this task: ask for another change, a fix, or a question about the work…"></textarea>
+        <div class="row" style="justify-content: space-between; margin-top: 6px;">
+          <span style="color: var(--muted); font-size: 12px;">Ctrl+Enter · the same agents resume with their memory of this task</span>
+          <button class="primary" id="send">Send follow-up</button>
+        </div>
+      </form>
+      <div id="detail-bottom"></div>
+    </div>
   </section>
 </main>
 <script>
@@ -123,7 +143,7 @@ async function refreshList() {
   $("list").innerHTML = tasks.length ? tasks.map((t) => {
     const m = t.metadata || {};
     return `<div class="task ${t.id === selected ? "sel" : ""}" data-id="${t.id}">
-      <div class="t">#${t.id} ${esc(m.title || t.text)}</div>
+      <div class="t">#${t.id} ${esc(m.title || t.text)} ${t.turn > 1 ? `<span class="turn">${t.turn} turns</span>` : ""}</div>
       <div class="m">${badge(t.status)}<span>${esc(t.project || "—")}</span><span>${esc(t.task_type || "")}</span>
         <span>${esc((m.workflow || []).join(" → "))}</span><span>${esc(m.model_tier || "")}</span><span>${ago(t.created_at)}</span></div>
     </div>`;
@@ -136,18 +156,20 @@ function section(title, body, open) {
 
 async function refreshDetail() {
   if (!selected) return;
-  const t = await api(`/api/tasks/${selected}`);
+  const [t, msgs] = await Promise.all([api(`/api/tasks/${selected}`), api(`/api/tasks/${selected}/messages`)]);
   const m = t.metadata || {};
   const actions = [];
   if (["triaging", "queued", "running"].includes(t.status)) actions.push(`<button data-act="cancel">Cancel</button>`);
-  if (["failed", "cancelled", "done"].includes(t.status)) actions.push(`<button data-act="retry">Retry</button>`);
-  const openKeys = [...document.querySelectorAll("#detail details[open] summary")].map((s) => s.textContent);
+  if (["failed", "cancelled", "done"].includes(t.status)) actions.push(`<button data-act="retry" title="Re-run the latest turn">Retry</button>`);
+  const openKeys = [...document.querySelectorAll("#detail-bottom details[open] summary")].map((s) => s.textContent);
   const isOpen = (k, d) => openKeys.length ? openKeys.includes(k) : d;
-  if (eventsFor !== t.id) { eventsFor = t.id; lastEventId = 0; }
+  if (eventsFor !== t.id) { eventsFor = t.id; lastEventId = 0; $("followup").value = ""; }
   const keepLog = lastEventId ? $("log")?.innerHTML : "";
-  $("detail").innerHTML = `
+  const busy = ["triaging", "queued", "running"].includes(t.status);
+  const chat = msgs.map((x) => `<div class="msg ${x.role}"><div class="who">${x.role === "user" ? "you" : x.role === "assistant" ? "team" : "system"} · turn ${x.turn}</div>${esc(x.content)}</div>`).join("")
+    + (busy ? `<div class="msg pending">team is working on turn ${t.turn}…</div>` : "");
+  $("detail-top").innerHTML = `
     <div class="row" style="justify-content: space-between;"><h2>#${t.id} ${esc(m.title || "")}</h2><div class="row">${actions.join("")}</div></div>
-    <div>${esc(t.text)}</div>
     <dl class="kv">
       <dt>Status</dt><dd>${badge(t.status)} ${t.error ? `<span class="err">${esc(t.error)}</span>` : ""}</dd>
       <dt>Project</dt><dd>${esc(t.project || "—")}</dd>
@@ -155,11 +177,15 @@ async function refreshDetail() {
       <dt>Agents</dt><dd>${esc((m.workflow || []).join(" → ") || "—")}</dd>
       <dt>Model</dt><dd>${esc(m.model_tier || "—")} ${m.model ? `(${esc(m.provider)}: ${esc(m.model)})` : ""}</dd>
       <dt>Why</dt><dd>${esc(m.rationale || "—")}</dd>
-      <dt>Timing</dt><dd>created ${ago(t.created_at)}${t.started_at ? ` · ran ${dur(t.started_at, t.finished_at)}` : ""}</dd>
+      <dt>Timing</dt><dd>created ${ago(t.created_at)}${t.started_at ? ` · turn ${t.turn} ran ${dur(t.started_at, t.finished_at)}` : ""}</dd>
     </dl>
-    ${section("Plan", t.plan, isOpen("Plan", false))}
-    ${section("Developer summary", t.result, isOpen("Developer summary", false))}
-    ${section("Review", t.review, isOpen("Review", false))}
+    <details open><summary>Conversation</summary><div class="chat">${chat}</div></details>`;
+  $("compose").hidden = busy || !t.metadata;
+  const turnLabel = t.turn > 1 ? ` (turn ${t.turn})` : "";
+  $("detail-bottom").innerHTML = `
+    ${section("Plan" + turnLabel, t.plan, isOpen("Plan" + turnLabel, false))}
+    ${section("Developer summary" + turnLabel, t.result, isOpen("Developer summary" + turnLabel, false))}
+    ${section("Review" + turnLabel, t.review, isOpen("Review" + turnLabel, false))}
     <details open><summary>Activity log</summary><div id="log">${keepLog}</div></details>`;
   const evs = await api(`/api/tasks/${t.id}/events?after=${lastEventId}`);
   for (const e of evs) {
@@ -189,10 +215,21 @@ $("list").addEventListener("click", (e) => { const el = e.target.closest(".task"
 $("counts").addEventListener("click", (e) => { const c = e.target.closest(".chip"); if (c) { $("f-status").value = $("f-status").value === c.dataset.s ? "" : c.dataset.s; tick(); } });
 ["f-status", "f-type", "f-project"].forEach((id) => $(id).addEventListener("change", tick));
 $("f-q").addEventListener("input", () => { clearTimeout(window._q); window._q = setTimeout(tick, 250); });
+$("compose").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const text = $("followup").value.trim();
+  if (!text || !selected) return;
+  $("send").disabled = true;
+  try { await api(`/api/tasks/${selected}/messages`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
+        $("followup").value = ""; await tick(); }
+  catch (e) { $("info").textContent = "⚠ " + e.message; }
+  finally { $("send").disabled = false; }
+});
+$("followup").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) $("compose").requestSubmit(); });
 $("detail").addEventListener("click", async (e) => {
   const act = e.target.dataset?.act;
   if (!act) return;
-  try { await api(`/api/tasks/${selected}/${act}`, { method: "POST" }); if (act === "retry") lastEventId = 0, eventsFor = null; await tick(); }
+  try { await api(`/api/tasks/${selected}/${act}`, { method: "POST" }); await tick(); }
   catch (err) { $("info").textContent = "⚠ " + err.message; }
 });
 tick();

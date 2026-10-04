@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     agent_max_steps: int = 40
     command_timeout: int = 120
     poll_interval: float = 2.0
+    checkpoint_db: Path | None = None    # set below, next to db_path
+    claude_config_dir: Path | None = None
 
     @property
     def backend(self) -> str:
@@ -73,3 +75,7 @@ settings = Settings()
 settings.workspace_root = settings.workspace_root.resolve()
 settings.hidden_dirs = [p.resolve() for p in settings.hidden_dirs]
 settings.db_path.parent.mkdir(parents=True, exist_ok=True)
+# Persistent memory next to the task DB (in the stack: /data, i.e. ai-team/data on the host).
+settings.checkpoint_db = settings.db_path.parent / "checkpoints.db"
+settings.claude_config_dir = settings.db_path.parent / "claude-home"  # Claude Code sessions, for --resume
+settings.claude_config_dir.mkdir(exist_ok=True)

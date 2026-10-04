@@ -255,8 +255,38 @@ flowchart TD
 | `codex_cli.py` | Codex CLI backend (`codex exec --json`, ChatGPT login state, read-only guard) |
 | `tools.py` | Sandboxed workspace tools for the `langchain` backend |
 | `graph.py` | LangGraph workflow and routing |
-| `orchestrator.py` | Queue worker, status transitions, cancellation, crash recovery |
+| `orchestrator.py` | Queue worker, status transitions, cancellation, crash recovery; runs each turn on the task's checkpointed thread |
+| `memory.py` | LangGraph SQLite checkpointer (`data/checkpoints.db`): team-graph state and agent threads per task |
 | `api.py` | REST API + serves the dashboard |
+
+### Continue chat (follow-ups)
+
+A task is a conversation. Once it's done, failed or cancelled, the dashboard's **Continue this task** box
+(or `POST /api/tasks/{id}/messages {"text": …}`) queues another turn on the same task, like resuming a
+`claude` CLI session. The same team picks it up with its memory:
+
+```mermaid
+flowchart LR
+    U["follow-up text"] --> Q["turn N+1 queued<br/>messages table"]
+    Q --> O["orchestrator<br/>graph.invoke on thread = task id"]
+    O <-->|"restore / save"| CP[("data/checkpoints.db<br/>LangGraph SqliteSaver")]
+    O --> A["each agent resumes its own session"]
+    A --> C1["claude: --resume &lt;session-id&gt;<br/>transcripts in data/claude-home"]
+    A --> C2["codex: exec resume &lt;thread-id&gt;<br/>transcripts in data/codex"]
+    A --> C3["langchain: checkpointer thread<br/>&lt;task&gt;:&lt;role&gt;"]
+    O --> R["outcome appended to the<br/>conversation as turn N+1"]
+```
+
+- **What carries over** in the graph checkpoint (thread = task id): plan, result, review, and each agent's
+  session id. **Reset each turn:** review rounds, approval and the changed-files list.
+- **Every follow-up brief** has the original task, a compact history of earlier turns and the new request.
+  An agent that has no session yet (e.g. tasks from before this feature) still has the full context.
+- **The follow-up reuses the task's triage** (project, agents, tier); it isn't re-triaged.
+- **Retry** re-runs only the latest turn. Retrying turn 1 starts over: re-triage, and all memory for the
+  task is forgotten.
+- **Storage:** everything is local in `ai-team/data/` (SQLite + CLI transcript folders, gitignored).
+  Redis could replace the SQLite checkpointer later (`langgraph-checkpoint-redis`), e.g. for several
+  orchestrator replicas.
 
 ### Model selection
 Triage sets `model_tier` (`fast` / `balanced` / `deep`). It maps to `AI_TEAM_MODEL_FAST/BALANCED/DEEP`.
@@ -275,7 +305,7 @@ The provider (`anthropic`, `openai`, `ollama`, …) is global, via `AI_TEAM_PROV
 - In dev mode `run_command` can still *read* files outside the workspace (e.g. `~/.ssh`); the stack doesn't have this gap.
 - The dashboard/API has no auth, and the stack publishes it on the LAN.
 - Polling instead of SSE/websockets; a single process holds the API, triage and orchestrator.
-- No per-task checkpointing: a task interrupted by a restart re-runs from the start.
+- A task interrupted by a restart re-runs its current turn from the start (earlier turns are kept).
 - Cancelling a running task takes effect at the next agent step, not instantly.
 
 ## Next steps (toward the full "company")

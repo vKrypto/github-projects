@@ -38,8 +38,23 @@ _conn.executescript(
         content TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_events_task ON events(task_id);
+    -- The task's conversation: turn 1 is the original request, later turns are follow-ups.
+    CREATE TABLE IF NOT EXISTS messages (
+        id      INTEGER PRIMARY KEY AUTOINCREMENT,
+        task_id INTEGER NOT NULL REFERENCES tasks(id),
+        turn    INTEGER NOT NULL,
+        role    TEXT NOT NULL,         -- user | assistant | system
+        content TEXT NOT NULL,
+        ts      TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_messages_task ON messages(task_id);
     """
 )
+# Migrations for databases created before conversations existed.
+if "turn" not in {r["name"] for r in _conn.execute("PRAGMA table_info(tasks)")}:
+    _conn.execute("ALTER TABLE tasks ADD COLUMN turn INTEGER NOT NULL DEFAULT 1")
+    _conn.execute("INSERT INTO messages (task_id, turn, role, content, ts) "
+                  "SELECT id, 1, 'user', text, created_at FROM tasks")
 
 
 def now() -> str:
@@ -57,6 +72,8 @@ def _row(r: sqlite3.Row | None) -> dict | None:
 def create_task(text: str) -> dict:
     with _lock:
         cur = _conn.execute("INSERT INTO tasks (text, created_at) VALUES (?, ?)", (text, now()))
+        _conn.execute("INSERT INTO messages (task_id, turn, role, content, ts) VALUES (?, 1, 'user', ?, ?)",
+                      (cur.lastrowid, text, now()))
     return get_task(cur.lastrowid)
 
 
@@ -122,3 +139,21 @@ def counts() -> dict:
 def distinct(col: str) -> list[str]:
     assert col in ("project", "task_type")
     return [r[0] for r in _conn.execute(f"SELECT DISTINCT {col} FROM tasks WHERE {col} IS NOT NULL ORDER BY 1")]
+
+
+def add_message(task_id: int, turn: int, role: str, content: str) -> None:
+    with _lock:
+        _conn.execute("INSERT INTO messages (task_id, turn, role, content, ts) VALUES (?, ?, ?, ?, ?)",
+                      (task_id, turn, role, content, now()))
+
+
+def list_messages(task_id: int) -> list[dict]:
+    rows = _conn.execute("SELECT * FROM messages WHERE task_id = ? ORDER BY id", (task_id,)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def delete_messages(task_id: int, from_turn: int, roles: tuple[str, ...] = ("user", "assistant", "system")) -> None:
+    marks = ",".join("?" * len(roles))
+    with _lock:
+        _conn.execute(f"DELETE FROM messages WHERE task_id = ? AND turn >= ? AND role IN ({marks})",
+                      (task_id, from_turn, *roles))

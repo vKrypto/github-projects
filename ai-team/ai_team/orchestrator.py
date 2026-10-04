@@ -28,26 +28,58 @@ def triage_task(task_id: int) -> None:
         db.add_event(task_id, "triage", "error", traceback.format_exc()[-4000:])
 
 
+def _history(task_id: int, before_turn: int, limit: int = 1500) -> str:
+    """Earlier turns as compact text, for agents joining a follow-up without a session of their own."""
+    lines = []
+    for m in db.list_messages(task_id):
+        if m["turn"] < before_turn:
+            text = m["content"] if len(m["content"]) <= limit else m["content"][:limit] + " …"
+            lines.append(f"[turn {m['turn']} · {m['role']}] {text}")
+    return "\n\n".join(lines)
+
+
+def _outcome(state: dict, workflow: list[str]) -> str:
+    """The turn's answer for the conversation: what was done and the review verdict / plan / answer."""
+    if "coder" in workflow:
+        out = state.get("result") or ""
+        if state.get("review"):
+            out += "\n\n— Review —\n" + state["review"]
+        return out.strip()
+    if "reviewer" in workflow and state.get("review"):
+        return state["review"]
+    return state.get("plan") or ""
+
+
 def run_task(task: dict) -> None:
-    tid = task["id"]
-    db.add_event(tid, "orchestrator", "status", "picked up")
+    tid, turn = task["id"], task.get("turn") or 1
+    request = next((m["content"] for m in reversed(db.list_messages(tid))
+                    if m["turn"] == turn and m["role"] == "user"), task["text"])
+    db.add_event(tid, "orchestrator", "status", f"picked up (turn {turn})")
+    wf = (task["metadata"] or {}).get("workflow", [])
+    # Same thread every turn: the checkpointer restores plan/result/sessions from earlier turns.
+    # Per-turn fields are reset here.
+    config = {"configurable": {"thread_id": str(tid)}}
+    turn_input = {"task": task, "turn": turn, "request": request, "history": _history(tid, turn),
+                  "rounds": 0, "approved": False, "review": "", "changed_files": []}
     try:
-        final = team_graph.invoke({"task": task, "rounds": 0})
+        final = team_graph.invoke(turn_input, config)
         if db.get_task(tid)["status"] == "cancelled":
             raise Cancelled()
-        wf = (task["metadata"] or {}).get("workflow", [])
+        db.add_message(tid, turn, "assistant", _outcome(final, wf) or "(no output)")
         if "coder" in wf and "reviewer" in wf and not final.get("approved"):
             db.update_task(tid, status="failed", finished_at=db.now(),
                            error=f"reviewer did not approve after {settings.max_review_rounds} round(s)")
         else:
             db.update_task(tid, status="done", finished_at=db.now())
-        db.add_event(tid, "orchestrator", "status", "finished")
+        db.add_event(tid, "orchestrator", "status", f"finished turn {turn}")
     except Cancelled:
         db.add_event(tid, "orchestrator", "status", "cancelled")
+        db.add_message(tid, turn, "system", "cancelled")
         db.update_task(tid, finished_at=db.now())
     except Exception as e:
         log.exception("task %s failed", tid)
         db.update_task(tid, status="failed", error=f"{type(e).__name__}: {e}", finished_at=db.now())
+        db.add_message(tid, turn, "system", f"failed: {type(e).__name__}: {e}")
         db.add_event(tid, "orchestrator", "error", traceback.format_exc()[-4000:])
 
 

@@ -30,10 +30,16 @@ def model_label(tier: str) -> str:
     return f"{model} · {EFFORT.get(tier, 'medium')} effort"
 
 
-def _base_cmd(tier: str, model: str | None, cwd: Path) -> list[str]:
-    cmd = [settings.codex_bin, "exec", "--json", "--ephemeral", "--skip-git-repo-check",
-           "--dangerously-bypass-approvals-and-sandbox",  # container is the sandbox (see module doc)
-           "-C", str(cwd), "-c", f'model_reasoning_effort="{EFFORT.get(tier, "medium")}"']
+def _base_cmd(tier: str, model: str | None, cwd: Path, session: str | None = None,
+              ephemeral: bool = False) -> list[str]:
+    """`codex exec` for a new session, or `codex exec resume <id>` to continue one (follow-ups).
+    resume has no -C, so the working dir comes from the process cwd (same project dir either way)."""
+    cmd = [settings.codex_bin, "exec"] + (["resume", session] if session else ["-C", str(cwd)])
+    cmd += ["--json", "--skip-git-repo-check",
+            "--dangerously-bypass-approvals-and-sandbox",  # container is the sandbox (see module doc)
+            "-c", f'model_reasoning_effort="{EFFORT.get(tier, "medium")}"']
+    if ephemeral:
+        cmd.append("--ephemeral")
     if model:
         cmd += ["-m", model]
     return cmd
@@ -62,15 +68,15 @@ def project_dir(project: str | None) -> Path:
     return p if project and project != "general" and p.is_dir() else settings.workspace_root
 
 
-def _stream(cmd: list[str], prompt: str, cwd: Path, log, cancelled, on_item=None) -> str:
-    """Run codex exec, feed `prompt` on stdin, log its JSONL events, return the final message."""
+def _stream(cmd: list[str], prompt: str, cwd: Path, log, cancelled, on_item=None) -> tuple[str, str | None]:
+    """Run codex exec, feed `prompt` on stdin, log its JSONL events; return (final message, thread id)."""
     _check_logged_in()
     with tempfile.NamedTemporaryFile("r", suffix=".txt") as last:
         proc = subprocess.Popen(cmd + ["-o", last.name, "-"], cwd=cwd, env=_env(), stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         proc.stdin.write(prompt)
         proc.stdin.close()
-        error, usage = None, None
+        error, usage, thread = None, None, None
         try:
             for line in proc.stdout:
                 if cancelled():
@@ -81,7 +87,9 @@ def _stream(cmd: list[str], prompt: str, cwd: Path, log, cancelled, on_item=None
                 except json.JSONDecodeError:
                     continue
                 kind = ev.get("type", "")
-                if kind == "item.completed":
+                if kind == "thread.started":
+                    thread = ev.get("thread_id")
+                elif kind == "item.completed":
                     item = ev.get("item") or {}
                     t = item.get("type")
                     if t == "agent_message" and item.get("text"):
@@ -109,11 +117,12 @@ def _stream(cmd: list[str], prompt: str, cwd: Path, log, cancelled, on_item=None
     if usage:
         log("status", f"tokens in {usage.get('input_tokens', '?')} (cached {usage.get('cached_input_tokens', 0)}),"
                       f" out {usage.get('output_tokens', '?')}")
-    return final
+    return final, thread
 
 
 def run(role: str, system_prompt: str, brief: str, tier: str, project: str | None,
-        log, changed: set, cancelled) -> str:
+        log, changed: set, cancelled, session: str | None = None) -> tuple[str, str | None]:
+    """Run one role; returns (answer, thread id). A previous thread id resumes that conversation."""
     cwd = project_dir(project)
     touched: list[str] = []
 
@@ -123,14 +132,18 @@ def run(role: str, system_prompt: str, brief: str, tier: str, project: str | Non
                 if (r := _rel(c.get("path", ""), cwd)) is not None:
                     touched.append(r)
 
-    prompt = f"{system_prompt}\n\n---\n\n{brief}"
+    # A resumed session already has the role prompt; only the new brief is sent.
+    prompt = brief if session else f"{system_prompt}\n\n---\n\n{brief}"
     if role in READ_ONLY_ROLES:
         prompt = "You are in READ-ONLY mode: do not create, modify or delete any file.\n\n" + prompt
-    out = _stream(_base_cmd(tier, settings.codex_model_for_tier(tier), cwd), prompt, cwd, log, cancelled, on_item)
+    if session:
+        log("status", f"resuming session {session[:8]}")
+    out, thread = _stream(_base_cmd(tier, settings.codex_model_for_tier(tier), cwd, session),
+                          prompt, cwd, log, cancelled, on_item)
     if role in READ_ONLY_ROLES and touched:
         raise CliError(f"read-only {role} modified files: {', '.join(sorted(set(touched)))}")
     changed.update(touched)
-    return out
+    return out, thread or session
 
 
 def _strict(schema: dict) -> dict:
@@ -150,8 +163,8 @@ def structured(prompt: str, schema: dict, tier: str = "fast") -> dict:
     with tempfile.NamedTemporaryFile("w", suffix=".json") as f:
         json.dump(_strict(schema), f)
         f.flush()
-        cmd = _base_cmd(tier, settings.codex_model_triage or None, settings.workspace_root)
+        cmd = _base_cmd(tier, settings.codex_model_triage or None, settings.workspace_root, ephemeral=True)
         cmd += ["--output-schema", f.name]
-        text = _stream(cmd, "Answer with JSON only. Do not run any commands.\n\n" + prompt,
+        text, _ = _stream(cmd, "Answer with JSON only. Do not run any commands.\n\n" + prompt,
                        settings.workspace_root, lambda *_: None, lambda: False)
     return json.loads(text[text.find("{"):text.rfind("}") + 1])

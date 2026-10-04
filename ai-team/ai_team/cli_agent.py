@@ -7,6 +7,7 @@ and stream its JSON events into the task's activity log. Auth: a long-lived OAut
 import json
 import os
 import subprocess
+import uuid
 from pathlib import Path
 
 from .config import settings
@@ -38,11 +39,12 @@ def _env() -> dict:
     env = {k: v for k, v in os.environ.items() if not k.startswith("AI_TEAM_")}
     env["CLAUDE_CODE_OAUTH_TOKEN"] = token()
     env["DISABLE_AUTOUPDATER"] = "1"
+    env["CLAUDE_CONFIG_DIR"] = str(settings.claude_config_dir)  # persistent, so sessions can be resumed
     return env
 
 
 def _base_cmd(model: str) -> list[str]:
-    return [settings.claude_bin, "-p", "--model", model, "--no-session-persistence", "--strict-mcp-config"]
+    return [settings.claude_bin, "-p", "--model", model, "--strict-mcp-config"]
 
 
 def project_dir(project: str | None) -> Path:
@@ -63,9 +65,13 @@ def _rel(path: str) -> str | None:
 
 
 def run(role: str, system_prompt: str, brief: str, model: str, project: str | None,
-        log, changed: set, cancelled) -> str:
-    """Run one role to completion. `log(kind, msg)` records activity; `cancelled()` aborts the run."""
-    cmd = _base_cmd(model) + [
+        log, changed: set, cancelled, session: str | None = None) -> tuple[str, str]:
+    """Run one role to completion; returns (answer, session id). Passing the previous session id
+    resumes that conversation (follow-ups). `log(kind, msg)` records activity; `cancelled()` aborts."""
+    session_args = ["--resume", session] if session else ["--session-id", str(uuid.uuid4())]
+    if session:
+        log("status", f"resuming session {session[:8]}")
+    cmd = _base_cmd(model) + session_args + [
         "--output-format", "stream-json", "--verbose",
         "--tools", ROLE_TOOLS[role],
         "--disallowedTools", *DENY,
@@ -113,12 +119,13 @@ def run(role: str, system_prompt: str, brief: str, model: str, project: str | No
     cost = result.get("total_cost_usd")
     log("status", f"finished in {result.get('num_turns', '?')} turns"
                   + (f", ~${cost:.3f} (API-equivalent)" if cost is not None else ""))
-    return result.get("result") or final
+    return result.get("result") or final, result.get("session_id") or session_args[1]
 
 
 def structured(prompt: str, schema: dict, model: str) -> dict:
     """One tool-less call returning JSON that matches `schema` (used for triage)."""
-    cmd = _base_cmd(model) + ["--output-format", "json", "--tools", "", "--json-schema", json.dumps(schema)]
+    cmd = _base_cmd(model) + ["--no-session-persistence", "--output-format", "json", "--tools", "",
+                              "--json-schema", json.dumps(schema)]
     r = subprocess.run(cmd, input=prompt, cwd=settings.workspace_root, env=_env(), capture_output=True,
                        text=True, timeout=300)
     try:

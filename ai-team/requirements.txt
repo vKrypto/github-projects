@@ -6,3 +6,4 @@ fastapi>=0.140
 uvicorn[standard]
 pydantic-settings
 python-dotenv
+langgraph-checkpoint-sqlite>=3.0

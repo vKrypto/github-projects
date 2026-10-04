@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from langchain.agents import create_agent
 from langchain_core.messages import AIMessage
 
-from . import cli_agent, codex_cli, db, llm
+from . import cli_agent, codex_cli, db, llm, memory
 from .config import settings
 from .tools import make_tools
 
@@ -57,16 +57,20 @@ def check_cancelled(task_id: int) -> None:
         raise Cancelled()
 
 
-def run_role(role: Role, task: dict, brief: str, changed: set | None = None) -> str:
-    """Run one agent to completion on `brief`, logging its activity to the task's event stream."""
+def run_role(role: Role, task: dict, brief: str, changed: set | None = None,
+             session: str | None = None) -> tuple[str, str | None]:
+    """Run one agent to completion on `brief`, logging its activity to the task's event stream.
+    Returns (answer, session id). Passing the role's previous session id resumes its conversation,
+    so follow-up turns (and review rounds) continue where the agent left off."""
     tid, meta = task["id"], task["metadata"] or {}
     log = lambda kind, msg: db.add_event(tid, role.name, kind, msg)
     log("status", f"started ({meta.get('model', '?')})")
+    changed = changed if changed is not None else set()
 
     if llm.is_mock():
         out = mock_output(role, task)
         log("message", out)
-        return out
+        return out, None
 
     system_prompt = (COMMON.format(root=settings.workspace_root, project=meta.get("project", "general"))
                      + "\n\n" + role.prompt)
@@ -74,25 +78,31 @@ def run_role(role: Role, task: dict, brief: str, changed: set | None = None) -> 
         def cancelled():
             t = db.get_task(tid)
             return t is not None and t["status"] == "cancelled"
-        changed = changed if changed is not None else set()
         tier = meta.get("model_tier", "balanced")
         try:
             if settings.backend == "claude":
                 return cli_agent.run(role.name, system_prompt, brief, settings.model_for_tier(tier),
-                                     meta.get("project"), log, changed, cancelled)
-            return codex_cli.run(role.name, system_prompt, brief, tier, meta.get("project"), log, changed, cancelled)
+                                     meta.get("project"), log, changed, cancelled, session)
+            return codex_cli.run(role.name, system_prompt, brief, tier, meta.get("project"), log, changed,
+                                 cancelled, session)
         except InterruptedError:
             raise Cancelled()
 
+    # langchain backend: the agent's message history lives in the checkpointer, one thread per task+role.
+    thread = f"{tid}:{role.name}"
+    if session:
+        log("status", "resuming conversation")
     agent = create_agent(
         llm.model_for(meta.get("model_tier", "balanced")),
         make_tools(role.read_only, log, changed),
         system_prompt=system_prompt,
         name=role.name,
+        checkpointer=memory.checkpointer,
     )
     final = ""
     for update in agent.stream({"messages": [("user", brief)]}, stream_mode="updates",
-                               config={"recursion_limit": settings.agent_max_steps * 2}):
+                               config={"recursion_limit": settings.agent_max_steps * 2,
+                                       "configurable": {"thread_id": thread}}):
         check_cancelled(tid)
         for node in update.values():
             for m in (node or {}).get("messages", []):
@@ -101,7 +111,7 @@ def run_role(role: Role, task: dict, brief: str, changed: set | None = None) -> 
                     if m.tool_calls:  # interim thinking-out-loud between tool calls
                         log("message", m.text)
     log("message", final)
-    return final
+    return final, thread
 
 
 def verdict(review: str) -> bool:
