@@ -1,6 +1,6 @@
 # FastAPI Hello World
 
-Minimal FastAPI sample project with two endpoints and test coverage.
+Minimal FastAPI sample project with endpoints and test coverage.
 
 ## Setup
 
