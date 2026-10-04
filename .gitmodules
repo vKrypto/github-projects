@@ -35,3 +35,6 @@
 	path = exercise_planner
 	url = https://github.com/vKrypto/self-care.git
 	branch = main
+[submodule "ai-team"]
+	path = ai-team
+	url = https://github.com/vKrypto/ai-tech-team.git

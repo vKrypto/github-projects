@@ -1,9 +1,0 @@
-langgraph>=1.2
-langchain>=1.4
-langchain-anthropic>=1.7
-langchain-openai>=1.6
-fastapi>=0.140
-uvicorn[standard]
-pydantic-settings
-python-dotenv
-langgraph-checkpoint-sqlite>=3.0
